@@ -1,6 +1,8 @@
 <resources>
-    <string name="app_name">Where\'s Don?</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="app_name">Where is Don?</string>
+    <string name="restart_game">Restarting the Game! (Replace with Dialog later)</string>
+    <string name="menu_resume">Resume Game</string>
+    <string name="menu_resuming">Resuming Game…</string>
+    <string name="menu_restart">Restart Game</string>
+    <string name="menu_about">About the Team</string>
 </resources>

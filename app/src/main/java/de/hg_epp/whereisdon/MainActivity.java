@@ -1,15 +1,22 @@
 package de.hg_epp.whereisdon;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
 
+    /**
+     * @author Jan Zartmann and Christian Oder
+     * https://developer.android.com/training/system-ui/immersive.html
+     * Implementation of the Google Non-Sticky Immersive Mode
+     */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -31,9 +38,15 @@ public class MainActivity extends ActionBarActivity {
 
     public void buttonOnClick(View z)
     {
-        Button button = (Button) z;
-        ((Button)z).setText("Das Spiel wird fortgesetzt");
-
+        switch (z.getId()) {
+            case R.id.continue_button:
+                ((Button) z).setText(getString(R.string.menu_resuming));
+                this.startActivity(new Intent(this, TMXTiledMap.class));
+                break;
+            case R.id.restart_button:
+                Toast.makeText(this, getString(R.string.restart_game), Toast.LENGTH_SHORT);
+                break;
+        }
     }
 
     @Override
@@ -51,7 +64,7 @@ public class MainActivity extends ActionBarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
             return true;
         }
 
