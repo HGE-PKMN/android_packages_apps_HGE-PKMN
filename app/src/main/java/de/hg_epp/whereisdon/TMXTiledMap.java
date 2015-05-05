@@ -117,7 +117,7 @@ public class TMXTiledMap extends SimpleBaseGameActivity {
                 public void onTMXTileWithPropertiesCreated(final org.andengine.extension.tmx.TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, final TMXTile pTMXTile, final TMXProperties<TMXTileProperty> pTMXTileProperties) {
                 }
             });
-            this.mTMXTiledMap = tmxLoader.loadFromAsset("tmx/desert.tmx");
+            this.mTMXTiledMap = tmxLoader.loadFromAsset("tmx/WIDmap.tmx");
             this.mTMXTiledMap.setOffsetCenter(0, 0);
         } catch (final TMXLoadException e) {
             Debug.e(e);
@@ -153,7 +153,7 @@ public class TMXTiledMap extends SimpleBaseGameActivity {
                         player.animate(new long[] { 200, 200, 200 }, 0, 2, true);
                         break;
                     case 1:
-                        player.animate(new long[] { 200, 200, 200 }, 3, 5, true);
+                        player.animate(new long[]{200, 200, 200 }, 3, 5, true);
                         break;
                     case 2:
                         player.animate(new long[] { 200, 200, 200 }, 6, 8, true);
