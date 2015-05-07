@@ -1,10 +1,12 @@
 package de.hg_epp.whereisdon;
 
-import java.io.IOException;
+import android.opengl.GLES20;
+import android.view.View;
 
 import org.andengine.engine.camera.BoundCamera;
-import org.andengine.engine.camera.hud.controls.AnalogOnScreenControl;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
+import org.andengine.engine.camera.hud.controls.BaseOnScreenControl.IOnScreenControlListener;
+import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
 import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.engine.options.EngineOptions;
@@ -13,6 +15,7 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXLoader;
@@ -23,8 +26,6 @@ import org.andengine.extension.tmx.TMXTileProperty;
 import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.bitmap.AssetBitmapTexture;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
@@ -33,8 +34,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.Constants;
 import org.andengine.util.debug.Debug;
 
-import android.opengl.GLES20;
-import android.view.View;
+import java.io.IOException;
 
 /**
  * Based Off TMXTiledMapExample.java by
@@ -45,7 +45,7 @@ import android.view.View;
  * using Google Non Sticky Immersive Mode
  * @author Christian Oder
  */
-public class TMXTiledMap extends SimpleBaseGameActivity  {
+public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
 
     // Non Sticky Immersive Mode
     @Override
@@ -79,11 +79,14 @@ public class TMXTiledMap extends SimpleBaseGameActivity  {
 
     private org.andengine.extension.tmx.TMXTiledMap mTMXTiledMap;
 
-    private BitmapTextureAtlas mOnScreenControlTexture;
+    static AnimatedSprite mPlayer;
+
+    private ITexture mOnScreenControlBaseTexture;
     private ITextureRegion mOnScreenControlBaseTextureRegion;
+    private ITexture mOnScreenControlKnobTexture;
     private ITextureRegion mOnScreenControlKnobTextureRegion;
 
-    static AnimatedSprite mPlayer;
+    private DigitalOnScreenControl mDigitalOnScreenControl;
 
     // ===========================================================
     // Constructors
@@ -107,14 +110,17 @@ public class TMXTiledMap extends SimpleBaseGameActivity  {
 
     @Override
     public void onCreateResources() throws IOException {
-        this.mPlayerTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/player.png", TextureOptions.DEFAULT);
+        this.mPlayerTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/enemy.png", TextureOptions.DEFAULT);
         this.mPlayerTextureRegion = TextureRegionFactory.extractTiledFromTexture(this.mPlayerTexture, 3, 4);
         this.mPlayerTexture.load();
 
-        this.mOnScreenControlTexture = new BitmapTextureAtlas(this.getTextureManager(), 256, 128, TextureOptions.BILINEAR);
-        this.mOnScreenControlBaseTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mOnScreenControlTexture, this, "gfx/onscreen_control_base.png", 0, 0);
-        this.mOnScreenControlKnobTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mOnScreenControlTexture, this, "gfx/onscreen_control_knob.png", 128, 0);
-        this.mOnScreenControlTexture.load();
+        this.mOnScreenControlBaseTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/onscreen_control_base.png", TextureOptions.BILINEAR);
+        this.mOnScreenControlBaseTextureRegion = TextureRegionFactory.extractFromTexture(this.mOnScreenControlBaseTexture);
+        this.mOnScreenControlBaseTexture.load();
+
+        this.mOnScreenControlKnobTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/onscreen_control_knob.png", TextureOptions.BILINEAR);
+        this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.extractFromTexture(this.mOnScreenControlKnobTexture);
+        this.mOnScreenControlKnobTexture.load();
     }
 
     @Override
@@ -155,23 +161,28 @@ public class TMXTiledMap extends SimpleBaseGameActivity  {
         		/* Velocity control (left). */
         // Amount of Pixels away from 0/0 (top left corner)
         final float edge_space = 40;
-        final AnalogOnScreenControl velocityOnScreenControl = new AnalogOnScreenControl(edge_space, edge_space, this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, this.getVertexBufferObjectManager(), new AnalogOnScreenControl.IAnalogOnScreenControlListener() {
+        this.mDigitalOnScreenControl = new DigitalOnScreenControl(edge_space, edge_space, this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, this.getVertexBufferObjectManager(), new IOnScreenControlListener() {
             @Override
             public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
-
+                    if(pValueX == 1) {
+                        mPlayer.animate(new long[]{200, 200, 200}, 3, 5, true);
+                    } else if (pValueX == -1) {
+                        mPlayer.animate(new long[] { 200, 200, 200 }, 9, 11, true);
+                    } else if(pValueY == 1) {
+                        mPlayer.animate(new long[] { 200, 200, 200 }, 0, 2, true);
+                    } else if(pValueY == -1) {
+                        mPlayer.animate(new long[] { 200, 200, 200 }, 6, 8, true);
+                    }
                 physicsHandler.setVelocity(pValueX * 100, pValueY * 100);
             }
-
-            @Override
-            public void onControlClick(final AnalogOnScreenControl pAnalogOnScreenControl) {
-				/* Nothing. */
-            }
         });
-        velocityOnScreenControl.getControlBase().setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-        velocityOnScreenControl.getControlBase().setAlpha(0.5f);
-        velocityOnScreenControl.getControlBase().setScale(0.5f);
 
-        scene.setChildScene(velocityOnScreenControl);
+        this.mDigitalOnScreenControl.getControlBase().setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        this.mDigitalOnScreenControl.setAlpha(0.5f);
+        this.mDigitalOnScreenControl.getControlBase().setScale(0.5f);
+
+        scene.setChildScene(this.mDigitalOnScreenControl);
+
 
 		/* Now we are going to create a rectangle that will  always highlight the tile below the feet of the pEntity. */
         final Rectangle currentTileRectangle = new Rectangle(0, 0, this.mTMXTiledMap.getTileWidth(), this.mTMXTiledMap.getTileHeight(), this.getVertexBufferObjectManager());

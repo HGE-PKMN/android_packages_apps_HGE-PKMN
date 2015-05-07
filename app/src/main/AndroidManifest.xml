@@ -17,7 +17,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TMXTiledMap" android:configChanges="orientation"/>
+        <activity android:name=".TMXTiledMap" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".TMXTiledMapDigital" android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>
