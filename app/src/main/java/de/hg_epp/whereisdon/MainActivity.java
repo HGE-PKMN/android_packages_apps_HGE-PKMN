@@ -46,6 +46,14 @@ public class MainActivity extends ActionBarActivity {
             case R.id.restart_button:
                 Toast.makeText(this, getString(R.string.restart_game), Toast.LENGTH_SHORT);
                 break;
+            case R.id.gender_change_radiobutton:
+                //TMXTiledMap.onCreateResources();
+                Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.gender_change_radiobutton_2:
+                //TMXTiledMap.onCreateResources();
+                Toast.makeText(this, getString(R.string.girl_selected), Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
