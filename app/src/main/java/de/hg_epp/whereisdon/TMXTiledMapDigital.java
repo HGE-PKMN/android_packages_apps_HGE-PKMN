@@ -162,18 +162,26 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
         // Amount of Pixels away from 0/0 (top left corner)
         final float edge_space = 40;
         this.mDigitalOnScreenControl = new DigitalOnScreenControl(edge_space, edge_space, this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, this.getVertexBufferObjectManager(), new IOnScreenControlListener() {
+            float lastpValueX;
+            float lastpValueY;
             @Override
             public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
-                    if(pValueX == 1) {
+                if(pValueX != lastpValueX || pValueY != lastpValueY) {
+                    lastpValueX = pValueX;
+                    lastpValueY = pValueY;
+                    if (pValueX == 1) {
                         mPlayer.animate(new long[]{200, 200, 200}, 3, 5, true);
                     } else if (pValueX == -1) {
-                        mPlayer.animate(new long[] { 200, 200, 200 }, 9, 11, true);
-                    } else if(pValueY == 1) {
-                        mPlayer.animate(new long[] { 200, 200, 200 }, 0, 2, true);
-                    } else if(pValueY == -1) {
-                        mPlayer.animate(new long[] { 200, 200, 200 }, 6, 8, true);
+                        mPlayer.animate(new long[]{200, 200, 200}, 9, 11, true);
+                    } else if (pValueY == 1) {
+                        mPlayer.animate(new long[]{200, 200, 200}, 0, 2, true);
+                    } else if (pValueY == -1) {
+                        mPlayer.animate(new long[]{200, 200, 200}, 6, 8, true);
+                    } else if (pValueX == 0 && pValueY == 0) {
+                        mPlayer.stopAnimation();
                     }
-                physicsHandler.setVelocity(pValueX * 100, pValueY * 100);
+                    physicsHandler.setVelocity(pValueX * 100, pValueY * 100);
+                }
             }
         });
 
