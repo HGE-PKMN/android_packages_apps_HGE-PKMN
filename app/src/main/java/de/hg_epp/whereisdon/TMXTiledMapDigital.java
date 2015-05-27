@@ -110,7 +110,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
 
     @Override
     public void onCreateResources() throws IOException {
-        this.mPlayerTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/enemy.png", TextureOptions.DEFAULT);
+        this.mPlayerTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), MainActivity.mChar, TextureOptions.DEFAULT);
         this.mPlayerTextureRegion = TextureRegionFactory.extractTiledFromTexture(this.mPlayerTexture, 3, 4);
         this.mPlayerTexture.load();
 

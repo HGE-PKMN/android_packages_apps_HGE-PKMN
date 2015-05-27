@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
+    public static String mChar = "gfx/enemy.png";
     /**
      * @author Jan Zartmann and Christian Oder
      * https://developer.android.com/training/system-ui/immersive.html
@@ -47,12 +48,12 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(this, getString(R.string.restart_game), Toast.LENGTH_SHORT);
                 break;
             case R.id.gender_change_radiobutton:
-                //TMXTiledMap.onCreateResources();
                 Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();
+                mChar = "gfx/enemy.png";
                 break;
             case R.id.gender_change_radiobutton_2:
-                //TMXTiledMap.onCreateResources();
                 Toast.makeText(this, getString(R.string.girl_selected), Toast.LENGTH_SHORT).show();
+                mChar = "gfx/player.png";
                 break;
         }
     }
