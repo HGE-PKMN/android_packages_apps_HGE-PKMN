@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
@@ -23,7 +24,6 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
@@ -48,6 +48,7 @@ import org.andengine.util.Constants;
 import org.andengine.util.debug.Debug;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Based Off TMXTiledMapExample.java by
@@ -91,10 +92,12 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
     private TiledTextureRegion mPlayerTextureRegion;
 
     private org.andengine.extension.tmx.TMXTiledMap mTMXTiledMap;
-    private TMXLayer layer;
 
     private Scene mScene;
     private PhysicsWorld mPhysicsWorld;
+    private static final float ELASTICITY = 0f;
+    private static final float FRICTION = 0.5f;
+    private ArrayList<Body> walls = new ArrayList<Body>();
 
     private Music mMusic;
 
@@ -175,9 +178,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
             this.mTMXTiledMap = tmxLoader.loadFromAsset("tmx/mapchris.tmx");
             this.mTMXTiledMap.setOffsetCenter(0, 0);
 
-            Log.e("WID", "vor createUnwalkableObjects");
             createUnwalkableObjects(this.mTMXTiledMap);
-            Log.e("WID", "nach createUnwalkableObjects");
             mScene.attachChild(this.mTMXTiledMap);
 
         } catch (final TMXLoadException e) {
@@ -274,18 +275,27 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
 
     private void createUnwalkableObjects(TMXTiledMap map){
 // Loop through the object groups
-        Log.e("WID", "createUnwalkableObjects vor for");
-        for(final TMXObjectGroup group: map.getTMXObjectGroups()) {
-            Log.e("WID", "createUnwalkableObjects vor if");
-            if(group.getTMXObjectGroupProperties().containsTMXProperty("wall", "true")){
-                Log.e("WID", "createUnwalkableObjects in if");
-// This is our "wall" layer. Create the boxes from it
-                for(final TMXObject object : group.getTMXObjects()) {
-                    final Rectangle rect = new Rectangle(object.getX(), object.getY(),object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
-                    final FixtureDef boxFixtureDef = PhysicsFactory.createFixtureDef(0, 0, 1f);
-                    Log.e("WID", "createUnwalkableObjects after FixtureDef");
-                    PhysicsFactory.createBoxBody(mPhysicsWorld, rect, BodyDef.BodyType.StaticBody, boxFixtureDef);
-                    rect.setVisible(true);
+        for (final TMXObjectGroup group : mTMXTiledMap.getTMXObjectGroups()) {
+            if (group.getTMXObjectGroupProperties().containsTMXProperty("wall",
+                    "true")) {
+                // This is our "wall" layer. Create the physical boxes from it
+                for (final TMXObject object : group.getTMXObjects()) {
+                    // Create the rectangle
+                    final Rectangle rect = new Rectangle(object.getX(),
+                            object.getY(), object.getWidth(),
+                            object.getHeight(), getVertexBufferObjectManager());
+                    //make the body
+                    final FixtureDef boxFixtureDef = PhysicsFactory
+                            .createFixtureDef(0, ELASTICITY, FRICTION);
+                    //connect the body to the physics engine.
+                    Body tempbody = PhysicsFactory.createBoxBody(mPhysicsWorld, rect,
+                            BodyDef.BodyType.StaticBody, boxFixtureDef);
+
+                    // make it invisible
+                    rect.setVisible(false);
+                    //add it to the scene
+                    walls.add(tempbody);
+                    //rects.add(rect);
                     mScene.attachChild(rect);
                 }
             }

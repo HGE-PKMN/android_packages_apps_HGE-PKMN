@@ -1,24 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" nextobjectid="1">
- <properties>
-  <property name="wall" value="true"/>
- </properties>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" nextobjectid="36">
  <tileset firstgid="1" name="floors_tiled_ready" tilewidth="32" tileheight="32">
   <image source="gfx/floors/floors_tiled_ready.png" width="64" height="128"/>
-  <tile id="1">
-   <properties>
-    <property name="wall" value="true"/>
-   </properties>
-  </tile>
-  <tile id="2">
-   <properties>
-    <property name="wall" value="true"/>
-   </properties>
-  </tile>
  </tileset>
  <layer name="Kachelebene 1" width="20" height="20">
   <data encoding="base64" compression="zlib">
-   eJxjZmBgYKYyZoVidihmJRKjq0c3j1I8VM0jNdyJMY+RAB41b9Q8WppHzfQ82PMvtcyjVnlKTQwA004GAQ==
+   eJxjYmBgYKIyZoVidihmJRKjq0c3j1I8VM0jNdyJMY+RAB41b9Q8WppHzfQ82PMvtcyjVnlKTQwAdF8FkQ==
   </data>
  </layer>
+ <objectgroup name="Walls" width="20" height="20">
+  <properties>
+   <property name="wall" value="true"/>
+  </properties>
+  <object id="30" x="160" y="160" width="321" height="321"/>
+  <object id="31" x="0" y="-1" width="31" height="639"/>
+  <object id="33" x="33" y="607" width="607" height="33"/>
+  <object id="34" x="30" y="-1" width="610" height="34"/>
+  <object id="35" x="606" y="32" width="34" height="576"/>
+ </objectgroup>
 </map>
