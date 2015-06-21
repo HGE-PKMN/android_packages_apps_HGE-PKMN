@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl.IOnScreenControlListener;
@@ -94,6 +96,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
     private Scene mScene;
     private PhysicsWorld mPhysicsWorld;
 
+    private Music mMusic;
+
     static AnimatedSprite mPlayer;
 
     private ITexture mOnScreenControlBaseTexture;
@@ -120,7 +124,10 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
         this.mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         this.mCamera.setBoundsEnabled(false);
 
-        return new EngineOptions(true, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera);
+        final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera);
+            engineOptions.getAudioOptions().setNeedsMusic(true);
+            engineOptions.getAudioOptions().setNeedsSound(true);
+        return engineOptions;
     }
 
     @Override
@@ -136,13 +143,23 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
         this.mOnScreenControlKnobTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/onscreen_control_knob.png", TextureOptions.BILINEAR);
         this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.extractFromTexture(this.mOnScreenControlKnobTexture);
         this.mOnScreenControlKnobTexture.load();
+
+        try
+        {
+            mMusic = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this,"mfx/background_music.ogg");
+        }
+
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
-    private void createBackground(){
 
-    }
     @Override
     public Scene onCreateScene() {
+
+        
         this.mEngine.registerUpdateHandler(new FPSLogger());
 
         mScene = new Scene();
@@ -245,6 +262,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
             }
         });
         mScene.attachChild(mPlayer);
+        this.mMusic.play();
+        this.mMusic.setLooping(true);
 
         return mScene;
     }

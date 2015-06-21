@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merger version="3"><dataSet config="debug"><source path="D:\Android\Projects\android_packages_apps_WhereIsDon\andEngine\build\intermediates\bundles\debug\assets"/></dataSet><dataSet config="main"><source path="D:\Android\Projects\android_packages_apps_WhereIsDon\andEngine\src\androidTest\assets"/></dataSet></merger>
+<merger version="3"><dataSet config="debug"><source path="E:\Schule\Informatik\Jgst.1\Git_WhereIsDon\android_packages_apps_WhereIsDon\andEngine\build\intermediates\bundles\debug\assets"/></dataSet><dataSet config="main"><source path="E:\Schule\Informatik\Jgst.1\Git_WhereIsDon\android_packages_apps_WhereIsDon\andEngine\src\androidTest\assets"/></dataSet></merger>
