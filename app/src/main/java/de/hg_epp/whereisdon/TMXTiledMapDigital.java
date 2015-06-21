@@ -1,7 +1,12 @@
 package de.hg_epp.whereisdon;
 
+import android.hardware.SensorManager;
 import android.opengl.GLES20;
 import android.view.View;
+
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
@@ -17,12 +22,17 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.util.FPSLogger;
+import org.andengine.extension.physics.box2d.PhysicsFactory;
+import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXLoader;
 import org.andengine.extension.tmx.TMXLoader.ITMXTilePropertiesListener;
+import org.andengine.extension.tmx.TMXObject;
+import org.andengine.extension.tmx.TMXObjectGroup;
 import org.andengine.extension.tmx.TMXProperties;
 import org.andengine.extension.tmx.TMXTile;
 import org.andengine.extension.tmx.TMXTileProperty;
+import org.andengine.extension.tmx.TMXTiledMap;
 import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
@@ -78,6 +88,10 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
     private TiledTextureRegion mPlayerTextureRegion;
 
     private org.andengine.extension.tmx.TMXTiledMap mTMXTiledMap;
+    private TMXLayer layer;
+
+    private Scene mScene;
+    private PhysicsWorld mPhysicsWorld;
 
     static AnimatedSprite mPlayer;
 
@@ -123,11 +137,16 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
         this.mOnScreenControlKnobTexture.load();
     }
 
+    private void createBackground(){
+
+    }
     @Override
     public Scene onCreateScene() {
         this.mEngine.registerUpdateHandler(new FPSLogger());
 
-        final Scene scene = new Scene();
+        mScene = new Scene();
+        mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
+        mScene.registerUpdateHandler(mPhysicsWorld);
 
         try {
             final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, this.getVertexBufferObjectManager(), new ITMXTilePropertiesListener() {
@@ -137,11 +156,13 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
             });
             this.mTMXTiledMap = tmxLoader.loadFromAsset("tmx/basic_asp.tmx");
             this.mTMXTiledMap.setOffsetCenter(0, 0);
+
+            createUnwalkableObjects(this.mTMXTiledMap);
+            mScene.attachChild(mTMXTiledMap);
+
         } catch (final TMXLoadException e) {
             Debug.e(e);
         }
-
-        scene.attachChild(this.mTMXTiledMap);
 
 		/* Make the camera not exceed the bounds of the TMXEntity. */
         this.mCamera.setBoundsEnabled(false);
@@ -189,7 +210,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
         this.mDigitalOnScreenControl.setAlpha(0.5f);
         this.mDigitalOnScreenControl.getControlBase().setScale(0.5f);
 
-        scene.setChildScene(this.mDigitalOnScreenControl);
+        mScene.setChildScene(this.mDigitalOnScreenControl);
 
 
 		/* Now we are going to create a rectangle that will  always highlight the tile below the feet of the pEntity. */
@@ -202,7 +223,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
 		/* The layer for the player to walk on. */
         final TMXLayer tmxLayer = this.mTMXTiledMap.getTMXLayers().get(0);
 
-        scene.registerUpdateHandler(new IUpdateHandler() {
+        mScene.registerUpdateHandler(new IUpdateHandler() {
             @Override
             public void reset() {
             }
@@ -220,14 +241,30 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
                 }
             }
         });
-        scene.attachChild(mPlayer);
+        mScene.attachChild(mPlayer);
 
-        return scene;
+        return mScene;
     }
 
     // ===========================================================
     // Methods
     // ===========================================================
+
+    private void createUnwalkableObjects(TMXTiledMap map){
+// Loop through the object groups
+        for(final TMXObjectGroup group: mTMXTiledMap.getTMXObjectGroups()) {
+            if(group.getTMXObjectGroupProperties().containsTMXProperty("wall", "true")){
+// This is our "wall" layer. Create the boxes from it
+                for(final TMXObject object : group.getTMXObjects()) {
+                    final Rectangle rect = new Rectangle(object.getX(), object.getY(),object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
+                    final FixtureDef boxFixtureDef = PhysicsFactory.createFixtureDef(0, 0, 1f);
+                    PhysicsFactory.createBoxBody(mPhysicsWorld, rect, BodyDef.BodyType.StaticBody, boxFixtureDef);
+                    rect.setVisible(true);
+                    mScene.attachChild(rect);
+                }
+            }
+        }
+    }
 
     // ===========================================================
     // Inner and Anonymous Classes

@@ -12,9 +12,10 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 
-    public static String mChar = "gfx/enemy.png";
+    public static String mChar = "gfx/trainer.png";
     /**
-     * @author Jan Zartmann and Christian Oder
+     * @author Jan Zartmann
+     * @author Christian Oder
      * https://developer.android.com/training/system-ui/immersive.html
      * Implementation of the Google Non-Sticky Immersive Mode
      */
@@ -49,7 +50,7 @@ public class MainActivity extends ActionBarActivity {
                 break;
             case R.id.gender_change_radiobutton:
                 Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();
-                mChar = "gfx/enemy.png";
+                mChar = "gfx/trainer.png";
                 break;
             case R.id.gender_change_radiobutton_2:
                 Toast.makeText(this, getString(R.string.girl_selected), Toast.LENGTH_SHORT).show();
