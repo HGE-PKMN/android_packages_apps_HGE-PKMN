@@ -2,6 +2,7 @@ package de.hg_epp.whereisdon;
 
 import android.hardware.SensorManager;
 import android.opengl.GLES20;
+import android.util.Log;
 import android.view.View;
 
 import com.badlogic.gdx.math.Vector2;
@@ -154,11 +155,13 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
                 public void onTMXTileWithPropertiesCreated(final org.andengine.extension.tmx.TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, final TMXTile pTMXTile, final TMXProperties<TMXTileProperty> pTMXTileProperties) {
                 }
             });
-            this.mTMXTiledMap = tmxLoader.loadFromAsset("tmx/basic_asp.tmx");
+            this.mTMXTiledMap = tmxLoader.loadFromAsset("tmx/mapchris.tmx");
             this.mTMXTiledMap.setOffsetCenter(0, 0);
 
+            Log.e("WID", "vor createUnwalkableObjects");
             createUnwalkableObjects(this.mTMXTiledMap);
-            mScene.attachChild(mTMXTiledMap);
+            Log.e("WID", "nach createUnwalkableObjects");
+            mScene.attachChild(this.mTMXTiledMap);
 
         } catch (final TMXLoadException e) {
             Debug.e(e);
@@ -252,12 +255,16 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
 
     private void createUnwalkableObjects(TMXTiledMap map){
 // Loop through the object groups
-        for(final TMXObjectGroup group: mTMXTiledMap.getTMXObjectGroups()) {
+        Log.e("WID", "createUnwalkableObjects vor for");
+        for(final TMXObjectGroup group: map.getTMXObjectGroups()) {
+            Log.e("WID", "createUnwalkableObjects vor if");
             if(group.getTMXObjectGroupProperties().containsTMXProperty("wall", "true")){
+                Log.e("WID", "createUnwalkableObjects in if");
 // This is our "wall" layer. Create the boxes from it
                 for(final TMXObject object : group.getTMXObjects()) {
                     final Rectangle rect = new Rectangle(object.getX(), object.getY(),object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
                     final FixtureDef boxFixtureDef = PhysicsFactory.createFixtureDef(0, 0, 1f);
+                    Log.e("WID", "createUnwalkableObjects after FixtureDef");
                     PhysicsFactory.createBoxBody(mPhysicsWorld, rect, BodyDef.BodyType.StaticBody, boxFixtureDef);
                     rect.setVisible(true);
                     mScene.attachChild(rect);
