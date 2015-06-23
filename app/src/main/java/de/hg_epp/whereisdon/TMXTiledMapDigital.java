@@ -97,9 +97,10 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
     private PhysicsWorld mPhysicsWorld;
     private static final float ELASTICITY = 0f;
     private static final float FRICTION = 0.5f;
-    private ArrayList<Body> walls = new ArrayList<Body>();
+    private ArrayList<Body> walls = new ArrayList<>();
 
     private Music mMusic;
+    private Music mMainMusic;
 
     static AnimatedSprite mPlayer;
 
@@ -147,9 +148,11 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
         this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.extractFromTexture(this.mOnScreenControlKnobTexture);
         this.mOnScreenControlKnobTexture.load();
 
+        //load music
         try
         {
             mMusic = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this,"mfx/background_music.ogg");
+            mMainMusic = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this,"mfx/menu_close1.ogg");
         }
 
         catch (IOException e)
