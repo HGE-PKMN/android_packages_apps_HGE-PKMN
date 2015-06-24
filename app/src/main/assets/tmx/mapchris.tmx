@@ -13,9 +13,5 @@
    <property name="wall" value="true"/>
   </properties>
   <object id="30" x="160" y="160" width="321" height="321"/>
-  <object id="31" x="0" y="-1" width="31" height="639"/>
-  <object id="33" x="33" y="607" width="607" height="33"/>
-  <object id="34" x="30" y="-1" width="610" height="34"/>
-  <object id="35" x="606" y="32" width="34" height="576"/>
  </objectgroup>
 </map>

@@ -8,6 +8,7 @@ import android.view.View;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import org.andengine.audio.music.Music;
@@ -21,10 +22,14 @@ import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.util.FPSLogger;
+import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
+import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.extension.tmx.TMXLayer;
@@ -58,6 +63,7 @@ import java.util.ArrayList;
  * modified by Christian Oder for steering of the Sprite and FullScreen Mode
  * using Google Non Sticky Immersive Mode
  * @author Christian Oder
+ * @author Jan Zartmann
  */
 public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
 
@@ -81,6 +87,11 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
 
     private static final int CAMERA_WIDTH = 240;
     private static final int CAMERA_HEIGHT = 135;
+    private static final short CATEGORYBIT_PLAYER = 2;
+    private static final short MASKBITS_PLAYER = 7;
+    private static final float ELASTICITY = 0f;
+    private static final float MASS = 1f;
+    private static final float FRICTION = 0f;
 
     // ===========================================================
     // Fields
@@ -95,14 +106,13 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
 
     private Scene mScene;
     private PhysicsWorld mPhysicsWorld;
-    private static final float ELASTICITY = 0f;
-    private static final float FRICTION = 0.5f;
-    private ArrayList<Body> walls = new ArrayList<>();
 
     private Music mMusic;
-    private Music mMainMusic;
 
     static AnimatedSprite mPlayer;
+    private static AnimatedSprite player_self_sprite;
+    private static Body player_self_body;
+    public ArrayList<IEntity> mEntityList;
 
     private ITexture mOnScreenControlBaseTexture;
     private ITextureRegion mOnScreenControlBaseTextureRegion;
@@ -148,11 +158,9 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
         this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.extractFromTexture(this.mOnScreenControlKnobTexture);
         this.mOnScreenControlKnobTexture.load();
 
-        //load music
         try
         {
             mMusic = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this,"mfx/background_music.ogg");
-            mMainMusic = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this,"mfx/menu_close1.ogg");
         }
 
         catch (IOException e)
@@ -169,8 +177,6 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
         this.mEngine.registerUpdateHandler(new FPSLogger());
 
         mScene = new Scene();
-        mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
-        mScene.registerUpdateHandler(mPhysicsWorld);
 
         try {
             final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, this.getVertexBufferObjectManager(), new ITMXTilePropertiesListener() {
@@ -181,7 +187,6 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
             this.mTMXTiledMap = tmxLoader.loadFromAsset("tmx/mapchris.tmx");
             this.mTMXTiledMap.setOffsetCenter(0, 0);
 
-            createUnwalkableObjects(this.mTMXTiledMap);
             mScene.attachChild(this.mTMXTiledMap);
 
         } catch (final TMXLoadException e) {
@@ -265,9 +270,21 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
                 }
             }
         });
-        mScene.attachChild(mPlayer);
+
+/*        this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
+        mScene.registerUpdateHandler(this.mPhysicsWorld);
+
+        final FixtureDef mPlayerFixtureDef = PhysicsFactory.createFixtureDef(0, 0f, 0f, false, CATEGORYBIT_PLAYER, MASKBITS_PLAYER, (short) 0);
+
+        Body mPlayerBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld, mPlayer, BodyDef.BodyType.DynamicBody, mPlayerFixtureDef);
+        this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(mPlayer, mPlayerBody, true, false));
+        player_self_body = mPhysicsWorld.getPhysicsConnectorManager().findBodyByShape(mPlayer);*/
+
+        // Add the sprite to the scene
+        this.mScene.attachChild(mPlayer);
         this.mMusic.play();
         this.mMusic.setLooping(true);
+/*        createUnwalkableObjects(this.mTMXTiledMap);*/
 
         return mScene;
     }
@@ -278,28 +295,41 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
 
     private void createUnwalkableObjects(TMXTiledMap map){
 // Loop through the object groups
-        for (final TMXObjectGroup group : mTMXTiledMap.getTMXObjectGroups()) {
+        Log.e("WID", "vor for");
+        for (final TMXObjectGroup group : map.getTMXObjectGroups()) {
+            Log.e("WID", "vor if");
             if (group.getTMXObjectGroupProperties().containsTMXProperty("wall",
                     "true")) {
+                Log.e("WID", "nach if");
                 // This is our "wall" layer. Create the physical boxes from it
+                Log.e("WID", "vor for2");
                 for (final TMXObject object : group.getTMXObjects()) {
                     // Create the rectangle
+                    Log.e("WID", "nach for2");
                     final Rectangle rect = new Rectangle(object.getX(),
                             object.getY(), object.getWidth(),
                             object.getHeight(), getVertexBufferObjectManager());
-                    //make the body
+                    final Rectangle rectshow = new Rectangle(object.getX(),
+                            object.getY(), object.getWidth(),
+                            object.getHeight(), getVertexBufferObjectManager());
+                    // make the body
                     final FixtureDef boxFixtureDef = PhysicsFactory
                             .createFixtureDef(0, ELASTICITY, FRICTION);
-                    //connect the body to the physics engine.
-                    Body tempbody = PhysicsFactory.createBoxBody(mPhysicsWorld, rect,
+                    // connect the body to the physics engine.
+                    PhysicsFactory.createBoxBody(mPhysicsWorld, rect,
                             BodyDef.BodyType.StaticBody, boxFixtureDef);
 
                     // make it invisible
                     rect.setVisible(false);
+                    rectshow.setOffsetCenter(0, 0);
+                    rectshow.setColor(1, 0, 0, 0.25f);
+                    mScene.attachChild(rectshow);
+                    Log.e("WID", "nach rectshow");
                     //add it to the scene
-                    walls.add(tempbody);
+                    //walls.add(tempbody);
                     //rects.add(rect);
                     mScene.attachChild(rect);
+                    Log.e("WID", "nach rect");
                 }
             }
         }
