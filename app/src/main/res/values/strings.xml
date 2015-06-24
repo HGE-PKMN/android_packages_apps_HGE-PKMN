@@ -9,4 +9,54 @@
     <string name="gender_change_2">Player</string>
     <string name="boy_selected">You selected the Boy</string>
     <string name="girl_selected">You selected the Player</string>
+
+    <string-array name="attacks">
+        <item
+            >Lauter Schrei</item>
+        <item
+            >Rotstiftwurf</item>
+        <item
+            >Fliegender Stuhl</item>
+        <item
+            >Diagenese</item>
+        <item
+            >Subduktion</item>
+        <item
+            >Böser Blick</item>
+        <item
+            >Hämisches Lachen</item>
+        <item
+            >Kreide Wurf</item>
+        <item
+            >Fiese Beleidigung</item>
+        <item
+            >Handy konfeszieren</item>
+        <item
+            >Roter Eintrag</item>
+        <item
+            >Rektorgespräch</item>
+        <item
+            >Peitschenhiebe</item>
+        <item
+            >Ab an die Tafel</item>
+        <item
+            >Cooperlauf</item>
+        <item
+            >Krammatig test</item>
+        <item
+            >Dikdad</item>
+        <item
+            >Ausdruckstanz</item>
+        <item
+            >Kehrbruch des Todes</item>
+        <item
+            >Non-Schtobbb-Attacke</item>
+        <item
+            >Oh, ein Dachs</item>
+        <item
+            >Linke Attacke</item>
+        <item
+            >Elemenierungsreaktion</item>
+    </string-array>
+
 </resources>
