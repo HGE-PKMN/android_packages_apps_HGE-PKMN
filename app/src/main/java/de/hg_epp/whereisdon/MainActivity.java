@@ -37,6 +37,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
+
     //method gets invoked when someone clicks a button with the onClick setting
     public void buttonOnClick(View z)
     {
@@ -46,7 +47,8 @@ public class MainActivity extends ActionBarActivity {
                 this.startActivity(new Intent(this, TMXTiledMapDigital.class));
                 break;
             case R.id.restart_button:
-                Toast.makeText(this, getString(R.string.restart_game), Toast.LENGTH_SHORT);
+                // Toast.makeText(this, getString(R.string.restart_game), Toast.LENGTH_SHORT);
+                new FightEngine(1, this);
                 break;
             case R.id.gender_change_radiobutton:
                 Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();

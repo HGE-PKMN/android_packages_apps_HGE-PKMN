@@ -18,6 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".TMXTiledMapDigital" android:configChanges="orientation|screenSize"/>
+        <activity android:name=".FightEngine" android:configChanges="orientation|screenSize"/>
     </application>
 
 </manifest>
