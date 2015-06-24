@@ -38,24 +38,44 @@
         <item>Elemenierungsreaktion</item>
     </string-array>
 
-
     <string-array name="sayings">
-        <item>Ein Tag ohne Nadine ist ein verlorener Tag.</item>
-        <item>Mach deine Hausaufgaben!</item>
-        <item>Des wird noch was &#8230;</item>
-        <item>Wie ich soweit gekommmen bin?? Ich habe mit dem Chef geschlafen &#8230;</item>
-        <item>Ab an die Tafel</item>
-        <item>Integrieren vor Dividieren</item>
-        <item>Direkt hops</item>
-        <item>Ich muss neue ArbeitsblÃ¤tter kopieren gehen &#8230;</item>
-        <item>Ja, du darfst aufs Klo.</item>
-        <item>Raus in die Pause!</item>
-        <item>Rechne immer mit mir!</item>
-        <item>MÃ¶ge die Macht mit mir sein!</item>
-        <item>Es wird Zeit fÃ¼r ein wenig Entropie &#8230;</item>
-        <item>Kraft ist Masse mal Beschleunigung, also voll auf die Fresse!</item>
-        <item>Es heiÃŸt nicht w, sondern Omega!</item>
-        <item>Oh, du hast den Witz nicht verstanden &#8230;</item>
-        <item>Uriniere dich hinfort du Gesäßöffnung</item>
+        <item
+            >Ein Tag ohne Nadine ist ein verlorener Tag.</item>
+        <item
+            >Mach deine Hausaufgaben!</item>
+        <item
+            >Des wird noch was &#8230;</item>
+        <item
+            >Wie ich soweit gekommmen bin?? Ich habe mit dem Chef geschlafen &#8230;</item>
+        <item
+            >Ab an die Tafel</item>
+        <item
+            >Integrieren vor Dividieren</item>
+        <item
+            >Direkt hops</item>
+        <item
+            >Ich muss neue Arbeitsblätter kopieren gehen &#8230;</item>
+        <item
+            >Ja, du darfst aufs Klo.</item>
+        <item
+            >Raus in die Pause!</item>
+        <item
+            >Rechne immer mit mir!</item>
+        <item
+            >Möge die Macht mit mir sein!</item>
+        <item
+            >Es wird Zeit für ein wenig Entropie &#8230;</item>
+        <item
+            >Kraft ist Masse mal Beschleunigung, also voll auf die Fresse!</item>
+        <item
+            >Es heißt nicht w, sondern Omega!</item>
+        <item
+            >Oh, du hast den Witz nicht verstanden &#8230;</item>
+        <item
+            >Uriniere dich hinfort du Gesäßöffnung</item>
+        <item
+            >Auf Lehramt studieren ist was für Pussies &#8230;</item>
+        <item
+            >Du bekommst eine Sechs, wenn du gewinnst.</item>
     </string-array>
 </resources>
