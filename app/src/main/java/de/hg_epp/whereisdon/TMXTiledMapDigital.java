@@ -22,8 +22,10 @@ import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
+import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
@@ -85,6 +87,11 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
 
     private static final int CAMERA_WIDTH = 240;
     private static final int CAMERA_HEIGHT = 135;
+    private static final short CATEGORYBIT_PLAYER = 2;
+    private static final short MASKBITS_PLAYER = 7;
+    private static final float ELASTICITY = 0f;
+    private static final float MASS = 1f;
+    private static final float FRICTION = 0f;
 
     // ===========================================================
     // Fields
@@ -99,13 +106,13 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
 
     private Scene mScene;
     private PhysicsWorld mPhysicsWorld;
-    private static final float ELASTICITY = 0f;
-    private static final float MASS = 1f;
-    private static final float FRICTION = 0f;
 
     private Music mMusic;
 
     static AnimatedSprite mPlayer;
+    private static AnimatedSprite player_self_sprite;
+    private static Body player_self_body;
+    public ArrayList<IEntity> mEntityList;
 
     private ITexture mOnScreenControlBaseTexture;
     private ITextureRegion mOnScreenControlBaseTextureRegion;
@@ -264,33 +271,20 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
             }
         });
 
-        // Create the physics body
-        mPhysicsWorld = new PhysicsWorld(new Vector2(0, 0), false);
-        mScene.registerUpdateHandler(mPhysicsWorld);
-        final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(1, 0.5f, 0.5f);
-        final Body body = PhysicsFactory.createBoxBody(this.mPhysicsWorld, mPlayer,
-                BodyDef.BodyType.DynamicBody, FIXTURE_DEF);
+/*        this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
+        mScene.registerUpdateHandler(this.mPhysicsWorld);
+
+        final FixtureDef mPlayerFixtureDef = PhysicsFactory.createFixtureDef(0, 0f, 0f, false, CATEGORYBIT_PLAYER, MASKBITS_PLAYER, (short) 0);
+
+        Body mPlayerBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld, mPlayer, BodyDef.BodyType.DynamicBody, mPlayerFixtureDef);
+        this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(mPlayer, mPlayerBody, true, false));
+        player_self_body = mPhysicsWorld.getPhysicsConnectorManager().findBodyByShape(mPlayer);*/
 
         // Add the sprite to the scene
         this.mScene.attachChild(mPlayer);
-
-        // Link the sprite and the body
-        this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(mPlayer, body, true, true));
-
-/*        mPhysicsWorld = new PhysicsWorld(new Vector2(0, 0), false);
-        mScene.registerUpdateHandler(mPhysicsWorld);
-        final FixtureDef playerFixtureDef = PhysicsFactory.createFixtureDef(
-                MASS, ELASTICITY, FRICTION);
-        Body playerBody = PhysicsFactory.createBoxBody(mPhysicsWorld, mPlayer,
-                BodyDef.BodyType.DynamicBody, playerFixtureDef);
-        mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(mPlayer, playerBody, true, false));
-
-        playerBody.setLinearDamping(1);
-        playerBody.setAngularDamping(1);
-        mScene.attachChild(mPlayer);*/
         this.mMusic.play();
         this.mMusic.setLooping(true);
-        createUnwalkableObjects(this.mTMXTiledMap);
+/*        createUnwalkableObjects(this.mTMXTiledMap);*/
 
         return mScene;
     }
