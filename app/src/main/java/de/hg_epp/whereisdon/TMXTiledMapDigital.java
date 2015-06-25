@@ -92,6 +92,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
     private static final float ELASTICITY = 0f;
     private static final float MASS = 1f;
     private static final float FRICTION = 0f;
+    private boolean wasPaused = false;
 
     // ===========================================================
     // Fields
@@ -139,8 +140,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
         this.mCamera.setBoundsEnabled(false);
 
         final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), this.mCamera);
-            engineOptions.getAudioOptions().setNeedsMusic(true);
-            engineOptions.getAudioOptions().setNeedsSound(true);
+        engineOptions.getAudioOptions().setNeedsMusic(true);
+        engineOptions.getAudioOptions().setNeedsSound(true);
         return engineOptions;
     }
 
@@ -173,7 +174,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
     @Override
     public Scene onCreateScene() {
 
-        
+
         this.mEngine.registerUpdateHandler(new FPSLogger());
 
         mScene = new Scene();
@@ -292,6 +293,21 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
     // ===========================================================
     // Methods
     // ===========================================================
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+        wasPaused=true;
+        //pause that music, else it keeps on playing while minimized
+        this.mMusic.pause();
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
+        if(wasPaused)
+            this.mMusic.play();
+    }
 
     private void createUnwalkableObjects(TMXTiledMap map){
 // Loop through the object groups

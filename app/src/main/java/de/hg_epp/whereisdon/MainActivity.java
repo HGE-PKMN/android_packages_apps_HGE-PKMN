@@ -48,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
                 break;
             case R.id.restart_button:
                 // Toast.makeText(this, getString(R.string.restart_game), Toast.LENGTH_SHORT);
-                new FightEngine(1, this);
+                this.startActivity(new Intent(this, FightEngine.class));
                 break;
             case R.id.gender_change_radiobutton:
                 Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();

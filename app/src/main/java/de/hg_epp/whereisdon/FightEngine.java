@@ -37,12 +37,7 @@ public class FightEngine extends ActionBarActivity {
     private String[] sayings;
     private Activity mActivity;
 
-    public FightEngine(){
-        //empty Constructor
-    }
-
-    public FightEngine(int type, Activity a){
-        mActivity = a;
+    public void prepareFight(int type){
         WBType = type;
         WBType = type;
         switch (type){
@@ -90,12 +85,19 @@ public class FightEngine extends ActionBarActivity {
         setContentView(R.layout.fight_layout);
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        //we are going to call a Dialog in here later, to select your Webertron Type
+        prepareFight(1);
+    }
+
     private void increaseN(){
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         n = settings.getInt("amount_games", 0);
         if (n<225)
-        n++;
+            n++;
         editor.putInt("amount_games", n);
 /*        return n;*/
     }
@@ -112,7 +114,7 @@ public class FightEngine extends ActionBarActivity {
         int High = 151;
         double R = r.nextInt(High-Low) + Low / 100;
         a = 250 * Math.sqrt(l) * R * u;
-       return a;
+        return a;
     }
 
     private void health(){
@@ -148,5 +150,14 @@ public class FightEngine extends ActionBarActivity {
         wbt.setImageResource(R.drawable.wbt_2);
         ImageView wbt2= (ImageView) findViewById(R.id.webertron_2);
         wbt2.setImageResource(R.drawable.wbt_3);
+    }
+
+    public void fight(View unused){
+        //code to fight in here.
+    }
+
+    public void escape(View unused){
+        //temp code to test the prepare Fight method
+        prepareFight(1);
     }
 }

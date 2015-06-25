@@ -2,7 +2,7 @@
     <string name="app_name">Where is Don?</string>
     <string name="restart_game">Restarting the Game! (Replace with Dialog later)</string>
     <string name="menu_resume">Resume Game</string>
-    <string name="menu_resuming">Resuming Gameâ€¦</string>
+    <string name="menu_resuming">Resuming Game &#8230;</string>
     <string name="menu_restart">Restart Game</string>
     <string name="menu_about">About the Team</string>
     <string name="gender_change">Boy</string>
