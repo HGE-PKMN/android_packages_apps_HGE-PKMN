@@ -40,13 +40,13 @@
 
     <string-array name="sayings">
         <item
-            >Ein Tag ohne Nadine ist ein verlorener Tag.</item>
+            >Ein Tag ohne Nadine&#8230; \nist ein verlorener Tag.</item>
         <item
             >Mach deine Hausaufgaben!</item>
         <item
             >Des wird noch was &#8230;</item>
         <item
-            >Wie ich soweit gekommmen bin?? Ich habe mit dem Chef geschlafen &#8230;</item>
+            >Wie ich soweit gekommmen bin?? \nIch habe mit dem Chef geschlafen &#8230;</item>
         <item
             >Ab an die Tafel</item>
         <item
@@ -66,7 +66,7 @@
         <item
             >Es wird Zeit für ein wenig Entropie &#8230;</item>
         <item
-            >Kraft ist Masse mal Beschleunigung, also voll auf die Fresse!</item>
+            >Kraft ist Masse mal Beschleunigung,\nalso voll auf die Fresse!</item>
         <item
             >Es heißt nicht w, sondern Omega!</item>
         <item
@@ -76,6 +76,8 @@
         <item
             >Auf Lehramt studieren ist was für Pussies &#8230;</item>
         <item
-            >Du bekommst eine Sechs, wenn du gewinnst.</item>
+            >Du bekommst eine Sechs, \nwenn du gewinnst.</item>
+        <item
+            >Nachhaltigkeit des Todes</item>
     </string-array>
 </resources>

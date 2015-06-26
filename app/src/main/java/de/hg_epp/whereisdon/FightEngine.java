@@ -4,18 +4,23 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.Animation.AnimationListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Random;
 
 
-public class FightEngine extends ActionBarActivity {
+public class FightEngine extends ActionBarActivity implements AnimationListener{
     /**
      * Engine Idea
      * @author Christian Schechter
@@ -79,11 +84,44 @@ public class FightEngine extends ActionBarActivity {
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);}
     }
 
+
+    ImageView wbt1;
+    ImageView wbt2;
+    Button btnAttack;
+    Animation upDown;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fight_layout);
+
+        wbt1 = (ImageView) findViewById(R.id.webertron_1);
+        wbt2 = (ImageView) findViewById(R.id.webertron_2);
+        btnAttack = (Button) findViewById(R.id.attack_button);
+
+        //load animation upDown
+        upDown = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.up_down);
+
+        //set listener for the animation
+        upDown.setAnimationListener(this);
+
+        btnAttack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                upDown.setRepeatMode(Animation.REVERSE);
+                upDown.setRepeatMode(Animation.INFINITE);
+                wbt1.setVisibility(View.VISIBLE);
+                wbt1.startAnimation(upDown);
+                wbt2.startAnimation(upDown);
+                wbt2.setVisibility(View.VISIBLE);
+            }
+        });
     }
+
+
+
+
 
     @Override
     protected void onResume(){
@@ -159,5 +197,27 @@ public class FightEngine extends ActionBarActivity {
     public void escape(View unused){
         //temp code to test the prepare Fight method
         prepareFight(1);
+    }
+
+
+
+
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+       // if(animation == upDown)
+        //{
+        //    Toast.makeText(getApplicationContext(), "Stopped", Toast.LENGTH_SHORT).show();
+        //}
+    }
+
+    @Override
+    public void onAnimationEnd(Animation animation) {
+
+    }
+
+    @Override
+    public void onAnimationRepeat(Animation animation) {
+
     }
 }
