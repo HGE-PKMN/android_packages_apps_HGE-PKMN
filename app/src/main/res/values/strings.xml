@@ -2,15 +2,31 @@
     <string name="app_name">Where is Don?</string>
     <string name="restart_game">Restarting the Game! (Replace with Dialog later)</string>
     <string name="menu_resume">Resume Game</string>
-    <string name="menu_resuming">Resuming Game &#8230;</string>
+    <string name="menu_resuming">Resuming Game&#8230;</string>
     <string name="menu_restart">Restart Game</string>
     <string name="menu_about">About the Team</string>
     <string name="gender_change">Boy</string>
     <string name="gender_change_2">Player</string>
     <string name="boy_selected">You selected the Boy</string>
     <string name="girl_selected">You selected the Player</string>
-    <string name="escape">Escape</string>
+    <string name="escape">Flucht</string>
     <string name="attack_button">Attack</string>
+    <string name="LVL">Level:</string>
+    <string name="HP">HP:</string>
+    <string name="remainingFights">Verbleibende Kämpfe:</string>
+    <string name="cant_escape_in_trainerfight">Du kannst in einem Trainerkampf nicht flüchten!</string>
+    <string name="fight_won">Glückwunsch, du hast den Kampf gewonnen!</string>
+    <string name="fight_lost">Schade, du hast den Kampf verloren!</string>
+    <string name="duel_won">Glückwunsch, du hast das Duell und den Kampf gewonnen!</string>
+    <string name="duel_lost">Schade, du hast das Duell und den Kampf verloren!</string>
+    <string name="fighting">Die Webetrons kämpfen&#8230;</string>
+    <string name="choose_wbt">Wähle deinen Webertrontypen</string>
+
+    <string-array name="webertons">
+        <item>Literaturwebertrons</item>
+        <item>Mathewebertrons</item>
+        <item>Naturwebertrons</item>
+    </string-array>
 
     <string-array name="attacks">
         <item>Lauter Schrei</item>
@@ -18,13 +34,13 @@
         <item>Fliegender Stuhl</item>
         <item>Diagenese</item>
         <item>Subduktion</item>
-        <item>BÃ¶ser Blick</item>
-        <item>HÃ¤misches Lachen</item>
+        <item>Böser Blick</item>
+        <item>Hämisches Lachen</item>
         <item>Kreide Wurf</item>
         <item>Fiese Beleidigung</item>
         <item>Handy konfeszieren</item>
         <item>Roter Eintrag</item>
-        <item>RektorgesprÃ¤ch</item>
+        <item>Rektorgespräch</item>
         <item>Peitschenhiebe</item>
         <item>Ab an die Tafel</item>
         <item>Cooperlauf</item>
@@ -44,17 +60,17 @@
         <item
             >Mach deine Hausaufgaben!</item>
         <item
-            >Des wird noch was &#8230;</item>
+            >Des wird noch was&#8230;</item>
         <item
-            >Wie ich soweit gekommmen bin?? \nIch habe mit dem Chef geschlafen &#8230;</item>
+            >Wie ich soweit gekommmen bin?? \nIch habe mit dem Chef geschlafen&#8230;</item>
         <item
-            >Ab an die Tafel</item>
+            >Ab an die Tafel!</item>
         <item
-            >Integrieren vor Dividieren</item>
+            >Integrieren vor Dividieren!</item>
         <item
-            >Direkt hops</item>
+            >Direkt hops!</item>
         <item
-            >Ich muss neue Arbeitsblätter kopieren gehen &#8230;</item>
+            >Ich muss neue Arbeitsblätter kopieren gehen&#8230;</item>
         <item
             >Ja, du darfst aufs Klo.</item>
         <item
@@ -64,20 +80,18 @@
         <item
             >Möge die Macht mit mir sein!</item>
         <item
-            >Es wird Zeit für ein wenig Entropie &#8230;</item>
+            >Es wird Zeit für ein wenig Entropie&#8230;</item>
         <item
             >Kraft ist Masse mal Beschleunigung,\nalso voll auf die Fresse!</item>
         <item
             >Es heißt nicht w, sondern Omega!</item>
         <item
-            >Oh, du hast den Witz nicht verstanden &#8230;</item>
+            >Oh, du hast den Witz nicht verstanden&#8230;</item>
         <item
-            >Uriniere dich hinfort du Gesäßöffnung</item>
+            >Uriniere dich hinfort du Gesäßöffnung!</item>
         <item
-            >Auf Lehramt studieren ist was für Pussies &#8230;</item>
+            >Auf Lehramt studieren ist was für Pussies&#8230;</item>
         <item
             >Du bekommst eine Sechs, \nwenn du gewinnst.</item>
-        <item
-            >Nachhaltigkeit des Todes</item>
     </string-array>
 </resources>
