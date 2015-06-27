@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -86,21 +87,35 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fight_layout);
 
-        wbt_p = (ImageView) findViewById(R.id.webertron_p);
-        wbt_t = (ImageView) findViewById(R.id.webertron_t);
+        // Get intent, action and MIME type
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("WIDCheatCodeInput".equals(type)) {
+                cheatSetN(intent); // Handle text being sent
+            } else if ("WIDCheatCodeUpdate".equals(type)) {
+                cheatAnswerN(); // Handle text being sent
+            }
+        } else {
+            setContentView(R.layout.fight_layout);
+
+            wbt_p = (ImageView) findViewById(R.id.webertron_p);
+            wbt_t = (ImageView) findViewById(R.id.webertron_t);
 
 
-        // load animation upDown
-        startWBTAnimation();
+            // load animation upDown
+            startWBTAnimation();
 
-        attack_button = (Button) findViewById(R.id.attack_button);
-        sayingsTV = (TextView) findViewById(R.id.textfield);
-        // create some fake view to pass an argument to the escape method
-        fake_view = findViewById(R.id.action_bar);
-        unlockButton();
-        prepareFight();
+            attack_button = (Button) findViewById(R.id.attack_button);
+            sayingsTV = (TextView) findViewById(R.id.textfield);
+            // create some fake view to pass an argument to the escape method
+            fake_view = findViewById(R.id.action_bar);
+            unlockButton();
+            prepareFight();
+        }
     }
 
     // override the action when pressing the back button to block escaping from a trainer fight.
@@ -166,24 +181,44 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
 
     // increases the players won games
     private void increaseN() {
-        /*SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);*/
-        // make the prefs world writable to be able to access it from our level cheat app
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_WORLD_WRITEABLE);
-        SharedPreferences.Editor editor = settings.edit();
-        int won_games = settings.getInt("won_games", 0);
         // max level is 20, so max amount of count games is 20² = 400
-        if (won_games < 400) {
-            won_games++;
+        if (getN() < 400) {
+            setN(getN() + 1);
         }
-        editor.putInt("won_games", won_games);
+    }
+
+    //get N from the Shared Settings
+    private int getN() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        return settings.getInt("won_games", 0);
+    }
+
+    //store a new N to the Shared Settings
+    private void setN(int n) {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("won_games", n);
         editor.apply();
+    }
+
+    private void cheatAnswerN(){
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, Integer.toString(getN()));
+        sendIntent.setType("WIDCheatCodeAnswer");
+        startActivity(sendIntent);
+    }
+
+    // this is our cheat method, to set our own level from the WID Cheat App
+    private void cheatSetN(Intent intent) {
+        int n = Integer.parseInt(intent.getStringExtra(Intent.EXTRA_TEXT));
+        setN(n);
     }
 
     // returns the Players current Level in dependence of the won games
     private double getPlayerLevel() {
-        /*SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);*/
-        // make the prefs world writable to be able to access it from our level cheat app
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_WORLD_WRITEABLE);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         int nFights = settings.getInt("won_games", 1);
         return Math.sqrt(nFights * 1D);
     }

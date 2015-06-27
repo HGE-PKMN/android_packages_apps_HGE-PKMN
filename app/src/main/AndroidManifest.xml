@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.hg_epp.whereisdon" >
+    package="de.hg_epp.whereisdon">
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
@@ -17,8 +17,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TMXTiledMapDigital" android:configChanges="orientation|screenSize"/>
-        <activity android:name=".FightEngine" android:configChanges="orientation|screenSize" android:screenOrientation="landscape"/>
+        <activity
+            android:name=".TMXTiledMapDigital"
+            android:configChanges="orientation|screenSize" />
+        <activity
+            android:name=".FightEngine"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="WIDCheatCodeInput" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:mimeType="WIDCheatCodeUpdate" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
