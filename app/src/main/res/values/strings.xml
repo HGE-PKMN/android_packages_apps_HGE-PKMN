@@ -21,6 +21,8 @@
     <string name="duel_lost">Schade, du hast das Duell und den Kampf verloren!</string>
     <string name="fighting">Die Webetrons kämpfen&#8230;</string>
     <string name="choose_wbt">Wähle deinen Webertrontypen</string>
+    <string name="wins">Siege</string>
+    <string name="you">Du:</string>
 
     <string-array name="webertons">
         <item>Literaturwebertrons</item>

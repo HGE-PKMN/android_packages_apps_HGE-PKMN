@@ -46,7 +46,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
 
     private String[] attacks;
     private String[] sayings;
-    private ArrayList<Integer> mDrawableArray = new ArrayList<Integer>();
+    private ArrayList<Integer> mDrawableArray = new ArrayList<>();
     private Button attack_button;
     private TextView sayingsTV;
     private boolean trainerfight;
@@ -55,8 +55,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     private int winsPlayer;
     private int winsTeacher;
     private int teacherWBT;
-    private ImageView wbt1;
-    private ImageView wbt2;
+    private ImageView wbt_p;
+    private ImageView wbt_t;
     private double player_lvl;
     private double teacher_lvl;
     private int wbt_type_p;
@@ -88,8 +88,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fight_layout);
 
-        wbt1 = (ImageView) findViewById(R.id.webertron_1);
-        wbt2 = (ImageView) findViewById(R.id.webertron_2);
+        wbt_p = (ImageView) findViewById(R.id.webertron_p);
+        wbt_t = (ImageView) findViewById(R.id.webertron_t);
 
 
         // load animation upDown
@@ -103,7 +103,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         prepareFight();
     }
 
-    // override the action when pressing the back button to block escaping from a trainerfight.
+    // override the action when pressing the back button to block escaping from a trainer fight.
     @Override
     public void onBackPressed() {
         escape(fake_view);
@@ -118,12 +118,15 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     // (can be changed later). Also set trainerfight true (this allows us to easily implement wild
     // Webertron fights later on, then call prepareNextFight.
     public void prepareFight() {
+        // I know it is bad sport to call android methods manually, but we need to be fullscreen
+        // before calling the Dialog in prepareNextFight
+        onWindowFocusChanged(true);
         getArrays();
         winsPlayer = 0;
         winsTeacher = 0;
-        // set the remaining fights to 4, cause we initially reduce it by 1,
+        // set the remaining fights to 3 + 1 (4), cause we initially reduce it by 1,
         // so we only have 3 rounds
-        remainingFights = 4;
+        remainingFights = 3 + 1;
         trainerfight = true;
         wbt_type_p = 0;
         wbt_type_t = 0;
@@ -136,7 +139,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
 
     // open Dialog to select Players Webertron, after that initialize the other parts
     // this happens in prepareNextFight2ndPart
-    public void prepareNextFight(){
+    public void prepareNextFight() {
         chooseWBT();
     }
 
@@ -158,33 +161,40 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         lowerRemainingFights();
         setHP(hp_p, hp_t);
         setLVL(player_lvl, teacher_lvl);
+        setWins(winsPlayer, winsTeacher);
     }
 
     // increases the players won games
     private void increaseN() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        /*SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);*/
+        // make the prefs world writable to be able to access it from our level cheat app
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_WORLD_WRITEABLE);
         SharedPreferences.Editor editor = settings.edit();
         int won_games = settings.getInt("won_games", 0);
-        if (won_games < 225)
+        // max level is 20, so max amount of count games is 20² = 400
+        if (won_games < 400) {
             won_games++;
+        }
         editor.putInt("won_games", won_games);
         editor.apply();
     }
 
-    // returns the Players current Level in dependance of the won games
+    // returns the Players current Level in dependence of the won games
     private double getPlayerLevel() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        int nFights = settings.getInt("amount_games", 1);
-        return Math.sqrt(nFights);
+        /*SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);*/
+        // make the prefs world writable to be able to access it from our level cheat app
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_WORLD_WRITEABLE);
+        int nFights = settings.getInt("won_games", 1);
+        return Math.sqrt(nFights * 1D);
     }
 
     // returns the Teachers Level
     private double getTeacherLevel() {
         // TODO: return the level passed from the Sprite
-        return 1;
+        return 1D;
     }
 
-    // calculates the Webertrons HP in dependance of the type facter (u/atk_pwr), the players level
+    // calculates the Webertrons HP in dependence of the type factor (u/atk_pwr), the players level
     // and a random factor between 0.85 and 1.15
     private double getAtkPwr(double atk_pwr, double level) {
         Random r = new Random();
@@ -199,9 +209,9 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         return atkp;
     }
 
-    // calculates the Webertrons HP in dependance of the type facter (t/type) and the players level
+    // calculates the Webertrons HP in dependence of the type factor (t/type) and the players level
     private double getHP(double type, double level) {
-        return (1500 * type * Math.sqrt(level));
+        return (1500D * type * Math.sqrt(level));
     }
 
     // loads the arrays from the strings.xml
@@ -240,11 +250,11 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         int High = mDrawableArray.size();
         int R1 = r.nextInt(High - Low) + Low;
         int R2 = r.nextInt(High - Low) + Low;
-        ImageView wbt1 = (ImageView) findViewById(R.id.webertron_1);
-        wbt1.setImageResource(mDrawableArray.get(R1));
-        ImageView wbt2 = (ImageView) findViewById(R.id.webertron_2);
+        /*ImageView wbt1 = (ImageView) findViewById(R.id.webertron_1);*/
+        wbt_p.setImageResource(mDrawableArray.get(R1));
+        /*ImageView wbt2 = (ImageView) findViewById(R.id.webertron_2);*/
         //this ImageView needs to be mirrored
-        wbt2.setImageBitmap(flipImage(BitmapFactory.decodeResource(getResources(), mDrawableArray.get(R2)),2));
+        wbt_t.setImageBitmap(flipImage(BitmapFactory.decodeResource(getResources(), mDrawableArray.get(R2)), 2));
     }
 
     // This allows us to mirror the Image so the Webertrons face each other
@@ -255,12 +265,12 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         int FLIP_HORIZONTAL = 2;
         Matrix matrix = new Matrix();
         // if vertical
-        if(type == FLIP_VERTICAL) {
+        if (type == FLIP_VERTICAL) {
             // y = y * -1
             matrix.preScale(1.0f, -1.0f);
         }
-        // if horizonal
-        else if(type == FLIP_HORIZONTAL) {
+        // if horizontal
+        else if (type == FLIP_HORIZONTAL) {
             // x = x * -1
             matrix.preScale(-1.0f, 1.0f);
             // unknown type
@@ -343,6 +353,20 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         TextView tvTeacherHP = (TextView) findViewById(R.id.hp_teacher);
         tvPlayerHP.setText(getString(R.string.HP) + " " + Math.round(hp_p));
         tvTeacherHP.setText(getString(R.string.HP) + " " + Math.round(hp_t));
+    }
+
+    // updates the TextView with the Players and Teachers current Wins
+    private void setWins(int win_p, int win_t) {
+        TextView tvWinsPlayer = (TextView) findViewById(R.id.winsPlayer);
+        TextView tvWinsTeacher = (TextView) findViewById(R.id.winsTeacher);
+        tvWinsPlayer.setText(getString(R.string.wins) + " " + getString(R.string.you) + " " + win_p);
+        tvWinsTeacher.setText(getString(R.string.wins) + " " + getTeacherName() + " " + win_t);
+    }
+
+    private String getTeacherName() {
+        //TODO: write code to return Teacher name
+        // use Hr. Weber for now
+        return "Hr. Weber";
     }
 
     // updates the TextView with the Remaining Fights
@@ -457,10 +481,10 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         upDown.setRepeatCount(Animation.INFINITE);
         upDown.setRepeatMode(Animation.REVERSE);
         upDown.setAnimationListener(this);
-        wbt1.setVisibility(View.VISIBLE);
-        wbt2.setVisibility(View.VISIBLE);
-        wbt1.startAnimation(upDown);
-        wbt2.startAnimation(upDown);
+        wbt_p.setVisibility(View.VISIBLE);
+        wbt_t.setVisibility(View.VISIBLE);
+        wbt_p.startAnimation(upDown);
+        wbt_t.startAnimation(upDown);
     }
 
     // lock the Attack button
@@ -528,7 +552,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         }
     }
 
-    public class selectWBTDialog extends DialogFragment {
+    public static class selectWBTDialog extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -537,8 +561,11 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
                         public void onClick(DialogInterface dialog, int which) {
                             // first position is 0, so increase the value by 1 to match our
                             // Webertron types
-                            wbt_type_p = which + 1;
-                            prepareNextFight2ndPart();
+                            // call the classes like this to prevent the need to be able to call
+                            // non-static content from the static DialogFragment
+                            // http://stackoverflow.com/questions/15414908/should-an-internal-dialogfragment-class-be-static-or-not
+                            ((FightEngine) getActivity()).wbt_type_p = which + 1;
+                            ((FightEngine) getActivity()).prepareNextFight2ndPart();
                         }
                     });
             return builder.create();
