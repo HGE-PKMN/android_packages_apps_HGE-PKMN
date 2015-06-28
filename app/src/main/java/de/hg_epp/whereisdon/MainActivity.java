@@ -26,9 +26,7 @@ public class MainActivity extends ActionBarActivity {
         if (hasFocus) {
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
@@ -49,7 +47,12 @@ public class MainActivity extends ActionBarActivity {
                 break;
             case R.id.restart_button:
                 // Toast.makeText(this, getString(R.string.restart_game), Toast.LENGTH_SHORT);
-                this.startActivity(new Intent(this, FightEngine.class));
+                Intent startAct = new Intent(this, FightEngine.class);
+                startAct.putExtra(Intent.EXTRA_SUBJECT, "CreateFight");
+                startAct.putExtra(Intent.EXTRA_TITLE, "Hr. Weber");
+                int t_won_fights = 1;
+                startAct.putExtra(Intent.EXTRA_TEXT, Integer.toString(t_won_fights));
+                this.startActivity(startAct);
                 break;
             case R.id.gender_change_radiobutton:
                 Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();

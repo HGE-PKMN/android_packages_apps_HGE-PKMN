@@ -61,6 +61,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     private ImageView wbt_t;
     private double player_lvl;
     private double teacher_lvl;
+    private int teacher_won_fights;
+    private String teacher_name;
     private int wbt_type_p;
     private int wbt_type_t;
     private double hp_p;
@@ -74,9 +76,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         if (hasFocus) {
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
@@ -92,28 +92,28 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+        setContentView(R.layout.fight_layout);
+
+        wbt_p = (ImageView) findViewById(R.id.webertron_p);
+        wbt_t = (ImageView) findViewById(R.id.webertron_t);
+
+
+        // load animation upDown
+        startWBTAnimation();
+
+        attack_button = (Button) findViewById(R.id.attack_button);
+        sayingsTV = (TextView) findViewById(R.id.textfield);
+        // create some fake view to pass an argument to the escape method
+        fake_view = findViewById(R.id.action_bar);
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("WIDCheatCodeInput".equals(type)) {
                 cheatSetN(intent); // Handle text being sent
             } else if ("WIDCheatCodeUpdate".equals(type)) {
                 cheatAnswerN(); // Handle text being sent
+            } else if ("CreateFight".equals(type)) {
+                unlockButton();
+                prepareFight(intent);
             }
-        } else {
-            setContentView(R.layout.fight_layout);
-
-            wbt_p = (ImageView) findViewById(R.id.webertron_p);
-            wbt_t = (ImageView) findViewById(R.id.webertron_t);
-
-
-            // load animation upDown
-            startWBTAnimation();
-
-            attack_button = (Button) findViewById(R.id.attack_button);
-            sayingsTV = (TextView) findViewById(R.id.textfield);
-            // create some fake view to pass an argument to the escape method
-            fake_view = findViewById(R.id.action_bar);
-            unlockButton();
-            prepareFight();
         }
     }
 
@@ -129,9 +129,9 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     }
 
     // initially prepare for a fight, set the wins to 0 and the remaining fights to 3
-    // (can be changed later). Also set trainerfight true (this allows us to easily implement wild
+    // (can be changed later). Also set trainer fight true (this allows us to easily implement wild
     // Webertron fights later on, then call prepareNextFight.
-    public void prepareFight() {
+    public void prepareFight(Intent intent) {
         // I know it is bad sport to call android methods manually, but we need to be fullscreen
         // before calling the Dialog in prepareNextFight
         onWindowFocusChanged(true);
@@ -148,6 +148,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         hp_t = 0;
         player_lvl = 0;
         teacher_lvl = 0;
+        setTeacherWonFights(intent);
+        setTeacherName(intent);
         prepareNextFight();
     }
 
@@ -189,7 +191,6 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     //get N from the Shared Settings
     private int getN() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
         return settings.getInt("won_games", 0);
     }
 
@@ -226,10 +227,16 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         return Math.sqrt(nFights * 1D);
     }
 
+    private void setTeacherWonFights(Intent intent) {
+        String levelS = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (!levelS.equals("")) {
+            teacher_won_fights = Integer.parseInt(levelS);
+        }
+    }
+
     // returns the Teachers Level
     private double getTeacherLevel() {
-        // TODO: return the level passed from the Sprite
-        return 1D;
+        return Math.sqrt(teacher_won_fights * 1D);
     }
 
     // calculates the Webertrons HP in dependence of the type factor (u/atk_pwr), the players level
@@ -401,10 +408,15 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         tvWinsTeacher.setText(getString(R.string.wins) + " " + getTeacherName() + " " + win_t);
     }
 
+    private void setTeacherName(Intent intent) {
+        String nameS = intent.getStringExtra(Intent.EXTRA_TITLE);
+        if (!nameS.equals("")) {
+            teacher_name = nameS;
+        }
+    }
+
     private String getTeacherName() {
-        //TODO: write code to return Teacher name
-        // use Hr. Weber for now
-        return "Hr. Weber";
+        return teacher_name + ":";
     }
 
     // updates the TextView with the Remaining Fights
