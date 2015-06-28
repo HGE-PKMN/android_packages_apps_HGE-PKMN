@@ -13,6 +13,7 @@ import android.widget.Toast;
 public class MainActivity extends ActionBarActivity {
 
     public static String mChar = "gfx/trainer.png";
+
     /**
      * @author Jan Zartmann
      * @author Christian Oder
@@ -29,18 +30,18 @@ public class MainActivity extends ActionBarActivity {
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);}
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+            setContentView(R.layout.activity_main);
     }
 
     //method gets invoked when someone clicks a button with the onClick setting
-    public void buttonOnClick(View z)
-    {
+    public void buttonOnClick(View z) {
         switch (z.getId()) {
             case R.id.continue_button:
                 ((Button) z).setText(getString(R.string.menu_resuming));

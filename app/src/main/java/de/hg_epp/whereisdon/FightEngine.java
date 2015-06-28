@@ -3,6 +3,7 @@ package de.hg_epp.whereisdon;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -85,14 +86,12 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     // unlock the attack button
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
 
         // Get intent, action and MIME type
         Intent intent = getIntent();
         String action = intent.getAction();
-        String type = intent.getType();
-
+        String type = intent.getStringExtra(Intent.EXTRA_SUBJECT);
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("WIDCheatCodeInput".equals(type)) {
                 cheatSetN(intent); // Handle text being sent
@@ -202,16 +201,20 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         editor.apply();
     }
 
-    private void cheatAnswerN(){
+    public void cheatAnswerN() {
+/*        PackageManager pm = getPackageManager();
+        Intent sendIntent = pm.getLaunchIntentForPackage("de.myself5.whereisdoncheats");*/
         Intent sendIntent = new Intent();
+        sendIntent.setComponent(new ComponentName("de.myself5.whereisdoncheats", "de.myself5.whereisdoncheats.MainActivity"));
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, Integer.toString(getN()));
-        sendIntent.setType("WIDCheatCodeAnswer");
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "WIDCheatCodeAnswer");
+        sendIntent.setType("text/plain");
         startActivity(sendIntent);
     }
 
     // this is our cheat method, to set our own level from the WID Cheat App
-    private void cheatSetN(Intent intent) {
+    public void cheatSetN(Intent intent) {
         int n = Integer.parseInt(intent.getStringExtra(Intent.EXTRA_TEXT));
         setN(n);
     }
