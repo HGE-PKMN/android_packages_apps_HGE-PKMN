@@ -87,11 +87,6 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Get intent, action and MIME type
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getStringExtra(Intent.EXTRA_SUBJECT);
         setContentView(R.layout.fight_layout);
 
         wbt_p = (ImageView) findViewById(R.id.webertron_p);
@@ -105,6 +100,11 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         sayingsTV = (TextView) findViewById(R.id.textfield);
         // create some fake view to pass an argument to the escape method
         fake_view = findViewById(R.id.action_bar);
+
+        // Get intent, action and MIME type
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getStringExtra(Intent.EXTRA_SUBJECT);
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("WIDCheatCodeInput".equals(type)) {
                 cheatSetN(intent); // Handle text being sent
@@ -114,6 +114,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
                 unlockButton();
                 prepareFight(intent);
             }
+        } else {
+            Log.e("WID", "No Intent detected!");
         }
     }
 
@@ -203,8 +205,6 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     }
 
     public void cheatAnswerN() {
-/*        PackageManager pm = getPackageManager();
-        Intent sendIntent = pm.getLaunchIntentForPackage("de.myself5.whereisdoncheats");*/
         Intent sendIntent = new Intent();
         sendIntent.setComponent(new ComponentName("de.myself5.whereisdoncheats", "de.myself5.whereisdoncheats.MainActivity"));
         sendIntent.setAction(Intent.ACTION_SEND);
@@ -212,12 +212,14 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         sendIntent.putExtra(Intent.EXTRA_SUBJECT, "WIDCheatCodeAnswer");
         sendIntent.setType("text/plain");
         startActivity(sendIntent);
+        finish();
     }
 
     // this is our cheat method, to set our own level from the WID Cheat App
     public void cheatSetN(Intent intent) {
         int n = Integer.parseInt(intent.getStringExtra(Intent.EXTRA_TEXT));
         setN(n);
+        finish();
     }
 
     // returns the Players current Level in dependence of the won games

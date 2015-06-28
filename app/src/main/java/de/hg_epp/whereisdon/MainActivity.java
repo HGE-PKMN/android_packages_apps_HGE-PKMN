@@ -48,8 +48,10 @@ public class MainActivity extends ActionBarActivity {
             case R.id.restart_button:
                 // Toast.makeText(this, getString(R.string.restart_game), Toast.LENGTH_SHORT);
                 Intent startAct = new Intent(this, FightEngine.class);
+                startAct.setAction(Intent.ACTION_SEND);
                 startAct.putExtra(Intent.EXTRA_SUBJECT, "CreateFight");
                 startAct.putExtra(Intent.EXTRA_TITLE, "Hr. Weber");
+                startAct.setType("text/plain");
                 int t_won_fights = 1;
                 startAct.putExtra(Intent.EXTRA_TEXT, Integer.toString(t_won_fights));
                 this.startActivity(startAct);
