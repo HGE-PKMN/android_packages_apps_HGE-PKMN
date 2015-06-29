@@ -12,6 +12,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -69,6 +70,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     private double hp_p;
     private double hp_t;
     private View fake_view;
+
+    MediaPlayer mMusic;
 
     // make our App Fullscreen
     @Override
@@ -156,6 +159,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         setTeacherName(intent);
         setTeacherToken(intent);
         prepareNextFight();
+        initializeSound();
+        startMusic();
     }
 
     // open Dialog to select Players Webertron, after that initialize the other parts
@@ -638,4 +643,17 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
             return builder.create();
         }
     }
+
+    //initzializes music
+    public void initializeSound(){
+        mMusic = MediaPlayer.create(this, R.raw.background_music);
+    }
+
+    //method for starting the music
+    //music with loop
+    public void startMusic(){
+        mMusic.start();
+        mMusic.setLooping(true);
+    }
+
 }
