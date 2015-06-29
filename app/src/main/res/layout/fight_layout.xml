@@ -1,157 +1,157 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- authored by Jan Zartmann -->
+<?xml version="1.0" encoding="utf-8"?><!-- authored by Jan Zartmann -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fight_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:weightSum="1"
-    tools:context=".FightEngine"
     android:baselineAligned="false"
-    android:id="@+id/fight_layout"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:weightSum="1"
+    tools:context=".FightEngine">
 
     <RelativeLayout
+        android:id="@+id/fight"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="right"
-        android:id="@+id/fight"
-        android:background="#663333">
+        android:background="@drawable/febackground">
 
         <Button
+            android:id="@+id/attack_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/attack_button"
-            android:id="@+id/attack_button"
-            android:background="#000000"
-            android:onClick="fight"
-            android:textColor="#ffffffff"
-            android:width="200dp"
-            android:layout_marginBottom="35dp"
             android:layout_above="@+id/escape"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="20dp"
+            android:width="215dp"
+            android:background="@drawable/fightbutton"
+            android:gravity="left|center_vertical"
+            android:onClick="fight"
+            android:text="@string/attack_button"
+            android:textColor="#ffffff" />
 
         <Button
+            android:id="@+id/escape"
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/escape"
-            android:id="@+id/escape"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="12dp"
+            android:width="215dp"
+            android:background="@drawable/escapebutton"
             android:onClick="escape"
-            android:background="#000000"
-            android:textColor="#ffffffff"
-            android:width="200dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:text=""
+            android:textColor="#000000" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text=""
             android:id="@+id/textfield"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_toRightOf="@+id/escape"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="37dp"
             android:layout_toEndOf="@+id/escape"
-            android:layout_marginLeft="20dp"/>
+            android:layout_toRightOf="@+id/escape"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/webertron_t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/attack_button"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="70dp"
+            android:layout_marginRight="70dp"
             android:maxHeight="200px"
             android:maxWidth="200px"
-            android:minWidth="200px"
             android:minHeight="200px"
-            android:layout_marginRight="70dp"
-            android:layout_marginEnd="70dp"
-            android:layout_alignBottom="@+id/attack_button"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:minWidth="200px" />
 
         <ImageView
+            android:id="@+id/webertron_p"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/webertron_p"
+            android:layout_above="@+id/attack_button"
+            android:layout_alignEnd="@+id/attack_button"
+            android:layout_alignRight="@+id/attack_button"
+            android:layout_marginBottom="5dp"
             android:maxHeight="200px"
             android:maxWidth="200px"
-            android:minWidth="200px"
             android:minHeight="200px"
-            android:layout_marginBottom="5dp"
-            android:layout_above="@+id/attack_button"
-            android:layout_alignRight="@+id/attack_button"
-            android:layout_alignEnd="@+id/attack_button"  />
+            android:minWidth="200px" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text=""
             android:id="@+id/hp_player"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
             android:id="@+id/lvl_player"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
             android:layout_below="@+id/hp_player"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text=""
             android:id="@+id/hp_teacher"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
             android:id="@+id/lvl_teacher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
             android:layout_below="@+id/hp_teacher"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text=""
             android:id="@+id/remainingFights"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text=""
             android:id="@+id/winsPlayer"
-            android:layout_below="@+id/lvl_player"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/lvl_player"
             android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
+
+        <TextView
             android:id="@+id/winsTeacher"
-            android:layout_below="@+id/lvl_teacher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-
+            android:layout_below="@+id/lvl_teacher"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceSmall" />
     </RelativeLayout>
 </LinearLayout>

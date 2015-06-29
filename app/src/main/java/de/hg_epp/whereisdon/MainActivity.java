@@ -55,6 +55,7 @@ public class MainActivity extends ActionBarActivity {
                 startAct.setType("text/plain");
                 int t_won_fights = 1;
                 startAct.putExtra(Intent.EXTRA_TEXT, Integer.toString(t_won_fights));
+                startAct.putExtra(Intent.EXTRA_UID, "Wb");
                 this.startActivity(startAct);
                 break;
             case R.id.gender_change_radiobutton:

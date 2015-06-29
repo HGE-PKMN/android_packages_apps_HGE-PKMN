@@ -63,6 +63,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     private double teacher_lvl;
     private int teacher_won_fights;
     private String teacher_name;
+    private String teacher_token;
     private int wbt_type_p;
     private int wbt_type_t;
     private double hp_p;
@@ -153,6 +154,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         teacher_lvl = 0;
         setTeacherWonFights(intent);
         setTeacherName(intent);
+        setTeacherToken(intent);
         prepareNextFight();
     }
 
@@ -283,7 +285,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         int R1 = r.nextInt(High1 - Low) + Low;
         int R2 = r.nextInt(High2 - Low) + Low;
         attack_button.setText(attacks[R1]);
-        sayingsTV.setText(sayings[R2]);
+        sayingsTV.setText(getTeacherName() + " " + sayings[R2]);
     }
 
     // sets the Sayings TextView text to R.string.fighting
@@ -408,7 +410,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         TextView tvWinsPlayer = (TextView) findViewById(R.id.winsPlayer);
         TextView tvWinsTeacher = (TextView) findViewById(R.id.winsTeacher);
         tvWinsPlayer.setText(getString(R.string.wins) + " " + getString(R.string.you) + " " + win_p);
-        tvWinsTeacher.setText(getString(R.string.wins) + " " + getTeacherName() + " " + win_t);
+        tvWinsTeacher.setText(getString(R.string.wins) + " " + getTeacherToken() + " " + win_t);
     }
 
     private void setTeacherName(Intent intent) {
@@ -418,8 +420,20 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         }
     }
 
+    private void setTeacherToken(Intent intent){
+        String tokenS = intent.getStringExtra(Intent.EXTRA_UID);
+        if (!tokenS.equals("")) {
+            teacher_token = tokenS;
+        }
+    }
+
     private String getTeacherName() {
         return teacher_name + ":";
+    }
+
+    private String getTeacherToken() {
+
+        return teacher_token + ":";
     }
 
     // updates the TextView with the Remaining Fights
