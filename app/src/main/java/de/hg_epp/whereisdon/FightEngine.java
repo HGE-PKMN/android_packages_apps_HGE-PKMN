@@ -373,16 +373,14 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         Random r = new Random();
         int Low = 95;
         int High = 106;
-        double R = (r.nextInt(High - Low) + Low) / 100D;
-        return R;
+        return (r.nextInt(High - Low) + Low) / 100D;
     }
 
     public double getATKRisky() {
         Random r = new Random();
         int Low = 15;
         int High = 201;
-        double R = (r.nextInt(High - Low) + Low) / 100D;
-        return R;
+        return (r.nextInt(High - Low) + Low) / 100D;
     }
 
     public void fight2ndPart(double atk_type) {

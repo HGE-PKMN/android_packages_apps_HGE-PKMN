@@ -1,7 +1,6 @@
 package de.hg_epp.whereisdon;
 
 import android.content.Intent;
-import android.hardware.SensorManager;
 import android.opengl.GLES20;
 import android.util.Log;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.View;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import org.andengine.audio.music.Music;
@@ -18,15 +16,12 @@ import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl.IOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
-import org.andengine.engine.handler.IUpdateHandler;
-import org.andengine.engine.handler.physics.PhysicsHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.shape.IShape;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
@@ -50,7 +45,6 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
-import org.andengine.util.Constants;
 import org.andengine.util.debug.Debug;
 
 import java.io.IOException;
@@ -89,11 +83,9 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
     private static final int CAMERA_WIDTH = 240;
     private static final int CAMERA_HEIGHT = 135;
-    private static final short CATEGORYBIT_PLAYER = 2;
-    private static final short MASKBITS_PLAYER = 7;
-    private static final float ELASTICITY = 0f;
-    private static final float MASS = 1f;
-    private static final float FRICTION = 0f;
+    private static final float ELASTICITY = 0;
+    private static final float FRICTION = 1f;
+    private static final int PLAYER_VELOCITY = 3;
     private boolean wasPaused = false;
 
     // ===========================================================
@@ -113,9 +105,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     private Music mMusic;
 
     static AnimatedSprite mPlayer;
-    private static AnimatedSprite player_self_sprite;
-    private static Body player_self_body;
-    public ArrayList<IEntity> mEntityList;
+    private Body mPlayerBody;
 
     private ITexture mOnScreenControlBaseTexture;
     private ITextureRegion mOnScreenControlBaseTextureRegion;
@@ -123,6 +113,17 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     private ITextureRegion mOnScreenControlKnobTextureRegion;
 
     private DigitalOnScreenControl mDigitalOnScreenControl;
+
+    private enum PlayerDirection {
+        NONE,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
+    }
+
+    private PlayerDirection playerDirection = PlayerDirection.NONE;
+    private static final long[] ANIMATE_DURATION = new long[]{200, 200, 200};
 
     // ===========================================================
     // Constructors
@@ -192,6 +193,9 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
         mScene = new Scene();
 
+        mPhysicsWorld = new FixedStepPhysicsWorld(30, new Vector2(0, 0), false, 8, 1);
+        mScene.registerUpdateHandler(mPhysicsWorld);
+
         try {
             final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, this.getVertexBufferObjectManager(), new ITMXTilePropertiesListener() {
                 @Override
@@ -208,45 +212,75 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         }
 
 		/* Make the camera not exceed the bounds of the TMXEntity. */
-        this.mCamera.setBoundsEnabled(false);
+        TMXLayer tmxLayer = mTMXTiledMap.getTMXLayers().get(0);
         this.mCamera.setBounds(0, 0, this.mTMXTiledMap.getWidth(), this.mTMXTiledMap.getHeight());
         this.mCamera.setBoundsEnabled(true);
+        // addBounds(tmxLayer.getWidth(), tmxLayer.getHeight());
 
         final float centerX = CAMERA_WIDTH / 2;
         final float centerY = CAMERA_HEIGHT / 2;
 
 		/* Create the sprite and add it to the scene. */
-        mPlayer = new AnimatedSprite(centerX, centerY, this.mPlayerTextureRegion, this.getVertexBufferObjectManager());
-        mPlayer.setOffsetCenterY(0);
-        this.mCamera.setChaseEntity(mPlayer);
-        final PhysicsHandler physicsHandler = new PhysicsHandler(mPlayer);
-        mPlayer.registerUpdateHandler(physicsHandler);
+        mPlayer = new AnimatedSprite(centerX, centerY, mPlayerTextureRegion, getVertexBufferObjectManager());
+        mCamera.setChaseEntity(mPlayer);
+        final FixtureDef fixtureDef = PhysicsFactory.createFixtureDef(0, 0, 0.5f);
+        mPlayerBody = PhysicsFactory.createBoxBody(mPhysicsWorld, mPlayer, BodyDef.BodyType.DynamicBody, fixtureDef);
+        mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(mPlayer, mPlayerBody, true, false) {
+
+            @Override
+            public void onUpdate(float pSecondsElapsed) {
+                super.onUpdate(pSecondsElapsed);
+                mCamera.updateChaseEntity();
+            }
+
+        });
+
+//		mPhysicsHandler = new PhysicsHandler(mPlayerSprite);
+//		mPlayerSprite.registerUpdateHandler(mPhysicsHandler);
+        mScene.attachChild(mPlayer);
 
         		/* Velocity control (left). */
         // Amount of Pixels away from 0/0 (top left corner)
         final float edge_space = 40;
         this.mDigitalOnScreenControl = new DigitalOnScreenControl(edge_space, edge_space, this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, this.getVertexBufferObjectManager(), new IOnScreenControlListener() {
-            float lastpValueX;
-            float lastpValueY;
 
             @Override
-            public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
-                if (pValueX != lastpValueX || pValueY != lastpValueY) {
-                    lastpValueX = pValueX;
-                    lastpValueY = pValueY;
-                    if (pValueX == 1) {
-                        mPlayer.animate(new long[]{200, 200, 200}, 3, 5, true);
-                    } else if (pValueX == -1) {
-                        mPlayer.animate(new long[]{200, 200, 200}, 9, 11, true);
-                    } else if (pValueY == 1) {
-                        mPlayer.animate(new long[]{200, 200, 200}, 0, 2, true);
-                    } else if (pValueY == -1) {
-                        mPlayer.animate(new long[]{200, 200, 200}, 6, 8, true);
-                    } else if (pValueX == 0 && pValueY == 0) {
-                        mPlayer.stopAnimation();
+            public void onControlChange(BaseOnScreenControl pBaseOnScreenControl,
+                                        float pValueX, float pValueY) {
+
+                // Set the correct walking animation
+                if (pValueX == 1) {
+                    // Up
+                    if (playerDirection != PlayerDirection.UP) {
+                        mPlayer.animate(ANIMATE_DURATION, 3, 5, true);
+                        playerDirection = PlayerDirection.UP;
                     }
-                    physicsHandler.setVelocity(pValueX * 100, pValueY * 100);
+                } else if (pValueX == -1) {
+                    // Down
+                    if (playerDirection != PlayerDirection.DOWN) {
+                        mPlayer.animate(ANIMATE_DURATION, 9, 11, true);
+                        playerDirection = PlayerDirection.DOWN;
+                    }
+                } else if (pValueY == 1) {
+                    // Left
+                    if (playerDirection != PlayerDirection.LEFT) {
+                        mPlayer.animate(ANIMATE_DURATION, 0, 2, true);
+                        playerDirection = PlayerDirection.LEFT;
+                    }
+                } else if (pValueY == -1) {
+                    // Right
+                    if (playerDirection != PlayerDirection.RIGHT) {
+                        mPlayer.animate(ANIMATE_DURATION, 6, 8, true);
+                        playerDirection = PlayerDirection.RIGHT;
+                    }
+                } else {
+                    if (mPlayer.isAnimationRunning()) {
+                        mPlayer.stopAnimation();
+                        playerDirection = PlayerDirection.NONE;
+                    }
                 }
+                // Set the player's velocity
+                mPlayerBody.setLinearVelocity(pValueX * PLAYER_VELOCITY, pValueY * PLAYER_VELOCITY);
             }
         });
 
@@ -256,50 +290,10 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
         mScene.setChildScene(this.mDigitalOnScreenControl);
 
-
-		/* Now we are going to create a rectangle that will  always highlight the tile below the feet of the pEntity. */
-        final Rectangle currentTileRectangle = new Rectangle(0, 0, this.mTMXTiledMap.getTileWidth(), this.mTMXTiledMap.getTileHeight(), this.getVertexBufferObjectManager());
-        /* Set the OffsetCenter to 0/0, so that it aligns with the TMXTiles. */
-        //currentTileRectangle.setOffsetCenter(0, 0);
-        //currentTileRectangle.setColor(1, 0, 0, 0.25f);
-        //scene.attachChild(currentTileRectangle);
-
-		/* The layer for the player to walk on. */
-        final TMXLayer tmxLayer = this.mTMXTiledMap.getTMXLayers().get(0);
-
-        mScene.registerUpdateHandler(new IUpdateHandler() {
-            @Override
-            public void reset() {
-            }
-
-            @Override
-            public void onUpdate(final float pSecondsElapsed) {
-				/* Get the scene-coordinates of the players feet. */
-                final float[] playerFootCordinates = mPlayer.convertLocalCoordinatesToSceneCoordinates(16, 1);
-
-				/* Get the tile the feet of the player are currently waking on. */
-                final TMXTile tmxTile = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
-                if (tmxTile != null) {
-                    // tmxTile.setTextureRegion(null); <-- Eraser-style removing of tiles =D
-                    currentTileRectangle.setPosition(tmxLayer.getTileX(tmxTile.getTileColumn()), tmxLayer.getTileY(tmxTile.getTileRow()));
-                }
-            }
-        });
-
-/*        this.mPhysicsWorld = new PhysicsWorld(new Vector2(0, SensorManager.GRAVITY_EARTH), false);
-        mScene.registerUpdateHandler(this.mPhysicsWorld);
-
-        final FixtureDef mPlayerFixtureDef = PhysicsFactory.createFixtureDef(0, 0f, 0f, false, CATEGORYBIT_PLAYER, MASKBITS_PLAYER, (short) 0);
-
-        Body mPlayerBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld, mPlayer, BodyDef.BodyType.DynamicBody, mPlayerFixtureDef);
-        this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(mPlayer, mPlayerBody, true, false));
-        player_self_body = mPhysicsWorld.getPhysicsConnectorManager().findBodyByShape(mPlayer);*/
-
-        // Add the sprite to the scene
-        this.mScene.attachChild(mPlayer);
         this.mMusic.play();
         this.mMusic.setLooping(true);
-/*        createUnwalkableObjects(this.mTMXTiledMap);*/
+        createUnwalkableObjects(this.mTMXTiledMap);
+        Log.e("WID", "4");
 
         return mScene;
     }
@@ -320,45 +314,51 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         this.startActivity(startAct);
     }
 
-    private void createUnwalkableObjects(TMXTiledMap map) {
-// Loop through the object groups
-        Log.e("WID", "vor for");
-        for (final TMXObjectGroup group : map.getTMXObjectGroups()) {
-            Log.e("WID", "vor if");
-            if (group.getTMXObjectGroupProperties().containsTMXProperty("wall",
-                    "true")) {
-                Log.e("WID", "nach if");
-                // This is our "wall" layer. Create the physical boxes from it
-                Log.e("WID", "vor for2");
-                for (final TMXObject object : group.getTMXObjects()) {
-                    // Create the rectangle
-                    Log.e("WID", "nach for2");
-                    final Rectangle rect = new Rectangle(object.getX(),
-                            object.getY(), object.getWidth(),
-                            object.getHeight(), getVertexBufferObjectManager());
-                    final Rectangle rectshow = new Rectangle(object.getX(),
-                            object.getY(), object.getWidth(),
-                            object.getHeight(), getVertexBufferObjectManager());
-                    // make the body
-                    final FixtureDef boxFixtureDef = PhysicsFactory
-                            .createFixtureDef(0, ELASTICITY, FRICTION);
-                    // connect the body to the physics engine.
-                    PhysicsFactory.createBoxBody(mPhysicsWorld, rect,
-                            BodyDef.BodyType.StaticBody, boxFixtureDef);
+    private void addBounds(float width, float height) {
+        final IEntity bottom = new Rectangle(0, height - 2, width, 2, getVertexBufferObjectManager());
+        bottom.setVisible(false);
+        final IEntity top = new Rectangle(0, 0, width, 2, getVertexBufferObjectManager());
+        top.setVisible(false);
+        final IEntity left = new Rectangle(0, 0, 2, height, getVertexBufferObjectManager());
+        left.setVisible(false);
+        final IEntity right = new Rectangle(width - 2, 0, 2, height, getVertexBufferObjectManager());
+        right.setVisible(false);
 
-                    // make it invisible
-                    rect.setVisible(false);
-                    rectshow.setOffsetCenter(0, 0);
-                    rectshow.setColor(1, 0, 0, 0.25f);
-                    mScene.attachChild(rectshow);
-                    Log.e("WID", "nach rectshow");
-                    //add it to the scene
-                    //walls.add(tempbody);
-                    //rects.add(rect);
+        final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0, 1f);
+        PhysicsFactory.createBoxBody(this.mPhysicsWorld, bottom, BodyDef.BodyType.StaticBody, wallFixtureDef);
+        PhysicsFactory.createBoxBody(this.mPhysicsWorld, top, BodyDef.BodyType.StaticBody, wallFixtureDef);
+        PhysicsFactory.createBoxBody(this.mPhysicsWorld, left, BodyDef.BodyType.StaticBody, wallFixtureDef);
+        PhysicsFactory.createBoxBody(this.mPhysicsWorld, right, BodyDef.BodyType.StaticBody, wallFixtureDef);
+
+        this.mScene.attachChild(bottom);
+        this.mScene.attachChild(top);
+        this.mScene.attachChild(left);
+        this.mScene.attachChild(right);
+    }
+
+    private void createUnwalkableObjects(TMXTiledMap map) {
+        // Loop through the object groups
+        Log.e("WID", "0");
+        for (final TMXObjectGroup group : this.mTMXTiledMap.getTMXObjectGroups()) {
+
+            // Check for wall objects
+            Log.e("WID", "1");
+            if (group.getTMXObjectGroupProperties().containsTMXProperty("wall", "true")) {
+                // This is our "wall" layer. Create the boxes from it
+                Log.e("WID", "2");
+                for (final TMXObject object : group.getTMXObjects()) {
+                    Log.e("WID", "3");
+                    final Rectangle rect = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
+                    final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0, 1f);
+                    rect.setOffsetCenter(0, 0);
+                    rect.setColor(1, 0, 0, 0.25f);
+                    PhysicsFactory.createBoxBody(this.mPhysicsWorld, rect, BodyDef.BodyType.StaticBody, wallFixtureDef);
+
                     mScene.attachChild(rect);
-                    Log.e("WID", "nach rect");
                 }
             }
+
+
         }
     }
 
