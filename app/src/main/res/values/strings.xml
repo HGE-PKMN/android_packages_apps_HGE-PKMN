@@ -23,6 +23,7 @@
     <string name="choose_wbt">Wähle deinen Webertrontypen</string>
     <string name="wins">Siege</string>
     <string name="you">Du:</string>
+    <string name="intro_continue">Continue&#8230;</string>
 
     <string-array name="webertons">
         <item>Literaturwebertrons</item>
@@ -96,4 +97,8 @@
         <item
             >Du bekommst eine Sechs, \nwenn du gewinnst.</item>
     </string-array>
+    <string name="title_activity_introduction">Introduction</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
 </resources>

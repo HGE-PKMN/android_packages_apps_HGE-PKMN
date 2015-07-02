@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
+
+
 public class MainActivity extends ActionBarActivity {
 
     public static String mChar = "gfx/trainer.png";
@@ -36,7 +38,8 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
+       setContentView(R.layout.activity_main);
+
     }
 
     //method gets invoked when someone clicks a button with the onClick setting
@@ -44,7 +47,7 @@ public class MainActivity extends ActionBarActivity {
         switch (z.getId()) {
             case R.id.continue_button:
                 ((Button) z).setText(getString(R.string.menu_resuming));
-                this.startActivity(new Intent(this, TMXTiledMapDigital.class));
+                this.startActivity(new Intent(this, Introduction.class));
                 break;
             case R.id.restart_button:
                 // Toast.makeText(this, getString(R.string.restart_game), Toast.LENGTH_SHORT);
@@ -66,6 +69,7 @@ public class MainActivity extends ActionBarActivity {
                 Toast.makeText(this, getString(R.string.girl_selected), Toast.LENGTH_SHORT).show();
                 mChar = "gfx/player.png";
                 break;
+
         }
     }
 
