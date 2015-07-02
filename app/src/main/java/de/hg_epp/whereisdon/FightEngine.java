@@ -135,6 +135,11 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         DialogFragment.show(getFragmentManager(), "WBT");
     }
 
+    public void chooseATKType() {
+        DialogFragment DialogFragment = new selectATKDialog();
+        DialogFragment.show(getFragmentManager(), "ATK");
+    }
+
     // initially prepare for a fight, set the wins to 0 and the remaining fights to 3
     // (can be changed later). Also set trainer fight true (this allows us to easily implement wild
     // Webertron fights later on, then call prepareNextFight.
@@ -251,7 +256,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
 
     // calculates the Webertrons HP in dependence of the type factor (u/atk_pwr), the players level
     // and a random factor between 0.85 and 1.15
-    private double getAtkPwr(double atk_pwr, double level) {
+    private double getAtkPwr(double atk_pwr, double level, double atk_type) {
         Random r = new Random();
         int Low = 85;
         // this calculates a number inside [85; 116) -> [85; 115]
@@ -259,7 +264,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         double R = (r.nextInt(High - Low) + Low) / 100D;
         double atkp;
         Log.e("WID", "R: " + R);
-        atkp = (250 * Math.sqrt(level) * R * atk_pwr);
+        atkp = (250 * Math.sqrt(level) * R * atk_pwr * atk_type);
         Log.e("WID", "atkp: " + atkp);
         return atkp;
     }
@@ -361,6 +366,24 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     }
 
     public void fight(View unused) {
+        chooseATKType();
+    }
+
+    public double getATKNormal() {
+        Random r = new Random();
+        int Low = 95;
+        int High = 106;
+        return (r.nextInt(High - Low) + Low) / 100D;
+    }
+
+    public double getATKRisky() {
+        Random r = new Random();
+        int Low = 15;
+        int High = 201;
+        return (r.nextInt(High - Low) + Low) / 100D;
+    }
+
+    public void fight2ndPart(double atk_type) {
         if (!button_locked) {
             // atk has the random factor inside, so recalculate it every hit
 
@@ -370,8 +393,21 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
             Log.e("WID", "teacher_lvl: " + teacher_lvl);
             Log.e("WID", "getU(wbt_type_p): " + getU(wbt_type_p));
             Log.e("WID", "getU(wbt_type_t): " + getU(wbt_type_t));
-            double atk_p = getAtkPwr(getU(wbt_type_p), player_lvl);
-            double atk_t = getAtkPwr(getU(wbt_type_t), teacher_lvl);
+            Random r = new Random();
+            int Low = 0;
+            int High = 101;
+            int R = r.nextInt(High-Low) + Low;
+            double t_atk_type;
+            if (R <= 70) {
+                t_atk_type = getATKNormal();
+            } else {
+                t_atk_type = getATKRisky();
+            }
+            Log.e("WID", "t_R: " + R);
+            Log.e("WID", "t_atk_type: " + t_atk_type);
+            Log.e("WID", "atk_type: " + atk_type);
+            double atk_p = getAtkPwr(getU(wbt_type_p), player_lvl, atk_type);
+            double atk_t = getAtkPwr(getU(wbt_type_t), teacher_lvl, t_atk_type);
 
             // actually fight
             // see if one has killed the other already
@@ -425,7 +461,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         }
     }
 
-    private void setTeacherToken(Intent intent){
+    private void setTeacherToken(Intent intent) {
         String tokenS = intent.getStringExtra(Intent.EXTRA_UID);
         if (!tokenS.equals("")) {
             teacher_token = tokenS;
@@ -644,14 +680,39 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         }
     }
 
+    public static class selectATKDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.choose_atk_type)
+                    .setItems(R.array.atk_types, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // first position is 0, so increase the value by 1 to match our
+                            // Webertron types
+                            // call the classes like this to prevent the need to be able to call
+                            // non-static content from the static DialogFragment
+                            // http://stackoverflow.com/questions/15414908/should-an-internal-dialogfragment-class-be-static-or-not
+                            if (which == 0) {
+                                ((FightEngine) getActivity()).fight2ndPart(((FightEngine) getActivity()).getATKNormal());
+                            } else if (which == 1) {
+                                ((FightEngine) getActivity()).fight2ndPart(((FightEngine) getActivity()).getATKRisky());
+                            } else {
+                                Toast.makeText(getActivity(), getString(R.string.invalid_atk_type), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+            return builder.create();
+        }
+    }
+
     //initzializes music
-    public void initializeSound(){
+    public void initializeSound() {
         mMusic = MediaPlayer.create(this, R.raw.background_music);
     }
 
     //method for starting the music
     //music with loop
-    public void startMusic(){
+    public void startMusic() {
         mMusic.start();
         mMusic.setLooping(true);
     }

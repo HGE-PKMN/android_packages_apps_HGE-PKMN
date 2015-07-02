@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!-- authored by Jan Zartmann -->
+<?xml version="1.0" encoding="utf-8"?><!-- authored by Christian Oder -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fight_layout"
@@ -24,8 +24,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="20dp"
-            android:layout_marginLeft="10dp"
-            android:width="215dp"
+            android:layout_marginLeft="15dp"
+            android:width="300dp"
+            android:height="70dp"
             android:background="@drawable/fightbutton"
             android:gravity="left|center_vertical"
             android:onClick="fight"
@@ -40,9 +41,10 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="12dp"
-            android:layout_marginLeft="10dp"
-            android:width="215dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginLeft="15dp"
+            android:width="300dp"
+            android:height="70dp"
             android:background="@drawable/escapebutton"
             android:onClick="escape"
             android:text=""
@@ -53,13 +55,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="12dp"
-            android:layout_marginLeft="22dp"
+            android:layout_marginBottom="35dp"
+            android:layout_marginLeft="205dp"
             android:layout_toEndOf="@+id/escape"
             android:layout_toRightOf="@+id/escape"
-            android:textSize="19dp"
             android:text=""
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="35dp" />
 
         <ImageView
             android:id="@+id/webertron_t"
@@ -70,10 +72,11 @@
             android:layout_alignParentRight="true"
             android:layout_marginEnd="70dp"
             android:layout_marginRight="70dp"
-            android:maxHeight="200dp"
-            android:maxWidth="200dp"
-            android:minHeight="200dp"
-            android:minWidth="200dp" />
+            android:layout_marginBottom="50dp"
+            android:maxHeight="400dp"
+            android:maxWidth="400dp"
+            android:minHeight="400dp"
+            android:minWidth="400dp" />
 
         <ImageView
             android:id="@+id/webertron_p"
@@ -82,11 +85,11 @@
             android:layout_above="@+id/attack_button"
             android:layout_alignEnd="@+id/attack_button"
             android:layout_alignRight="@+id/attack_button"
-            android:layout_marginBottom="5dp"
-            android:maxHeight="200dp"
-            android:maxWidth="200dp"
-            android:minHeight="200dp"
-            android:minWidth="200dp" />
+            android:layout_marginBottom="50dp"
+            android:maxHeight="400dp"
+            android:maxWidth="400dp"
+            android:minHeight="400dp"
+            android:minWidth="400dp" />
 
         <TextView
             android:id="@+id/hp_player"
@@ -96,7 +99,7 @@
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/lvl_player"
@@ -106,7 +109,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/hp_player"
             android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/hp_teacher"
@@ -116,7 +119,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/lvl_teacher"
@@ -126,7 +129,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/hp_teacher"
             android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/remainingFights"
@@ -135,7 +138,8 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textSize="30dp"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/winsPlayer"
@@ -145,7 +149,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/lvl_player"
             android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@+id/winsTeacher"
@@ -155,6 +159,6 @@
             android:layout_alignParentRight="true"
             android:layout_below="@+id/lvl_teacher"
             android:text=""
-            android:textAppearance="?android:attr/textAppearanceSmall" />
+            android:textAppearance="?android:attr/textAppearanceLarge" />
     </RelativeLayout>
 </LinearLayout>
