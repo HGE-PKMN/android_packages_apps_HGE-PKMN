@@ -47,7 +47,7 @@ public class MainActivity extends ActionBarActivity {
         switch (z.getId()) {
             case R.id.continue_button:
                 ((Button) z).setText(getString(R.string.menu_resuming));
-                this.startActivity(new Intent(this, Introduction.class));
+                this.startActivity(new Intent(this, TMXTiledMapDigital.class));
                 break;
             case R.id.restart_button:
                 // Toast.makeText(this, getString(R.string.restart_game), Toast.LENGTH_SHORT);
