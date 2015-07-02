@@ -1,5 +1,6 @@
 package de.hg_epp.whereisdon;
 
+import android.content.Intent;
 import android.hardware.SensorManager;
 import android.opengl.GLES20;
 import android.util.Log;
@@ -59,13 +60,14 @@ import java.util.ArrayList;
  * Based Off TMXTiledMapExample.java by
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga
- *
+ * <p/>
  * modified by Christian Oder for steering of the Sprite and FullScreen Mode
  * using Google Non Sticky Immersive Mode
+ *
  * @author Christian Oder
  * @author Jan Zartmann
  */
-public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
+public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
     // Non Sticky Immersive Mode
     @Override
@@ -77,7 +79,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);}
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
     }
 
     // ===========================================================
@@ -134,6 +137,21 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
     // ===========================================================
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        wasPaused = true;
+        //pause that music, else it keeps on playing while minimized
+        this.mMusic.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (wasPaused)
+            this.mMusic.play();
+    }
+
+    @Override
     public EngineOptions onCreateEngineOptions() {
         this.mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         this.mCamera.setBoundsEnabled(false);
@@ -158,13 +176,9 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
         this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.extractFromTexture(this.mOnScreenControlKnobTexture);
         this.mOnScreenControlKnobTexture.load();
 
-        try
-        {
-            mMusic = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this,"mfx/background_music.ogg");
-        }
-
-        catch (IOException e)
-        {
+        try {
+            mMusic = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/background_music.ogg");
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -214,9 +228,10 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
         this.mDigitalOnScreenControl = new DigitalOnScreenControl(edge_space, edge_space, this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, this.getVertexBufferObjectManager(), new IOnScreenControlListener() {
             float lastpValueX;
             float lastpValueY;
+
             @Override
             public void onControlChange(final BaseOnScreenControl pBaseOnScreenControl, final float pValueX, final float pValueY) {
-                if(pValueX != lastpValueX || pValueY != lastpValueY) {
+                if (pValueX != lastpValueX || pValueY != lastpValueY) {
                     lastpValueX = pValueX;
                     lastpValueY = pValueY;
                     if (pValueX == 1) {
@@ -244,7 +259,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
 
 		/* Now we are going to create a rectangle that will  always highlight the tile below the feet of the pEntity. */
         final Rectangle currentTileRectangle = new Rectangle(0, 0, this.mTMXTiledMap.getTileWidth(), this.mTMXTiledMap.getTileHeight(), this.getVertexBufferObjectManager());
-		/* Set the OffsetCenter to 0/0, so that it aligns with the TMXTiles. */
+        /* Set the OffsetCenter to 0/0, so that it aligns with the TMXTiles. */
         //currentTileRectangle.setOffsetCenter(0, 0);
         //currentTileRectangle.setColor(1, 0, 0, 0.25f);
         //scene.attachChild(currentTileRectangle);
@@ -293,22 +308,19 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity  {
     // Methods
     // ===========================================================
 
-    @Override
-    protected void onPause(){
-        super.onPause();
-        wasPaused=true;
-        //pause that music, else it keeps on playing while minimized
-        this.mMusic.pause();
+    private void startFE(String t_name, String t_token, int t_level) {
+        Intent startAct = new Intent(this, FightEngine.class);
+
+        startAct.setAction(Intent.ACTION_SEND);
+        startAct.putExtra(Intent.EXTRA_SUBJECT, "CreateFight");
+        startAct.putExtra(Intent.EXTRA_TITLE, t_name);
+        startAct.setType("text/plain");
+        startAct.putExtra(Intent.EXTRA_TEXT, Integer.toString(t_level));
+        startAct.putExtra(Intent.EXTRA_UID, t_token);
+        this.startActivity(startAct);
     }
 
-    @Override
-    protected void onResume(){
-        super.onResume();
-        if(wasPaused)
-            this.mMusic.play();
-    }
-
-    private void createUnwalkableObjects(TMXTiledMap map){
+    private void createUnwalkableObjects(TMXTiledMap map) {
 // Loop through the object groups
         Log.e("WID", "vor for");
         for (final TMXObjectGroup group : map.getTMXObjectGroups()) {

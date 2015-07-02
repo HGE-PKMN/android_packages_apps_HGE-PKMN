@@ -24,11 +24,12 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
             android:width="215dp"
             android:background="@drawable/fightbutton"
             android:gravity="left|center_vertical"
             android:onClick="fight"
-            android:text="@string/attack_button"
+            android:text=""
             android:textColor="#ffffff" />
 
         <Button
@@ -40,6 +41,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginBottom="12dp"
+            android:layout_marginLeft="10dp"
             android:width="215dp"
             android:background="@drawable/escapebutton"
             android:onClick="escape"
@@ -52,9 +54,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="12dp"
-            android:layout_marginLeft="37dp"
+            android:layout_marginLeft="22dp"
             android:layout_toEndOf="@+id/escape"
             android:layout_toRightOf="@+id/escape"
+            android:textSize="19dp"
             android:text=""
             android:textAppearance="?android:attr/textAppearanceLarge" />
 

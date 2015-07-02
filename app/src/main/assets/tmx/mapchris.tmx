@@ -8,7 +8,7 @@
    eJxjYmBgYKIyZoVidihmJRKjq0c3j1I8VM0jNdyJMY+RAB41b9Q8WppHzfQ82PMvtcyjVnlKTQwAdF8FkQ==
   </data>
  </layer>
- <objectgroup name="Walls" width="20" height="20">
+ <objectgroup name="wall" width="20" height="20">
   <properties>
    <property name="wall" value="true"/>
   </properties>
