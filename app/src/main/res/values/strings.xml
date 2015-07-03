@@ -5,8 +5,8 @@
     <string name="menu_resuming">Resuming Game&#8230;</string>
     <string name="menu_restart">Restart Game</string>
     <string name="menu_about">About the Team</string>
-    <string name="gender_change">Boy</string>
-    <string name="gender_change_2">Player</string>
+    <string name="gender_change_boy">Boy</string>
+    <string name="gender_change_girl">Player</string>
     <string name="boy_selected">You selected the Boy</string>
     <string name="girl_selected">You selected the Player</string>
     <string name="escape">Flucht</string>
@@ -19,11 +19,20 @@
     <string name="fight_lost">Schade, du hast den Kampf verloren!</string>
     <string name="duel_won">Glückwunsch, du hast das Duell und den Kampf gewonnen!</string>
     <string name="duel_lost">Schade, du hast das Duell und den Kampf verloren!</string>
-    <string name="fighting">Die Webetrons kämpfen&#8230;</string>
+    <string name="fighting">Die Webertrons kämpfen&#8230;</string>
     <string name="choose_wbt">Wähle deinen Webertrontypen</string>
+    <string name="choose_atk_type">Wähle deinen Attacktypen</string>
     <string name="wins">Siege</string>
     <string name="you">Du:</string>
     <string name="intro_continue">Continue&#8230;</string>
+    <string name="invalid_atk_type">Die gewählte Attacke ist nicht erlaubt!</string>
+    <string name="title_activity_introduction">Introduction</string>
+
+
+    <string-array name="atk_types">
+        <item>Normale Attacke</item>
+        <item>Riskante Attacke</item>
+    </string-array>
 
     <string-array name="webertons">
         <item>Literaturwebertrons</item>
@@ -97,8 +106,4 @@
         <item
             >Du bekommst eine Sechs, \nwenn du gewinnst.</item>
     </string-array>
-    <string name="title_activity_introduction">Introduction</string>
-
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
 </resources>

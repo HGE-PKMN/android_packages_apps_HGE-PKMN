@@ -1,24 +1,34 @@
 package de.hg_epp.whereisdon;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.RadioButton;
 import android.widget.Toast;
-
-
 
 
 public class MainActivity extends ActionBarActivity {
 
-    public static String mChar = "gfx/trainer.png";
+    public static String mChar;
+    public static final String PREFS_NAME = "WIDPrefs";
 
     /**
-     * @author Jan Zartmann
-     * @author Christian Oder
+     * MainMenu for our Game. It manages the main stuff and
+     * (c) 2015 Jan Zartmann
+     * (c) 2015 Christian Oder
+     * <p/>
      * https://developer.android.com/training/system-ui/immersive.html
      * Implementation of the Google Non-Sticky Immersive Mode
      */
@@ -38,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
 
     }
 
@@ -46,31 +56,55 @@ public class MainActivity extends ActionBarActivity {
     public void buttonOnClick(View z) {
         switch (z.getId()) {
             case R.id.continue_button:
-                ((Button) z).setText(getString(R.string.menu_resuming));
-                this.startActivity(new Intent(this, TMXTiledMapDigital.class));
+                SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                if(settings.getBoolean("intro_run", true)){
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putBoolean("intro_run", false);
+                    editor.apply();
+                    this.startActivity(new Intent(this, Introduction.class));
+                }else {
+                    this.startActivity(new Intent(this, TMXTiledMapDigital.class));
+                }
                 break;
             case R.id.restart_button:
-                // Toast.makeText(this, getString(R.string.restart_game), Toast.LENGTH_SHORT);
-                Intent startAct = new Intent(this, FightEngine.class);
-                startAct.setAction(Intent.ACTION_SEND);
-                startAct.putExtra(Intent.EXTRA_SUBJECT, "CreateFight");
-                startAct.putExtra(Intent.EXTRA_TITLE, "Hr. Weber");
-                startAct.setType("text/plain");
-                int t_won_fights = 1;
-                startAct.putExtra(Intent.EXTRA_TEXT, Integer.toString(t_won_fights));
-                startAct.putExtra(Intent.EXTRA_UID, "Wb");
-                this.startActivity(startAct);
+                reallyResetGame();
                 break;
-            case R.id.gender_change_radiobutton:
+            case R.id.gender_changer_radio_boy:
                 Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();
                 mChar = "gfx/trainer.png";
+                storeButtonState();
+
                 break;
-            case R.id.gender_change_radiobutton_2:
+            case R.id.gender_changer_radio_girl:
                 Toast.makeText(this, getString(R.string.girl_selected), Toast.LENGTH_SHORT).show();
                 mChar = "gfx/player.png";
+                storeButtonState();
                 break;
 
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean radio_boy = settings.getBoolean("radio_boy", true);
+        boolean radio_girl = settings.getBoolean("radio_girl", false);
+/*        if (radio_boy) {*/
+        ((RadioButton) findViewById(R.id.gender_changer_radio_boy)).setChecked(radio_boy);
+/*        }else if(radio_girl){*/
+        ((RadioButton) findViewById(R.id.gender_changer_radio_girl)).setChecked(radio_girl);
+/*        }*/
+        mChar = settings.getString("mChar_dir", "gfx/trainer.png");
+    }
+
+    private void storeButtonState() {
+        SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("radio_boy", ((RadioButton) findViewById(R.id.gender_changer_radio_boy)).isChecked());
+        editor.putBoolean("radio_girl", ((RadioButton) findViewById(R.id.gender_changer_radio_girl)).isChecked());
+        editor.putString("mChar_dir", mChar);
+        editor.apply();
     }
 
     @Override
@@ -93,5 +127,39 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void resetGame(){
+        SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("intro_run", true);
+        editor.putString("mChar_dir", "gfx/trainer.png");
+        editor.apply();
+    }
+
+    public void reallyResetGame() {
+        DialogFragment DialogFragment = new resetGameDialog();
+        DialogFragment.show(getFragmentManager(), "reset");
+    }
+
+    public class resetGameDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.resetGame)
+                    .setPositiveButton(R.string.reset, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            resetGame();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
     }
 }

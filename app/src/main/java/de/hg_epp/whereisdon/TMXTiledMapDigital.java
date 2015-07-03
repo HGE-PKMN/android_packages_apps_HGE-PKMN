@@ -1,6 +1,7 @@
 package de.hg_epp.whereisdon;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.opengl.GLES20;
 import android.util.Log;
 import android.view.View;
@@ -54,12 +55,13 @@ import java.util.ArrayList;
  * Based Off TMXTiledMapExample.java by
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga
- * <p/>
- * modified by Christian Oder for steering of the Sprite and FullScreen Mode
- * using Google Non Sticky Immersive Mode
  *
- * @author Christian Oder
- * @author Jan Zartmann
+ * https://developer.android.com/training/system-ui/immersive.html
+ * Implementation of the Google Non-Sticky Immersive Mode
+ *
+ *
+ * (c) 2015 Christian Oder
+ * (c) 2015 Jan Zartmann
  */
 public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
@@ -83,8 +85,6 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
     private static final int CAMERA_WIDTH = 240;
     private static final int CAMERA_HEIGHT = 135;
-    private static final float ELASTICITY = 0;
-    private static final float FRICTION = 1f;
     private static final int PLAYER_VELOCITY = 3;
     private boolean wasPaused = false;
 
@@ -102,7 +102,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     private Scene mScene;
     private PhysicsWorld mPhysicsWorld;
 
-    private Music mMusic;
+    private MediaPlayer mMusic;
 
     static AnimatedSprite mPlayer;
     private Body mPlayerBody;
@@ -148,8 +148,10 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (wasPaused)
-            this.mMusic.play();
+        if (wasPaused) {
+            this.mMusic.start();
+            this.mMusic.setLooping(true);
+        }
     }
 
     @Override
@@ -176,12 +178,6 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         this.mOnScreenControlKnobTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/onscreen_control_knob.png", TextureOptions.BILINEAR);
         this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.extractFromTexture(this.mOnScreenControlKnobTexture);
         this.mOnScreenControlKnobTexture.load();
-
-        try {
-            mMusic = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/background_music.ogg");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -290,7 +286,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
         mScene.setChildScene(this.mDigitalOnScreenControl);
 
-        this.mMusic.play();
+        mMusic = MediaPlayer.create(this, R.raw.background_music);
+        this.mMusic.start();
         this.mMusic.setLooping(true);
         createUnwalkableObjects(this.mTMXTiledMap);
         Log.e("WID", "4");
