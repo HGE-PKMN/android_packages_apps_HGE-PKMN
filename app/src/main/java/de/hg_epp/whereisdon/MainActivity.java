@@ -1,6 +1,10 @@
 package de.hg_epp.whereisdon;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
@@ -52,20 +56,18 @@ public class MainActivity extends ActionBarActivity {
     public void buttonOnClick(View z) {
         switch (z.getId()) {
             case R.id.continue_button:
-                ((Button) z).setText(getString(R.string.menu_resuming));
-                this.startActivity(new Intent(this, TMXTiledMapDigital.class));
+                SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                if(settings.getBoolean("intro_run", true)){
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putBoolean("intro_run", false);
+                    editor.apply();
+                    this.startActivity(new Intent(this, Introduction.class));
+                }else {
+                    this.startActivity(new Intent(this, TMXTiledMapDigital.class));
+                }
                 break;
             case R.id.restart_button:
-                // Toast.makeText(this, getString(R.string.restart_game), Toast.LENGTH_SHORT);
-                Intent startAct = new Intent(this, FightEngine.class);
-                startAct.setAction(Intent.ACTION_SEND);
-                startAct.putExtra(Intent.EXTRA_SUBJECT, "CreateFight");
-                startAct.putExtra(Intent.EXTRA_TITLE, "Hr. Weber");
-                startAct.setType("text/plain");
-                int t_won_fights = 1;
-                startAct.putExtra(Intent.EXTRA_TEXT, Integer.toString(t_won_fights));
-                startAct.putExtra(Intent.EXTRA_UID, "Wb");
-                this.startActivity(startAct);
+                reallyResetGame();
                 break;
             case R.id.gender_changer_radio_boy:
                 Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();
@@ -87,7 +89,7 @@ public class MainActivity extends ActionBarActivity {
         super.onResume();
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         boolean radio_boy = settings.getBoolean("radio_boy", true);
-        boolean radio_girl = settings.getBoolean("radio_girl", true);
+        boolean radio_girl = settings.getBoolean("radio_girl", false);
 /*        if (radio_boy) {*/
         ((RadioButton) findViewById(R.id.gender_changer_radio_boy)).setChecked(radio_boy);
 /*        }else if(radio_girl){*/
@@ -125,5 +127,39 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void resetGame(){
+        SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean("intro_run", true);
+        editor.putString("mChar_dir", "gfx/trainer.png");
+        editor.apply();
+    }
+
+    public void reallyResetGame() {
+        DialogFragment DialogFragment = new resetGameDialog();
+        DialogFragment.show(getFragmentManager(), "reset");
+    }
+
+    public class resetGameDialog extends DialogFragment {
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            // Use the Builder class for convenient dialog construction
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(R.string.resetGame)
+                    .setPositiveButton(R.string.reset, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            resetGame();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            // User cancelled the dialog
+                        }
+                    });
+            // Create the AlertDialog object and return it
+            return builder.create();
+        }
     }
 }

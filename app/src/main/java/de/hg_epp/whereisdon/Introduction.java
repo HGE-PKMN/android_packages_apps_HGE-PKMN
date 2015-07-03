@@ -1,5 +1,6 @@
 package de.hg_epp.whereisdon;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -77,4 +78,8 @@ public class Introduction extends ActionBarActivity {
 /*    private void waste() {
     }
     */
+
+    public void resumeToGame(View unused){
+        this.startActivity(new Intent(this, TMXTiledMapDigital.class));
+    }
 }
