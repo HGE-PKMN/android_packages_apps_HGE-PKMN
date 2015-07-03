@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.ByteArrayOutputStream;
@@ -19,6 +20,9 @@ import java.io.InputStream;
  */
 
 public class Introduction extends ActionBarActivity {
+
+
+    private ImageView intropic;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -35,17 +39,19 @@ public class Introduction extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setPic();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduction);
         setStartText();
     }
 
+    //sets the text and makes it scrollable
     private void setStartText() {
         TextView intro = (TextView) findViewById(R.id.intro_text);
         intro.setText(setRaw());
         intro.setMovementMethod(new ScrollingMovementMethod());
 
-
+        //creates a new thread with a delay
 /*        Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             public void run() {
@@ -56,6 +62,7 @@ public class Introduction extends ActionBarActivity {
 */
     }
 
+    //reads the Raw
     private String setRaw() {
         InputStream inputStream = getResources().openRawResource(R.raw.exposition);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -82,4 +89,13 @@ public class Introduction extends ActionBarActivity {
     public void resumeToGame(View unused){
         this.startActivity(new Intent(this, TMXTiledMapDigital.class));
     }
+
+
+    //fills the ImageView with a Picture
+    //just example Pic
+    public void setPic(){
+        intropic = (ImageView) findViewById(R.id.intro_pic);
+        intropic.setImageResource(R.drawable.wbt_1);
+    }
+
 }
