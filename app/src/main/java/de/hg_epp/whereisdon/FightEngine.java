@@ -32,15 +32,15 @@ import java.util.concurrent.TimeUnit;
 public class FightEngine extends ActionBarActivity implements Animation.AnimationListener {
     /**
      * Engine Idea:
+     * (c) 2015 Christian Schechter
      *
-     * @author Christian Schechter
-     * with slight modifications of:
-     * @author Christian Oder
-     * <p/>
+     * with slight modifications by:
+     * (c) 2015 Christian Oder
+     *
      * Code:
-     * @author Christian Oder
-     * @author Jan Zartmann
-     * <p/>
+     * (c) 2015 Christian Oder
+     * (c) 2015 Jan Zartmann
+     *
      * https://developer.android.com/training/system-ui/immersive.html
      * Implementation of the Google Non-Sticky Immersive Mode
      */
@@ -70,6 +70,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     private double hp_p;
     private double hp_t;
     private View fake_view;
+    private boolean wasPaused = false;
 
     MediaPlayer mMusic;
 
@@ -130,6 +131,23 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         escape(fake_view);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        wasPaused = true;
+        //pause that music, else it keeps on playing while minimized
+        this.mMusic.pause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (wasPaused) {
+            this.mMusic.start();
+            this.mMusic.setLooping(true);
+        }
+    }
+
     public void chooseWBT() {
         DialogFragment DialogFragment = new selectWBTDialog();
         DialogFragment.show(getFragmentManager(), "WBT");
@@ -164,8 +182,12 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         setTeacherName(intent);
         setTeacherToken(intent);
         prepareNextFight();
-        initializeSound();
-        startMusic();
+        //initzializes music
+        mMusic = MediaPlayer.create(this, R.raw.fight_music);
+        //method for starting the music
+        //music with loop
+        mMusic.start();
+        mMusic.setLooping(true);
     }
 
     // open Dialog to select Players Webertron, after that initialize the other parts
@@ -396,7 +418,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
             Random r = new Random();
             int Low = 0;
             int High = 101;
-            int R = r.nextInt(High-Low) + Low;
+            int R = r.nextInt(High - Low) + Low;
             double t_atk_type;
             if (R <= 70) {
                 t_atk_type = getATKNormal();
@@ -665,6 +687,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.choose_wbt)
+                    .setCancelable(false)
                     .setItems(R.array.webertons, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // first position is 0, so increase the value by 1 to match our
@@ -685,6 +708,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.choose_atk_type)
+                    .setCancelable(false)
                     .setItems(R.array.atk_types, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // first position is 0, so increase the value by 1 to match our
@@ -704,17 +728,4 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
             return builder.create();
         }
     }
-
-    //initzializes music
-    public void initializeSound() {
-        mMusic = MediaPlayer.create(this, R.raw.background_music);
-    }
-
-    //method for starting the music
-    //music with loop
-    public void startMusic() {
-        mMusic.start();
-        mMusic.setLooping(true);
-    }
-
 }
