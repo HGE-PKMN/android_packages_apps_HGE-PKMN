@@ -617,6 +617,20 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         wbt_t.startAnimation(upDown);
     }
 
+    //make the Webertron_p jiggle
+    public void startWBTpAnimationHit(){
+        Animation hit = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.hit);
+        wbt_p.setVisibility(View.VISIBLE);
+        wbt_p.startAnimation(hit);
+    }
+
+    //makes Webertron_t jiggle
+    public void startWBTtAnimationHit(){
+        Animation hit = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.hit);
+        wbt_t.setVisibility(View.VISIBLE);
+        wbt_t.startAnimation(hit);
+    }
+
     // lock the Attack button
     public void lockButton() {
         button_locked = true;
