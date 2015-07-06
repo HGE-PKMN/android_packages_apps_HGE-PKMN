@@ -362,7 +362,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                     final Rectangle rect = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
                     final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0, 1f);
                     rect.setOffsetCenter(0, 0);
-                    rect.setColor(1, 0, 0, 0.25f);
+                    rect.setVisible(false);
                     PhysicsFactory.createBoxBody(this.mPhysicsWorld, rect, BodyDef.BodyType.StaticBody, wallFixtureDef);
 
                     mScene.attachChild(rect);
