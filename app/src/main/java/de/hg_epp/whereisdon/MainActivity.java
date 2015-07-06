@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
                     editor.apply();
                     this.startActivity(new Intent(this, Introduction.class));
                 }else {
-                    this.startActivity(new Intent(this, TMXTiledMapDigital.class));
+                    loadDefaultMap();
                 }
                 break;
             case R.id.restart_button:
@@ -135,6 +135,7 @@ public class MainActivity extends ActionBarActivity {
         editor.putBoolean("intro_run", true);
         editor.putString("mChar_dir", "gfx/trainer.png");
         editor.apply();
+        Toast.makeText(this, getString(R.string.game_has_been_reset), Toast.LENGTH_LONG).show();
     }
 
     public void reallyResetGame() {
@@ -142,7 +143,7 @@ public class MainActivity extends ActionBarActivity {
         DialogFragment.show(getFragmentManager(), "reset");
     }
 
-    public class resetGameDialog extends DialogFragment {
+    public static class resetGameDialog extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the Builder class for convenient dialog construction
@@ -150,7 +151,7 @@ public class MainActivity extends ActionBarActivity {
             builder.setMessage(R.string.resetGame)
                     .setPositiveButton(R.string.reset, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            resetGame();
+                            ((MainActivity) getActivity()).resetGame();
                         }
                     })
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -161,5 +162,11 @@ public class MainActivity extends ActionBarActivity {
             // Create the AlertDialog object and return it
             return builder.create();
         }
+    }
+
+    public void loadDefaultMap(){
+        Intent startAct = new Intent(this, TMXTiledMapDigital.class);
+        ResourceManager.setMapID(0);
+        this.startActivity(startAct);
     }
 }

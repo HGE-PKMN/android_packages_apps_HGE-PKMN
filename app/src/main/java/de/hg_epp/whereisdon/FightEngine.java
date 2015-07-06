@@ -121,7 +121,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
                 prepareFight(intent);
             }
         } else {
-            Log.e("WID", "No Intent detected!");
+            Log.e("WID_FE", "No Intent detected!");
         }
     }
 
@@ -306,6 +306,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         mDrawableArray.add(R.drawable.wbt_3);
         mDrawableArray.add(R.drawable.wbt_4);
         mDrawableArray.add(R.drawable.wbt_5);
+        mDrawableArray.add(R.drawable.wbt_6);
+        mDrawableArray.add(R.drawable.wbt_7);
     }
 
     // randomly sets the Sayings and Attack Button Text

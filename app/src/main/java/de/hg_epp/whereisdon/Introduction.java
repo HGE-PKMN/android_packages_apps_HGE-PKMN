@@ -39,10 +39,10 @@ public class Introduction extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setPic();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduction);
         setStartText();
+        setPic();
     }
 
     //sets the text and makes it scrollable
@@ -86,8 +86,8 @@ public class Introduction extends ActionBarActivity {
     }
     */
 
-    public void resumeToGame(View unused){
-        this.startActivity(new Intent(this, TMXTiledMapDigital.class));
+    public void resumeToMenu(View unused){
+        finish();
     }
 
 

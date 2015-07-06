@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="18">
+ <tileset firstgid="1" name="floors_tiled_ready" tilewidth="32" tileheight="32" spacing="3" margin="2">
+  <image source="gfx/floors/floors_tiled_ready.png" width="71" height="141"/>
+ </tileset>
+ <layer name="Kachelebene 1" width="51" height="47">
+  <data encoding="base64" compression="zlib">
+   eJzt2LsKgDAQRcE0Yv7/iy0FKyGPvcosnDo7gTTprbUe0uhU77/CchbGwsLCwsLC8s4yK5aMWDJjyYwlM5b55844v9JyPGJhmW35y3vZcT/V+7CwJMeSGcueXb78D/NHy+iwsLCwsLCstCTEcs8FvB85Xg==
+  </data>
+ </layer>
+ <objectgroup name="Objektebene 1" width="51" height="47" >
+  <properties>
+   <property name="wall" value="true"/>
+  </properties>
+  <object id="1" x="0" y="0" width="1120" height="64"/>
+  <object id="4" x="1056" y="64" width="64" height="288"/>
+  <object id="5" x="1056" y="352" width="576" height="64"/>
+  <object id="6" x="1056" y="1088" width="576" height="64"/>
+  <object id="7" x="0" y="1440" width="1120" height="64"/>
+  <object id="9" x="0" y="64" width="64" height="1376"/>
+  <object id="10" x="896" y="672" width="192" height="32"/>
+  <object id="11" x="896" y="800" width="192" height="32"/>
+  <object id="14" x="896" y="704" width="32" height="96"/>
+  <object id="15" x="1056" y="704" width="32" height="96"/>
+  <object id="16" x="1568" y="416" width="64" height="672"/>
+ </objectgroup>
+ <objectgroup name="Objektebene 2" width="51" height="47" >
+  <properties>
+   <property name="spawn" value="true"/>
+  </properties>
+  <object id="17" x="1120" y="736" width="32" height="32"/>
+ </objectgroup>
+</map>

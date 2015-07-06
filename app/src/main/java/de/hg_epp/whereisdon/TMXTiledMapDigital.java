@@ -1,22 +1,25 @@
 package de.hg_epp.whereisdon;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
+import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
-import org.andengine.audio.music.Music;
-import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl.IOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
+import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
@@ -49,42 +52,28 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.debug.Debug;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Based Off TMXTiledMapExample.java by
  * (c) 2010 Nicolas Gramlich
  * (c) 2011 Zynga
- *
+ * <p/>
  * https://developer.android.com/training/system-ui/immersive.html
  * Implementation of the Google Non-Sticky Immersive Mode
- *
- *
+ * <p/>
+ * <p/>
  * (c) 2015 Christian Oder
  * (c) 2015 Jan Zartmann
  */
 public class TMXTiledMapDigital extends SimpleBaseGameActivity {
-
-    // Non Sticky Immersive Mode
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
-    }
-
     // ===========================================================
     // Constants
     // ===========================================================
 
-    private static final int CAMERA_WIDTH = 240;
-    private static final int CAMERA_HEIGHT = 135;
+    private static int CAMERA_WIDTH;
+    private static int CAMERA_HEIGHT;
+
+
     private static final int PLAYER_VELOCITY = 3;
     private boolean wasPaused = false;
 
@@ -92,6 +81,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     // Fields
     // ===========================================================
 
+    private String mMapPath;
+    private int mMapID;
     private BoundCamera mCamera;
 
     private ITexture mPlayerTexture;
@@ -106,6 +97,12 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
     static AnimatedSprite mPlayer;
     private Body mPlayerBody;
+    private IUpdateHandler handler;
+
+    private Rectangle upstairs = null;
+    private Rectangle downstairs = null;
+    private Rectangle fight_zone = null;
+    private Rectangle moser_hidden = null;
 
     private ITexture mOnScreenControlBaseTexture;
     private ITextureRegion mOnScreenControlBaseTextureRegion;
@@ -137,6 +134,20 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     // Methods for/from SuperClass/Interfaces
     // ===========================================================
 
+    // Non Sticky Immersive Mode
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN
+                            | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        }
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -156,6 +167,15 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
+        CAMERA_HEIGHT = 165;
+
+        // set the CAMERA_WIDTH in an fitting ratio compared to the screen size.
+        // this should avoid those ugly white bars across devices with different screens
+        final DisplayMetrics displayMetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        float aspectRatio = (float) displayMetrics.widthPixels / (float) displayMetrics.heightPixels;
+        CAMERA_WIDTH = Math.round(aspectRatio * CAMERA_HEIGHT);
+
         this.mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         this.mCamera.setBoundsEnabled(false);
 
@@ -184,6 +204,10 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     @Override
     public Scene onCreateScene() {
 
+        Resources r = getResources();
+        String[] maps = r.getStringArray(R.array.maps);
+        mMapID = ResourceManager.getMapID();
+        mMapPath = maps[mMapID];
 
         this.mEngine.registerUpdateHandler(new FPSLogger());
 
@@ -198,7 +222,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                 public void onTMXTileWithPropertiesCreated(final org.andengine.extension.tmx.TMXTiledMap pTMXTiledMap, final TMXLayer pTMXLayer, final TMXTile pTMXTile, final TMXProperties<TMXTileProperty> pTMXTileProperties) {
                 }
             });
-            this.mTMXTiledMap = tmxLoader.loadFromAsset("tmx/mapchris.tmx");
+            this.mTMXTiledMap = tmxLoader.loadFromAsset(mMapPath);
             this.mTMXTiledMap.setOffsetCenter(0, 0);
 
             mScene.attachChild(this.mTMXTiledMap);
@@ -211,13 +235,18 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         TMXLayer tmxLayer = mTMXTiledMap.getTMXLayers().get(0);
         this.mCamera.setBounds(0, 0, this.mTMXTiledMap.getWidth(), this.mTMXTiledMap.getHeight());
         this.mCamera.setBoundsEnabled(true);
-        // addBounds(tmxLayer.getWidth(), tmxLayer.getHeight());
-
-        final float centerX = CAMERA_WIDTH / 2;
-        final float centerY = CAMERA_HEIGHT / 2;
 
 		/* Create the sprite and add it to the scene. */
-        mPlayer = new AnimatedSprite(centerX, centerY, mPlayerTextureRegion, getVertexBufferObjectManager());
+        // only place game create player !
+        for (final TMXObjectGroup group : mTMXTiledMap.getTMXObjectGroups()) {
+            if (group.getTMXObjectGroupProperties().containsTMXProperty(
+                    "spawn", "true")) {
+                for (final TMXObject object : group.getTMXObjects()) {
+                    mPlayer = new AnimatedSprite(object.getX(), object.getY(), mPlayerTextureRegion, getVertexBufferObjectManager());
+                }
+            }
+        }
+
         mCamera.setChaseEntity(mPlayer);
         final FixtureDef fixtureDef = PhysicsFactory.createFixtureDef(0, 0, 0.5f);
         mPlayerBody = PhysicsFactory.createBoxBody(mPhysicsWorld, mPlayer, BodyDef.BodyType.DynamicBody, fixtureDef);
@@ -289,8 +318,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         mMusic = MediaPlayer.create(this, R.raw.background_music);
         this.mMusic.start();
         this.mMusic.setLooping(true);
-        createUnwalkableObjects(this.mTMXTiledMap);
-        Log.e("WID", "4");
+        createObjects();
+        updatePlayer();
 
         return mScene;
     }
@@ -311,29 +340,14 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         this.startActivity(startAct);
     }
 
-    private void addBounds(float width, float height) {
-        final IEntity bottom = new Rectangle(0, height - 2, width, 2, getVertexBufferObjectManager());
-        bottom.setVisible(false);
-        final IEntity top = new Rectangle(0, 0, width, 2, getVertexBufferObjectManager());
-        top.setVisible(false);
-        final IEntity left = new Rectangle(0, 0, 2, height, getVertexBufferObjectManager());
-        left.setVisible(false);
-        final IEntity right = new Rectangle(width - 2, 0, 2, height, getVertexBufferObjectManager());
-        right.setVisible(false);
-
-        final FixtureDef wallFixtureDef = PhysicsFactory.createFixtureDef(0, 0, 1f);
-        PhysicsFactory.createBoxBody(this.mPhysicsWorld, bottom, BodyDef.BodyType.StaticBody, wallFixtureDef);
-        PhysicsFactory.createBoxBody(this.mPhysicsWorld, top, BodyDef.BodyType.StaticBody, wallFixtureDef);
-        PhysicsFactory.createBoxBody(this.mPhysicsWorld, left, BodyDef.BodyType.StaticBody, wallFixtureDef);
-        PhysicsFactory.createBoxBody(this.mPhysicsWorld, right, BodyDef.BodyType.StaticBody, wallFixtureDef);
-
-        this.mScene.attachChild(bottom);
-        this.mScene.attachChild(top);
-        this.mScene.attachChild(left);
-        this.mScene.attachChild(right);
+    public void loadMap(int map) {
+        Intent startAct = new Intent(this, TMXTiledMapDigital.class);
+        ResourceManager.setMapID(map);
+        finish();
+        this.startActivity(startAct);
     }
 
-    private void createUnwalkableObjects(TMXTiledMap map) {
+    private void createObjects() {
         // Loop through the object groups
         Log.e("WID", "0");
         for (final TMXObjectGroup group : this.mTMXTiledMap.getTMXObjectGroups()) {
@@ -355,8 +369,87 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                 }
             }
 
+            if (group.getTMXObjectGroupProperties().containsTMXProperty("stairs_up", "true")) {
+                // This is our "upstair" layer. Create the boxes from it
+                for (final TMXObject object : group.getTMXObjects()) {
+                    upstairs = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
+                    upstairs.setOffsetCenter(0, 0);
+                    upstairs.setVisible(false);
+                    mScene.attachChild(upstairs);
+                }
+            }
 
+            if (group.getTMXObjectGroupProperties().containsTMXProperty("stairs_down", "true")) {
+                // This is our "downstair" layer. Create the boxes from it
+                for (final TMXObject object : group.getTMXObjects()) {
+                    downstairs = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
+                    downstairs.setOffsetCenter(0, 0);
+                    downstairs.setVisible(false);
+                    mScene.attachChild(downstairs);
+                }
+            }
+
+            if (group.getTMXObjectGroupProperties().containsTMXProperty("teacher_fight", "true")) {
+                // This is our "teacher fight" layer. Create the boxes from it
+                for (final TMXObject object : group.getTMXObjects()) {
+                    //go fight with them
+                    fight_zone = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
+                    fight_zone.setOffsetCenter(0, 0);
+                    fight_zone.setVisible(false);
+                    mScene.attachChild(fight_zone);
+                }
+            }
+
+/*            if (group.getTMXObjectGroupProperties().containsTMXProperty("moser_hidden", "true")) {
+                // This is our "Mr. Moser" layer. Create the boxes from it
+                for (final TMXObject object : group.getTMXObjects()) {
+                    //go upstairs if all teachers have been defeated
+                    moser_hidden = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
+                }
+            }*/
         }
+    }
+
+    public void updatePlayer() {
+        mScene.registerUpdateHandler(handler = new IUpdateHandler() {
+
+                    @Override
+                    public void reset() {/* Not used */
+                    }
+
+                    @Override
+                    public void onUpdate(final float pSecondsElapsed) {
+
+                        if (upstairs != null) {
+                            if (upstairs.collidesWith(mPlayer)) {
+                                loadMap(mMapID + 1);
+                                Log.e("WID", "going upstairs!");
+                            }
+                        }
+
+                        if (downstairs != null) {
+                            if (downstairs.collidesWith(mPlayer)) {
+                                loadMap(mMapID - 1);
+                                Log.e("WID", "going downstairs!");
+                            }
+                        }
+
+                        if (fight_zone != null) {
+                            if (fight_zone.collidesWith(mPlayer)) {
+                                startFE("Weber", "Wb", 2 * 2);
+                            }
+
+                        }
+/*                        if (moser_hidden != null) {
+                            if (moser_hidden.collidesWith(mPlayer)) {
+
+                            }
+                        }*/
+                    }// end inner class method
+                }
+
+        );
+
     }
 
     // ===========================================================

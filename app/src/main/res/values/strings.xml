@@ -26,8 +26,19 @@
     <string name="you">Du:</string>
     <string name="intro_continue">Continue&#8230;</string>
     <string name="invalid_atk_type">Die gewählte Attacke ist nicht erlaubt!</string>
+    <string name="invalid_map_type">Die gewählte Map ist nicht legal!</string>
     <string name="title_activity_introduction">Introduction</string>
+    <string name="resetGame">Möchtest du wirklich deinen Spielstand zurücksetzten?</string>
+    <string name="reset">Ja, Resetten!</string>
+    <string name="cancel">Nein, Abbrechen!</string>
+    <string name="game_has_been_reset">Das Spiel wurde zurückgesetzt!</string>
 
+    <string-array name="maps">
+        <item>tmx/ground_floor.tmx</item>
+        <item>tmx/1st_floor.tmx</item>
+        <item>tmx/2nd_floor.tmx</item>
+        <item>tmx/roof_floor.tmx</item>
+    </string-array>
 
     <string-array name="atk_types">
         <item>Normale Attacke</item>

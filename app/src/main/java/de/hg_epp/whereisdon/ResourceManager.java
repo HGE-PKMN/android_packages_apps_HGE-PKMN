@@ -6,61 +6,22 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 
 /**
- * @author Jan Zartmann
+ * Resources Class for our Game. It manages the Map Ressources
+ * (c) 2015 Jan Zartmann
+ * (c) 2015 Christian Oder
+ *
  * @version 1.0
  */
 
 public class ResourceManager {
 
-    private static final ResourceManager Instance = new ResourceManager();
+    private static int mMapID;
 
-    public Engine engine;
-    public Camera camera;
-    public BaseGameActivity activity;
-    public VertexBufferObjectManager vbom;
-
-    //loadGame method loads all GameFiles together
-    public void loadGame()
-    {
-        loadGameGraphic();
-        loadGameAudio();
+    public static void setMapID(int id){
+        mMapID = id;
     }
 
-    //loadStartScreen method loads all needed files for the start screen
-    public void loadStartScreen()
-    {
-        loadScreen();
+    public static int getMapID(){
+        return mMapID;
     }
-
-    private void loadGameGraphic()
-    {
-
-    }
-
-    private void loadGameAudio()
-    {
-
-    }
-
-    private void loadScreen()
-    {
-
-    }
-
-
-    //preparation method, which sets parameters vbom, activity, engine and camera. That makes it possible to use them from different classes
-
-    public static void prepManager(VertexBufferObjectManager vbom, BaseGameActivity activity, Engine engine, Camera camera) {
-
-        getInstance().vbom = vbom;
-        getInstance().activity = activity;
-        getInstance().engine = engine;
-        getInstance().camera = camera;
-    }
-
-    //setter and getter
-    public static ResourceManager getInstance() {
-        return Instance;
-    }
-
 }
