@@ -98,7 +98,6 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         wbt_p = (ImageView) findViewById(R.id.webertron_p);
         wbt_t = (ImageView) findViewById(R.id.webertron_t);
 
-
         // load animation upDown
         startWBTAnimation();
 
@@ -391,6 +390,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
 
     public void fight(View unused) {
         chooseATKType();
+        //let the Webertrons jiggle while attacking each other
+        startWBTAnimationHit();
     }
 
     public double getATKNormal() {
@@ -619,19 +620,18 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         wbt_t.startAnimation(upDown);
     }
 
-    //make the Webertron_p jiggle
-    public void startWBTpAnimationHit(){
+    //make the Webertrons jiggle
+    public void startWBTAnimationHit(){
+        wbt_t.clearAnimation();
+        wbt_p.clearAnimation();
         Animation hit = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.hit);
         wbt_p.setVisibility(View.VISIBLE);
         wbt_p.startAnimation(hit);
-    }
-
-    //makes Webertron_t jiggle
-    public void startWBTtAnimationHit(){
-        Animation hit = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.hit);
         wbt_t.setVisibility(View.VISIBLE);
         wbt_t.startAnimation(hit);
     }
+
+
 
     // lock the Attack button
     public void lockButton() {
