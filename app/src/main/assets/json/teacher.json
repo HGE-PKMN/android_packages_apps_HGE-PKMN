@@ -1,0 +1,26 @@
+{
+  "1": {
+    "1": {
+      "teacher_name": "Weber",
+      "teacher_token": "Wb",
+      "teacher_won": "1"
+    },
+    "2": {
+      "teacher_name": "Butz",
+      "teacher_token": "Bz",
+      "teacher_won": "5"
+    }
+  },
+  "2": {
+    "1": {
+      "teacher_name": "Weber",
+      "teacher_token": "Wb",
+      "teacher_won": "1"
+    },
+    "2": {
+      "teacher_name": "Butz",
+      "teacher_token": "Bz",
+      "teacher_won": "5"
+    }
+  }
+}

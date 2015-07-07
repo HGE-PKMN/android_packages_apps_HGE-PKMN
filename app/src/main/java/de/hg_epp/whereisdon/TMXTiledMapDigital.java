@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -50,7 +51,13 @@ import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.debug.Debug;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 
 /**
@@ -101,7 +108,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
     private Rectangle upstairs = null;
     private Rectangle downstairs = null;
-    private Rectangle fight_zone = null;
+    private Rectangle fight_zone[] = null;
     private Rectangle moser_hidden = null;
 
     private ITexture mOnScreenControlBaseTexture;
@@ -328,7 +335,11 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     // Methods
     // ===========================================================
 
-    private void startFE(String t_name, String t_token, int t_level) {
+    private void startFEAsync(int tID, int mapID) {
+        new FEAsyncJSONTask(tID, mapID).execute("teachers.json");
+    }
+
+    public void startFE(String t_name, String t_token, int t_level) {
         Intent startAct = new Intent(this, FightEngine.class);
 
         startAct.setAction(Intent.ACTION_SEND);
@@ -391,12 +402,14 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
             if (group.getTMXObjectGroupProperties().containsTMXProperty("teacher_fight", "true")) {
                 // This is our "teacher fight" layer. Create the boxes from it
+                int fight_zone_id = 0;
                 for (final TMXObject object : group.getTMXObjects()) {
                     //go fight with them
-                    fight_zone = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
-                    fight_zone.setOffsetCenter(0, 0);
-                    fight_zone.setVisible(false);
-                    mScene.attachChild(fight_zone);
+                    fight_zone[fight_zone_id] = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
+                    fight_zone[fight_zone_id].setOffsetCenter(0, 0);
+                    fight_zone[fight_zone_id].setVisible(false);
+                    mScene.attachChild(fight_zone[fight_zone_id]);
+                    fight_zone_id++;
                 }
             }
 
@@ -435,10 +448,13 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                         }
 
                         if (fight_zone != null) {
-                            if (fight_zone.collidesWith(mPlayer)) {
-                                startFE("Weber", "Wb", 2 * 2);
-                            }
+                            for (int i = 0; i < fight_zone.length; i++)
+                                if (fight_zone[i] != null) {
+                                    if (fight_zone[i].collidesWith(mPlayer)) {
+                                        startFEAsync(mMapID, i);
+                                    }
 
+                                }
                         }
 /*                        if (moser_hidden != null) {
                             if (moser_hidden.collidesWith(mPlayer)) {
@@ -455,4 +471,66 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     // ===========================================================
     // Inner and Anonymous Classes
     // ===========================================================
+
+    /**
+     * AsyncTask to read the Teacher JSON Table for our FightEngine.
+     * (c) 2015 Christian Oder
+     */
+    public class FEAsyncJSONTask extends AsyncTask<String, String, String> {
+
+        private String mMapID;
+        private String mTeacherID;
+        private String mTeacherName;
+        private String mTeacherToken;
+        private int mTeacherWonFights;
+
+        public FEAsyncJSONTask(int tID, int mID) {
+            mMapID = Integer.toString(mID);
+            mTeacherID = Integer.toString(tID);
+        }
+
+        @Override
+        protected String doInBackground(String... afile) {
+            String mFile = new String(afile[0]);
+            String mFilePath = MainActivity.FILE_PATH + mFile;
+            File f = new File(mFilePath);
+            if (f.exists() && !f.isDirectory()) {
+                String[] arr = {};
+                try {
+                    FileReader fileReader = new FileReader(mFilePath);
+                    BufferedReader bufferedReader = new BufferedReader(fileReader);
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null)
+                        stringBuilder.append(line).append("\n");
+                    bufferedReader.close();
+                    fileReader.close();
+
+                    JSONObject obj = new JSONObject(stringBuilder.toString().trim());
+                    JSONObject obj2 = obj.getJSONObject(mMapID);
+                    JSONObject obj3 = obj2.getJSONObject(mTeacherID);
+                    mTeacherName = obj3.getString("teacher_name");
+                    mTeacherToken = obj3.getString("teacher_token");
+                    mTeacherWonFights = obj3.getInt("teacher_won");
+
+                    return "true";
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            if (result.equals("true")) {
+                startFE(mTeacherName, mTeacherToken, mTeacherWonFights);
+            }
+        }
+    }
 }

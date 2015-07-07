@@ -23,9 +23,11 @@ public class MainActivity extends ActionBarActivity {
 
     public static String mChar;
     public static final String PREFS_NAME = "WIDPrefs";
+    public static String FILE_PATH;
+    private static Context context;
 
     /**
-     * MainMenu for our Game. It manages the main stuff and
+     * MainMenu for our Game. It manages the main stuff
      * (c) 2015 Jan Zartmann
      * (c) 2015 Christian Oder
      * <p/>
@@ -48,6 +50,12 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        MainActivity.context = getApplicationContext();
+        try {
+            FILE_PATH = getAssets() + "/json/";
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         setContentView(R.layout.activity_main);
 
     }
