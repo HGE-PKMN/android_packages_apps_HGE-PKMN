@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="80">
+ <tileset firstgid="1" name="floors_tiled_ready" tilewidth="32" tileheight="32" spacing="3" margin="2">
+  <image source="gfx/floors/floors_tiled_ready.png" width="71" height="141"/>
+ </tileset>
+ <tileset firstgid="9" name="objects_tiled_ready" tilewidth="32" tileheight="32">
+  <image source="gfx/objects/objects_tiled_ready.png" width="448" height="224"/>
+ </tileset>
+ <layer name="base" width="51" height="47">
+  <data encoding="base64" compression="zlib">
+   eJzt1ssKgDAMRNGK/f9vdulKSs3EPLyB2QhCjmmKc4wxk8Ra0f17WE5DFO9jwYIFCxYsWNaWqDz1kKW3qKjnigWLtyVyN9WW46NgqWNR7FsWS6e5dLMoE23pNJcuFu6xf1g6/Y+pz/BuL1iwVLK82d+d55F3S6XvmtFiLSxYsGDBgsXTkiFY7roArJgX5Q==
+  </data>
+ </layer>
+ <layer name="objects" width="51" height="47">
+  <data encoding="base64" compression="zlib">
+   eJztzkERAAAEADAhxNI/jxIcjy3BIgAAAAAAAP6o68CgvA4AAAArGtrAAGE=
+  </data>
+ </layer>
+ <objectgroup name="wall" width="51" height="47">
+  <properties>
+   <property name="wall" value="true"/>
+  </properties>
+  <object id="47" x="0" y="0" width="1120" height="64"/>
+  <object id="48" x="1056" y="64" width="64" height="288"/>
+  <object id="49" x="1056" y="352" width="576" height="64"/>
+  <object id="50" x="1056" y="1088" width="576" height="64"/>
+  <object id="51" x="1568" y="416" width="64" height="672"/>
+  <object id="52" x="0" y="64" width="64" height="1376"/>
+  <object id="53" x="0" y="1440" width="1120" height="64"/>
+  <object id="54" x="1056" y="1152" width="64" height="288"/>
+  <object id="55" x="1056" y="736" width="512" height="32"/>
+  <object id="56" x="544" y="64" width="32" height="352"/>
+  <object id="57" x="544" y="1088" width="32" height="352"/>
+  <object id="58" x="64" y="1088" width="384" height="32"/>
+  <object id="59" x="480" y="1088" width="64" height="32"/>
+  <object id="60" x="576" y="1088" width="64" height="32"/>
+  <object id="61" x="672" y="1088" width="384" height="32"/>
+  <object id="62" x="1056" y="768" width="32" height="64"/>
+  <object id="63" x="1056" y="864" width="32" height="224"/>
+  <object id="64" x="1056" y="672" width="32" height="64"/>
+  <object id="65" x="1056" y="416" width="32" height="224"/>
+  <object id="66" x="576" y="384" width="64" height="32"/>
+  <object id="67" x="480" y="384" width="64" height="32"/>
+  <object id="68" x="64" y="384" width="384" height="32"/>
+  <object id="69" x="672" y="384" width="384" height="32"/>
+  <object id="70" x="64" y="544" width="864" height="32"/>
+  <object id="71" x="64" y="928" width="864" height="32"/>
+  <object id="72" x="896" y="576" width="32" height="352"/>
+ </objectgroup>
+ <objectgroup name="spawn" width="51" height="47">
+  <properties>
+   <property name="spawn" value="true"/>
+  </properties>
+  <object id="73" x="112" y="1008" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="stairs_down" width="51" height="47">
+  <properties>
+   <property name="stairs_down" value="true"/>
+  </properties>
+  <object id="79" gid="34" x="64" y="1088" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="stairs_up" width="51" height="47">
+  <properties>
+   <property name="stairs_up" value="true"/>
+  </properties>
+  <object id="78" gid="62" x="64" y="992" width="32" height="32"/>
+ </objectgroup>
+</map>
