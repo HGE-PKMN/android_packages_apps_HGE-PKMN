@@ -13,8 +13,8 @@
  </layer>
  <layer name="objects" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt2TEKhDAQBVCvoPWCWwvuMezF7cUDLHv/zhSpxoAk86Mz+B+EkGZI84chaRqia7VhdRnnWjUQ+rDeGedaNRDGsD4Z5znui6KGFWvct1tvgfGL+//WW6Qx+/gaCIjces0+kVdWemGJRZyt9MIScm7w3Astzg105Dn7kufsS56zT3Q19jGb2MdskHOyxgSsVULOyZrsf4H3KiHnZE32X6hLgWiyP9S6FJHA92R8DYQnvyen/sW8svwvlpvb1L8Ys4/35OwTndkBV4ciOw==
-  </data>
+   eJzt2TEKwzAMBdBcIV0ypnMhOUbWUHyAkAOU3n+LB0+KIXX9bUvkPzBGi9AiIeyuI6qr9+eREJfKgTD680yIS+VAmPyZE+J3uF1GDi22cO9Nq8D4hPvbtIo49j4+BwKib632PpW1tC4AaG1dgJAzC4dSRf3IiThnFr5QRf1J7g2WZ6HGvYHOtOxBCFr2IATLvU9UG+eYTpxjOsg92TK5J1vufbkns/eJ6uJ7Mj4Hwp3fk2P/YlZp/hdL7dvYvxh7H+/OvU905QAwACIx
+ </data>
  </layer>
  <objectgroup name="stairs_down" width="51" height="47">
   <properties>

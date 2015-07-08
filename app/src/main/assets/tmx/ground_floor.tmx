@@ -13,7 +13,7 @@
  </layer>
  <layer name="objects" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJztmUEKAyEMRb1Ce4H2Au0xui/tvvQAZaD3X9QBZWRQjBo1Kf9BkA8S4uL/kdEYAMZxsHW09XWV075Sfai6BydbZ7PNmNOps/h9VN2Di62r2WbM6dRZ/D6qnkHsDHe3PqZMlGY/a6z2vNz6HjFgASXe93zcukT6UHUPqN6n9qHqHnB5VoP3AfgXJORgC+G3VkIOthB+a7Xn4JLfAiaj3fsh2r0fot37AIwEOSYT5JgcOP9J3Rh71RDek1u9/2Scq4bwngzvAzAejvuDlDsIR4ZIySGODNGaQ1LfkmqQ+pa0UupbqW9JK/A+fw8AJPID8cw2cQ==
+   eJztmUEKAyEMRb1Ce4H2Au0xui/tvvQAZaD3X9QBZcKgGGvUBP6DIB8kxMX/I6NzAIzj4Ovo6xuqpGPl+nB1D06+zm6bsaRzZ4n7uLoHF19Xt81Y0rmzxH1cPYPUGe5hfUyZKM9+1lTteYX1PWLACmq8H/mEdUn04eoecL3P7cPVPZDyrAXvA9DCbfYAhNYcfPYYqgL6rdWQgy3Qb631HFzKW8BkNNyBpLDufYp17wMwEuSYTpBjetD2T6oFek+27n16T4b3ARiPRIZoySGJDNGSQxIZYjWHtL4l/YPWt6SVWt9qfUtagfflewCgkR+dxDZx
   </data>
  </layer>
  <objectgroup name="stairs_up" width="51" height="47">

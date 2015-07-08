@@ -13,8 +13,8 @@
  </layer>
  <layer name="objects" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt2TEKwzAMBdBcIZ0D7VxIj5G9tHvpAULuv9VDDCKEgq2vWGr/AxO8CC2SRdR1RMfq0zkV3K3jaJzTuRTcreNojOncCu53UBwPXuv30TQLjHn9vptmsa+2ZhdQHKR/rn3rOET0nYceqCHfWg89UEO+tdF74PatJX+i174Uvfal6LVPdCT2MZ/Yx/xA/pOagLFqyDlZW/tPYF415Jysrf0BlRSAtvavFkkRbSBnh9ZzCHJ2aD2HIGeHiHNI3ov9wi4p78W87ZJq6jXvxbztklj79rGIvPgAgUwiOw==
-  </data>
+   eJzt2TEKAjEQBdC9gtaC1oIew160Fw8g3r8zxQYGsUnyJ/MT/4OwpBmmmZ+wWRaRvjZpbQv23nVa7NM6FOy967Q4pXUu2F9BdRg81u8ttAuM1/p9hnbxW+3MvkF1kP559r3ryDwu0Q0A3aMbMFozcOfRVAF71rZm4BHVVCV71o6egd9nrfBhuP+gMNx/UEaffZGelGOclGM8Zvgnldl78uizb+/Jmn2RvpD5EZ1FyPyIziJkfoyYRfldbIZzO7+Lsb0l1cxrfhdje0vS7PvXEmHxAVyAIjs=
+ </data>
  </layer>
  <objectgroup name="stairs_down" width="51" height="47">
   <properties>
