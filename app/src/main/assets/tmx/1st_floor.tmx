@@ -16,6 +16,18 @@
    eJzt2TEKhDAQBVCvoPWCWwvuMezF7cUDLHv/zhSpxoAk86Mz+B+EkGZI84chaRqia7VhdRnnWjUQ+rDeGedaNRDGsD4Z5znui6KGFWvct1tvgfGL+//WW6Qx+/gaCIjces0+kVdWemGJRZyt9MIScm7w3Astzg105Dn7kufsS56zT3Q19jGb2MdskHOyxgSsVULOyZrsf4H3KiHnZE32X6hLgWiyP9S6FJHA92R8DYQnvyen/sW8svwvlpvb1L8Ys4/35OwTndkBV4ciOw==
   </data>
  </layer>
+ <objectgroup name="stairs_down" width="51" height="47">
+  <properties>
+   <property name="stairs_down" value="true"/>
+  </properties>
+  <object id="83" x="64" y="1056" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="stairs_up" width="51" height="47">
+  <properties>
+   <property name="stairs_up" value="true"/>
+  </properties>
+  <object id="84" x="64" y="960" width="32" height="32"/>
+ </objectgroup>
  <objectgroup name="wall" width="51" height="47">
   <properties>
    <property name="wall" value="true"/>
@@ -87,19 +99,7 @@
   <properties>
    <property name="spawn" value="true"/>
   </properties>
-  <object id="73" x="112" y="1008" width="32" height="32"/>
- </objectgroup>
- <objectgroup name="stairs_down" width="51" height="47">
-  <properties>
-   <property name="stairs_down" value="true"/>
-  </properties>
-  <object id="83" x="64" y="1056" width="32" height="32"/>
- </objectgroup>
- <objectgroup name="stairs_up" width="51" height="47">
-  <properties>
-   <property name="stairs_up" value="true"/>
-  </properties>
-  <object id="84" x="64" y="960" width="32" height="32"/>
+  <object id="73" x="128" y="992" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="teacher_fight" width="51" height="47">
   <properties>

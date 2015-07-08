@@ -353,6 +353,12 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         this.startActivity(startAct);
     }
 
+    public void showWinAnimation(){
+        //Intent startAct = new Intent(this, DonWin.class);
+        finish();
+        //this.startActivity(startAct);
+    }
+
     static <T> T[] append(T[] arr, T element) {
         final int N = arr.length;
         arr = Arrays.copyOf(arr, N + 1);
@@ -454,8 +460,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                                                      } else {
                                                          if (t1 && t2 && t3 && t4 && t5 && t6) {
                                                              if(maxID + 1 == mMapsArray.length){
-                                                                 // call Don Win Animation
-                                                                 Log.e("WID", "YOU WON!!");
+                                                                 Log.d("WID", "YOU WON!!");
+                                                                 showWinAnimation();
                                                              }else {
                                                                  editor.putInt("maxMapID", mMapID + 1);
                                                                  editor.putBoolean("t1", false);
