@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,6 +26,8 @@ public class MainActivity extends ActionBarActivity {
     public static String mChar;
     public static final String PREFS_NAME = "WIDPrefs";
     public static Activity mActivity;
+
+    private MediaPlayer mMusicSwitch;
 
     /**
      * MainMenu for our Game. It manages the main stuff
@@ -49,6 +52,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        mMusicSwitch = MediaPlayer.create(this, R.raw.menu_switch_sound);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mActivity = this;
@@ -58,6 +62,7 @@ public class MainActivity extends ActionBarActivity {
     public void buttonOnClick(View z) {
         switch (z.getId()) {
             case R.id.continue_button:
+                mMusicSwitch.start();
                 SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
                 if(settings.getBoolean("intro_run", true)){
                     SharedPreferences.Editor editor = settings.edit();
@@ -69,18 +74,20 @@ public class MainActivity extends ActionBarActivity {
                 }
                 break;
             case R.id.restart_button:
+                mMusicSwitch.start();
                 reallyResetGame();
                 break;
             case R.id.gender_changer_radio_boy:
                 Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();
-                mChar = "gfx/trainer_male.png";
+                mChar = "gfx/trainer.png";
                 storeButtonState();
-
+                mMusicSwitch.start();
                 break;
             case R.id.gender_changer_radio_girl:
                 Toast.makeText(this, getString(R.string.girl_selected), Toast.LENGTH_SHORT).show();
                 mChar = "gfx/trainer_female.png";
                 storeButtonState();
+                mMusicSwitch.start();
                 break;
 
         }

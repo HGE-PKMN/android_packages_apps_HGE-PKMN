@@ -94,6 +94,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     private PhysicsWorld mPhysicsWorld;
 
     private MediaPlayer mMusic;
+    private MediaPlayer mMusicChangeMap;
 
     static AnimatedSprite mPlayer;
     private Body mPlayerBody;
@@ -195,6 +196,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         ITexture mOnScreenControlKnobTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/onscreen_control_knob.png", TextureOptions.BILINEAR);
         this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.extractFromTexture(mOnScreenControlKnobTexture);
         mOnScreenControlKnobTexture.load();
+
+        mMusicChangeMap = MediaPlayer.create(this, R.raw.downstairs);
     }
 
 
@@ -466,6 +469,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
                                              if (downstairs != null) {
                                                  if (downstairs.collidesWith(mPlayer)) {
+                                                     mMusicChangeMap.start();
                                                      loadMap(mMapID - 1);
                                                      Log.d("WID", "going downstairs!");
                                                  }
