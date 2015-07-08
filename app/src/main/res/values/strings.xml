@@ -1,16 +1,16 @@
 <resources>
     <string name="app_name">Where is Don?</string>
     <string name="restart_game">Restarting the Game! (Replace with Dialog later)</string>
-    <string name="menu_resume">Resume Game</string>
-    <string name="menu_resuming">Resuming Game&#8230;</string>
-    <string name="menu_restart">Restart Game</string>
+    <string name="menu_resume">Spiel fortsetzen</string>
+    <string name="menu_resuming">Spiel wird fortgesetzt&#8230;</string>
+    <string name="menu_restart">Spiel neustarten</string>
     <string name="menu_about">About the Team</string>
-    <string name="gender_change_boy">Boy</string>
-    <string name="gender_change_girl">Player</string>
+    <string name="gender_change_boy">Männlicher Trainer</string>
+    <string name="gender_change_girl">Weiblicher Trainer</string>
     <string name="boy_selected">You selected the Boy</string>
     <string name="girl_selected">You selected the Player</string>
     <string name="escape">Flucht</string>
-    <string name="attack_button">Attack</string>
+    <string name="attack_button">Attacke</string>
     <string name="LVL">Level:</string>
     <string name="HP">HP:</string>
     <string name="remainingFights">Verbleibende Kämpfe:</string>
@@ -24,7 +24,7 @@
     <string name="choose_atk_type">Wähle deinen Attacktypen</string>
     <string name="wins">Siege</string>
     <string name="you">Du:</string>
-    <string name="intro_continue">Continue&#8230;</string>
+    <string name="intro_continue">Fortsetzen&#8230;</string>
     <string name="invalid_atk_type">Die gewählte Attacke ist nicht erlaubt!</string>
     <string name="invalid_map_type">Die gewählte Map ist nicht legal!</string>
     <string name="title_activity_introduction">Introduction</string>
@@ -116,5 +116,7 @@
             >Auf Lehramt studieren ist was für Pussies&#8230;</item>
         <item
             >Du bekommst eine Sechs, \nwenn du gewinnst.</item>
+        <item
+            >Fünftklässlergeruch macht high.\nAber nicht das gute high.</item>
     </string-array>
 </resources>

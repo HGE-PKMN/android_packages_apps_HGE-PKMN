@@ -45,24 +45,15 @@ public class Introduction extends ActionBarActivity {
         setPic();
     }
 
-    //sets the text and makes it scrollable
+    //method sets the text and makes it scrollable
     private void setStartText() {
         TextView intro = (TextView) findViewById(R.id.intro_text);
         intro.setText(setRaw());
         intro.setMovementMethod(new ScrollingMovementMethod());
-
-        //creates a new thread with a delay
-/*        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            public void run() {
-                Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_SHORT).show();
-                waste();
-            }
-        }, 50000);
-*/
     }
 
-    //reads the Raw
+
+        //method reads the Raw
     private String setRaw() {
         InputStream inputStream = getResources().openRawResource(R.raw.exposition);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -86,16 +77,16 @@ public class Introduction extends ActionBarActivity {
     }
     */
 
-    public void resumeToMenu(View unused){
+    public void resumeToMenu(View unused) {
         finish();
     }
 
 
     //fills the ImageView with a Picture
     //just example Pic
-    public void setPic(){
+    public void setPic() {
         intropic = (ImageView) findViewById(R.id.intro_pic);
-        intropic.setImageResource(R.drawable.wbt_1);
+        intropic.setImageResource(R.drawable.app_icon);
     }
 
 }
