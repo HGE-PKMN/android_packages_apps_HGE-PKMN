@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="72">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="69">
  <tileset firstgid="1" name="floors_tiled_ready" tilewidth="32" tileheight="32" spacing="3" margin="2">
   <image source="gfx/floors/floors_tiled_ready.png" width="71" height="141"/>
  </tileset>
@@ -13,7 +13,7 @@
  </layer>
  <layer name="objects" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt07EJwDAQA0D39gL2AvEU2X+s/AbmSZEP3IFApRq1BgAAAAAA/N399QCAl3pkJHplM7ISvbIrshMdsny/Jt+HswcVbgUH
+   eJzt08EJgEAMBMD7nw14DWgVVmD/9ZgOJCAkwgws7HM/OwYAAAAAAPB3V/WAD93VA4ASM7Ilemd7ZCV6Z0fkTHTI8v2efB/ePdw7BVM=
   </data>
  </layer>
  <objectgroup name="wall" width="51" height="47">
@@ -55,12 +55,5 @@
    <property name="stairs_up" value="true"/>
   </properties>
   <object id="68" x="64" y="960" width="32" height="32"/>
- </objectgroup>
- <objectgroup name="teacher_fight" width="51" height="47">
-  <properties>
-   <property name="teacher_fight" value="true"/>
-  </properties>
-  <object id="69" x="845" y="1172" width="156" height="242"/>
-  <object id="71" x="840" y="137" width="176" height="223"/>
  </objectgroup>
 </map>

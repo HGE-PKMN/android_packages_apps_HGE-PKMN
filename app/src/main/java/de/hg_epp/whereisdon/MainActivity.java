@@ -1,5 +1,6 @@
 package de.hg_epp.whereisdon;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
@@ -23,8 +24,7 @@ public class MainActivity extends ActionBarActivity {
 
     public static String mChar;
     public static final String PREFS_NAME = "WIDPrefs";
-    public static String FILE_PATH;
-    private static Context context;
+    public static Activity mActivity;
 
     /**
      * MainMenu for our Game. It manages the main stuff
@@ -51,6 +51,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mActivity = this;
     }
 
     //method gets invoked when someone clicks a button with the onClick setting
@@ -96,7 +97,7 @@ public class MainActivity extends ActionBarActivity {
 /*        }else if(radio_girl){*/
         ((RadioButton) findViewById(R.id.gender_changer_radio_girl)).setChecked(radio_girl);
 /*        }*/
-        mChar = settings.getString("mChar_dir", "gfx/trainer.png");
+        mChar = settings.getString("mChar_dir", "gfx/trainer_male.png");
     }
 
     private void storeButtonState() {
@@ -134,7 +135,15 @@ public class MainActivity extends ActionBarActivity {
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean("intro_run", true);
-        editor.putString("mChar_dir", "gfx/trainer.png");
+        editor.putString("mChar_dir", "gfx/trainer_male.png");
+        editor.putBoolean("t1", false);
+        editor.putBoolean("t2", false);
+        editor.putBoolean("t3", false);
+        editor.putBoolean("t4", false);
+        editor.putBoolean("t5", false);
+        editor.putBoolean("t6", false);
+        editor.putInt("won_games", 0);
+        editor.putInt("maxMapID", 0);
         editor.apply();
         Toast.makeText(this, getString(R.string.game_has_been_reset), Toast.LENGTH_LONG).show();
     }

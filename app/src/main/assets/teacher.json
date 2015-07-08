@@ -12,7 +12,7 @@
     },
     "3":{
       "teacher_name": "Wittwer-Gärttner",
-      "teacher_token": "WG",
+      "teacher_token": "Wg",
       "teacher_won": "8"
     },
     "4":{
@@ -50,7 +50,7 @@
     },
     "4":{
       "teacher_name": "Wittwer-Gärttner",
-      "teacher_token": "WG",
+      "teacher_token": "Wg",
       "teacher_won": "67"
     },
     "5":{
@@ -83,7 +83,7 @@
     },
     "4":{
       "teacher_name": "Wiitwer-Gärttner",
-      "teacher_token": "WG",
+      "teacher_token": "Wg",
       "teacher_won": "260"
     },
     "5":{
@@ -115,18 +115,18 @@
       "teacher_won": "350"
     },
     "4":{
-      "teacher_name": "Eigenmann",
-      "teacher_token": "Eg",
+      "teacher_name": "Söhner",
+      "teacher_token": "Sö",
       "teacher_won": "370"
     },
     "5":{
-      "teacher_name": "Söhner",
-      "teacher_token": "Sö",
-      "teacher_won": "375"
+      "teacher_name": "Eigenmann",
+      "teacher_token": "Eg",
+      "teacher_won": "380"
     },
     "6":{
       "teacher_name": "Wittwer-Gärttner",
-      "teacher_token": "WG",
+      "teacher_token": "Wg",
       "teacher_won": "380"
     }
   }

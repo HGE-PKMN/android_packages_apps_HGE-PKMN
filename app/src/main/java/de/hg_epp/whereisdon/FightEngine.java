@@ -63,6 +63,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     private double player_lvl;
     private double teacher_lvl;
     private int teacher_won_fights;
+    private int mTeacherID;
+    private int mMapID;
     private String teacher_name;
     private String teacher_token;
     private int wbt_type_p;
@@ -177,6 +179,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         hp_t = 0;
         player_lvl = 0;
         teacher_lvl = 0;
+        setCurrentMapID(intent);
+        setTeacherID(intent);
         setTeacherWonFights(intent);
         setTeacherName(intent);
         setTeacherToken(intent);
@@ -267,6 +271,20 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         String levelS = intent.getStringExtra(Intent.EXTRA_TEXT);
         if (!levelS.equals("")) {
             teacher_won_fights = Integer.parseInt(levelS);
+        }
+    }
+
+    private void setCurrentMapID(Intent intent) {
+        String mapID = intent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
+        if (!mapID.equals("")) {
+            mMapID = Integer.parseInt(mapID);
+        }
+    }
+
+    private void setTeacherID(Intent intent) {
+        String TeacherID = intent.getStringExtra(Intent.EXTRA_REFERRER_NAME);
+        if (!TeacherID.equals("")) {
+            mTeacherID = Integer.parseInt(TeacherID);
         }
     }
 
@@ -579,6 +597,36 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         if (winsPlayer == 2) {
             Toast.makeText(this, getString(R.string.duel_won), Toast.LENGTH_LONG).show();
             trainerfight = false;
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = settings.edit();
+            if(mMapID == settings.getInt("maxMapID", 0)) {
+                switch (mTeacherID) {
+                    case 1:
+                        editor.putBoolean("t1", true);
+                        editor.apply();
+                        break;
+                    case 2:
+                        editor.putBoolean("t2", true);
+                        editor.apply();
+                        break;
+                    case 3:
+                        editor.putBoolean("t3", true);
+                        editor.apply();
+                        break;
+                    case 4:
+                        editor.putBoolean("t4", true);
+                        editor.apply();
+                        break;
+                    case 5:
+                        editor.putBoolean("t5", true);
+                        editor.apply();
+                        break;
+                    case 6:
+                        editor.putBoolean("t6", true);
+                        editor.apply();
+                        break;
+                }
+            }
             escape(fake_view);
         } else {
             Toast.makeText(this, getString(R.string.fight_won), Toast.LENGTH_LONG).show();

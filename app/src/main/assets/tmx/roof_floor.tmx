@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="30">
  <tileset firstgid="1" name="floors_tiled_ready" tilewidth="32" tileheight="32" spacing="3" margin="2">
-  <image source="floors/floors_tiled_ready.png" width="71" height="141"/>
+  <image source="gfx/floors/floors_tiled_ready.png" width="71" height="141"/>
  </tileset>
  <tileset firstgid="9" name="objects_tiled_ready" tilewidth="32" tileheight="32">
-  <image source="objects/objects_tiled_ready.png" width="448" height="224"/>
+  <image source="gfx/objects/objects_tiled_ready.png" width="448" height="224"/>
  </tileset>
  <layer name="base" width="51" height="47">
   <data encoding="base64" compression="zlib">
@@ -16,7 +16,7 @@
    eJztzkERAAAEADAhJNA/pBDc8dgSLAIAAAAA/svrwKK6DgAAAAAw0vrRADc=
   </data>
  </layer>
- <objectgroup name="wall" width="51" height="47">
+ <objectgroup name="wall">
   <properties>
    <property name="wall" value="true"/>
   </properties>
@@ -34,13 +34,13 @@
   <object id="19" x="1056" y="768" width="32" height="32"/>
   <object id="26" x="1056" y="1152" width="64" height="288"/>
  </objectgroup>
- <objectgroup name="spawn" width="51" height="47">
+ <objectgroup name="spawn">
   <properties>
    <property name="spawn" value="true"/>
   </properties>
   <object id="17" x="976" y="736" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="stairs_down" width="51" height="47">
+ <objectgroup name="stairs_down">
   <properties>
    <property name="stairs_down" value="true"/>
   </properties>

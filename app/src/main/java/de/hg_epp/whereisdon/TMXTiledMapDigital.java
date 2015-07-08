@@ -1,6 +1,9 @@
 package de.hg_epp.whereisdon;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
@@ -8,6 +11,7 @@ import android.os.AsyncTask;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -72,9 +76,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     // Constants
     // ===========================================================
 
-
+    public static final String PREFS_NAME = "WIDPrefs";
     private static final int PLAYER_VELOCITY = 3;
-    private boolean wasPaused = false;
 
     // ===========================================================
     // Fields
@@ -99,9 +102,11 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     private Rectangle downstairs = null;
     private Rectangle fight_zone[] = {};
     // private Rectangle moser_hidden = null;
+    private boolean wasPaused = false;
 
     private ITextureRegion mOnScreenControlBaseTextureRegion;
     private ITextureRegion mOnScreenControlKnobTextureRegion;
+    private int stop_toast;
 
     private enum PlayerDirection {
         NONE,
@@ -323,7 +328,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         new FEAsyncJSONTask(tID, mapID).execute("teacher.json");
     }
 
-    public void startFE(String t_name, String t_token, int t_level) {
+    public void startFE(String t_name, String t_token, int t_level, String MapID, String TeacherID) {
         Intent startAct = new Intent(this, FightEngine.class);
 
         startAct.setAction(Intent.ACTION_SEND);
@@ -332,6 +337,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         startAct.setType("text/plain");
         startAct.putExtra(Intent.EXTRA_TEXT, Integer.toString(t_level));
         startAct.putExtra(Intent.EXTRA_UID, t_token);
+        startAct.putExtra(Intent.EXTRA_SHORTCUT_NAME, MapID);
+        startAct.putExtra(Intent.EXTRA_REFERRER_NAME, TeacherID);
         this.startActivity(startAct);
     }
 
@@ -376,7 +383,6 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                 for (final TMXObject object : group.getTMXObjects()) {
                     upstairs = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
                     upstairs.setOffsetCenter(0, 0);
-                    //upstairs.setVisible(false);
                     upstairs.setVisible(false);
                     mScene.attachChild(upstairs);
                 }
@@ -387,7 +393,6 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                 for (final TMXObject object : group.getTMXObjects()) {
                     downstairs = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
                     downstairs.setOffsetCenter(0, 0);
-                    //downstairs.setVisible(false);
                     downstairs.setVisible(false);
                     mScene.attachChild(downstairs);
                 }
@@ -401,7 +406,6 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
                     Rectangle rect = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
                     rect.setOffsetCenter(0, 0);
-                    //fight_zone[fight_zone_id].setVisible(false);
                     rect.setVisible(false);
                     fight_zone = append(fight_zone, rect);
 
@@ -423,37 +427,58 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
     public void updatePlayer() {
         mScene.registerUpdateHandler(new IUpdateHandler() {
+                                         @Override
+                                         public void reset() {/* Not used */
+                                         }
 
-                    @Override
-                    public void reset() {/* Not used */
-                    }
+                                         @Override
+                                         public void onUpdate(final float pSecondsElapsed) {
+                                             if (upstairs != null) {
+                                                 if (upstairs.collidesWith(mPlayer)) {
+                                                     SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                                                     SharedPreferences.Editor editor = settings.edit();
+                                                     int maxID = settings.getInt("maxMapID", 0);
+                                                     boolean t1 = settings.getBoolean("t1", false);
+                                                     boolean t2 = settings.getBoolean("t2", false);
+                                                     boolean t3 = settings.getBoolean("t3", false);
+                                                     boolean t4 = settings.getBoolean("t4", false);
+                                                     boolean t5 = settings.getBoolean("t5", false);
+                                                     boolean t6 = settings.getBoolean("t6", false);
+                                                     if (mMapID < maxID) {
+                                                         loadMap(mMapID + 1);
+                                                         Log.d("WID", "going upstairs!");
+                                                     } else {
+                                                         if (t1 && t2 && t3 && t4 && t5 && t6) {
+                                                             editor.putInt("maxMapID", mMapID + 1);
+                                                             editor.putBoolean("t1", false);
+                                                             editor.putBoolean("t2", false);
+                                                             editor.putBoolean("t3", false);
+                                                             editor.putBoolean("t4", false);
+                                                             editor.putBoolean("t5", false);
+                                                             editor.putBoolean("t6", false);
+                                                             editor.apply();
+                                                             loadMap(mMapID + 1);
+                                                             Log.d("WID", "going upstairs!");
+                                                         }
+                                                     }
+                                                 }
+                                             }
 
-                    @Override
-                    public void onUpdate(final float pSecondsElapsed) {
+                                             if (downstairs != null) {
+                                                 if (downstairs.collidesWith(mPlayer)) {
+                                                     loadMap(mMapID - 1);
+                                                     Log.d("WID", "going downstairs!");
+                                                 }
+                                             }
 
-                        if (upstairs != null) {
-                            if (upstairs.collidesWith(mPlayer)) {
-                                loadMap(mMapID + 1);
-                                Log.e("WID", "going upstairs!");
-                            }
-                        }
-
-                        if (downstairs != null) {
-                            if (downstairs.collidesWith(mPlayer)) {
-                                loadMap(mMapID - 1);
-                                Log.e("WID", "going downstairs!");
-                            }
-                        }
-
-                        if (fight_zone != null) {
-                            for (int i = 0; i < fight_zone.length; i++)
-                                if (fight_zone[i] != null) {
-                                    if (fight_zone[i].collidesWith(mPlayer)) {
-                                        startFEAsync(mMapID, i + 1);
-                                    }
-
-                                }
-                        }
+                                             if (fight_zone != null) {
+                                                 for (int i = 0; i < fight_zone.length; i++)
+                                                     if (fight_zone[i] != null) {
+                                                         if (fight_zone[i].collidesWith(mPlayer)) {
+                                                             startFEAsync(mMapID, i + 1);
+                                                         }
+                                                     }
+                                             }
 /*                        if (moser_hidden != null) {
                             if (moser_hidden.collidesWith(mPlayer)) {
 
@@ -461,9 +486,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                         }*/
                     }// end inner class method
                 }
-
         );
-
     }
 
     // ===========================================================
@@ -490,20 +513,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         @Override
         protected String doInBackground(String... afile) {
             String mFile = afile[0];
-            Log.e("WID", "exist yes");
             try {
-
-/*                    InputStream is = getApplicationContext().getAssets().open(mFile);
-                    InputStreamReader inputStreamReader = new InputStreamReader(is);
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                    StringBuilder stringBuilder = new StringBuilder();
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null)
-                        stringBuilder.append(line).append("\n");
-                    bufferedReader.close();
-                    inputStreamReader.close();
-                    is.close();*/
-
                 StringBuilder buf = new StringBuilder();
                 InputStream json = getAssets().open(mFile);
                 BufferedReader in =
@@ -534,9 +544,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
         @Override
         protected void onPostExecute(String result) {
-            Log.e("WID", "R" + result);
             if (result.equals("true")) {
-                startFE(mTeacherName, mTeacherToken, mTeacherWonFights);
+                startFE(mTeacherName, mTeacherToken, mTeacherWonFights, mMapID, mTeacherID);
             }
         }
     }

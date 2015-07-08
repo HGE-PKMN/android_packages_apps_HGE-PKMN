@@ -32,6 +32,7 @@
     <string name="reset">Ja, Resetten!</string>
     <string name="cancel">Nein, Abbrechen!</string>
     <string name="game_has_been_reset">Das Spiel wurde zurückgesetzt!</string>
+    <string name="stairs_not_yet_unlocked">Du kannst noch nicht nach Oben gehen!</string>
 
     <string-array name="maps">
         <item>tmx/ground_floor.tmx</item>
