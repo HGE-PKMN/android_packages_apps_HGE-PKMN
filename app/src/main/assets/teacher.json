@@ -3,7 +3,7 @@
     "1": {
       "teacher_name": "Moser",
       "teacher_token": "Mo",
-      "teacher_won": "0"
+      "teacher_won": "1"
     },
     "2": {
       "teacher_name": "Böhm",
@@ -130,5 +130,4 @@
       "teacher_won": "380"
     }
   }
-
 }

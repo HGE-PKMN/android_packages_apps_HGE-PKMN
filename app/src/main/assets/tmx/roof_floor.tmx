@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="30">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="38">
  <tileset firstgid="1" name="floors_tiled_ready" tilewidth="32" tileheight="32" spacing="3" margin="2">
-  <image source="gfx/floors/floors_tiled_ready.png" width="71" height="141"/>
+  <image source="gfx/floors/floors_tiled_ready.png" width="141" height="141"/>
  </tileset>
- <tileset firstgid="9" name="objects_tiled_ready" tilewidth="32" tileheight="32">
+ <tileset firstgid="17" name="objects_tiled_ready" tilewidth="32" tileheight="32">
   <image source="gfx/objects/objects_tiled_ready.png" width="448" height="224"/>
  </tileset>
  <layer name="base" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt2DEOgCAQRUE6uf+JLW1JWOBjhuQ1NrsjsbG31npIs+f0/issz8FYWFhYWFhYxixVsWTEkhlLZiyZsdTPrZh/0jLy7FZL9V27l/m5N38vO97P6X1YWJJjyYxlzy43/4f5o2X2sLCwsLCwrLQkxPKdF2kxOXU=
+   eJzt2DEOgCAQRUEuIPc/rqUtCQt8zJC8xmZ3JDb21loPafac3n+F5TkYCwsLCwsLy5ilKpaMWDJjyYwlM5b6uRXzT1pGnt1qqb5r9zI/9+bvZcf7Ob0PC0tyLJmx7Nnl5v8wf7TMHhYWFhYWlpWWhFi+8wLONWlj
   </data>
  </layer>
  <layer name="objects" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJztzkERAAAEADAhJNA/pBDc8dgSLAIAAAAA/svrwKK6DgAAAAAw0vrRADc=
+   eJztzkERAAAEADBBJNA/oBDc8dgSLAIAAAAA/svrwKK6DgAAAAAw0h9PAEc=
   </data>
  </layer>
  <objectgroup name="wall">
@@ -45,5 +45,22 @@
    <property name="stairs_down" value="true"/>
   </properties>
   <object id="29" x="928" y="768" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="teacher_fight">
+  <properties>
+   <property name="teacher_fight" value="true"/>
+  </properties>
+  <object id="30" x="192" y="192" width="160" height="192"/>
+  <object id="31" x="1088" y="512" width="320" height="96"/>
+  <object id="32" x="736" y="1024" width="224" height="192"/>
+  <object id="33" x="768" y="576" width="64" height="192"/>
+  <object id="34" x="96" y="1024" width="192" height="352"/>
+  <object id="35" x="224" y="640" width="32" height="160"/>
+ </objectgroup>
+ <objectgroup name="stairs_up" width="32" height="32">
+  <properties>
+   <property name="stairs_up" value="true"/>
+  </properties>
+  <object id="37" x="736" y="64" width="320" height="352"/>
  </objectgroup>
 </map>

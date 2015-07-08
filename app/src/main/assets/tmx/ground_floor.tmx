@@ -1,21 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="69">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="172">
  <tileset firstgid="1" name="floors_tiled_ready" tilewidth="32" tileheight="32" spacing="3" margin="2">
-  <image source="gfx/floors/floors_tiled_ready.png" width="71" height="141"/>
+  <image source="gfx/floors/floors_tiled_ready.png" width="141" height="141"/>
  </tileset>
- <tileset firstgid="9" name="objects_tiled_ready" tilewidth="32" tileheight="32">
+ <tileset firstgid="17" name="objects_tiled_ready" tilewidth="32" tileheight="32">
   <image source="gfx/objects/objects_tiled_ready.png" width="448" height="224"/>
  </tileset>
  <layer name="base" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt1jEOgDAIBdDq/Q/t6GSMlgqSR/KXJk14sLCPMfYima3s/ldYtolE/GdhYWFhYWG5t2TlqocqvWUleq8sLCwsLLmzqGLptJduFjdMzb10sUTMooql015YWFhYIixv7oQn71/mz3OtaJktFhYWFhaWlZYKYTnrAP1XCeY=
+   eJzt2EEKwCAMRNFUvP+ZuxFcikTNMPzAX5VCn0opbRHRRMpO9fPfsHyJTtyPBQsWLFiwYFlbKuqj3WuvyqxrttP7igULFiyv61gkLU5nzM3CN4zmvrhYnN5jThanM4YFC5Y6y07O/2Eq11XVkh0sWLBgwYLlpkUhLHN+MMwKBA==
   </data>
  </layer>
  <layer name="objects" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt08EJgEAMBMD7nw14DWgVVmD/9ZgOJCAkwgws7HM/OwYAAAAAAPB3V/WAD93VA4ASM7Ilemd7ZCV6Z0fkTHTI8v2efB/ePdw7BVM=
+   eJztmUEKAyEMRb1Ce4H2Au0xui/tvvQAZaD3X9QBZWRQjBo1Kf9BkA8S4uL/kdEYAMZxsHW09XWV075Sfai6BydbZ7PNmNOps/h9VN2Di62r2WbM6dRZ/D6qnkHsDHe3PqZMlGY/a6z2vNz6HjFgASXe93zcukT6UHUPqN6n9qHqHnB5VoP3AfgXJORgC+G3VkIOthB+a7Xn4JLfAiaj3fsh2r0fot37AIwEOSYT5JgcOP9J3Rh71RDek1u9/2Scq4bwngzvAzAejvuDlDsIR4ZIySGODNGaQ1LfkmqQ+pa0UupbqW9JK/A+fw8AJPID8cw2cQ==
   </data>
  </layer>
+ <objectgroup name="stairs_up" width="51" height="47">
+  <properties>
+   <property name="stairs_up" value="true"/>
+  </properties>
+  <object id="68" x="64" y="960" width="32" height="32"/>
+ </objectgroup>
  <objectgroup name="wall" width="51" height="47">
   <properties>
    <property name="wall" value="true"/>
@@ -31,18 +37,54 @@
   <object id="22" x="1056" y="736" width="512" height="32"/>
   <object id="23" x="544" y="64" width="32" height="352"/>
   <object id="26" x="544" y="1088" width="32" height="352"/>
-  <object id="27" x="64" y="1088" width="384" height="32"/>
   <object id="28" x="480" y="1088" width="64" height="32"/>
   <object id="29" x="576" y="1088" width="64" height="32"/>
-  <object id="30" x="672" y="1088" width="384" height="32"/>
   <object id="33" x="1056" y="768" width="32" height="64"/>
-  <object id="35" x="1056" y="864" width="32" height="224"/>
   <object id="36" x="1056" y="672" width="32" height="64"/>
-  <object id="39" x="1056" y="416" width="32" height="224"/>
   <object id="41" x="576" y="384" width="64" height="32"/>
   <object id="42" x="480" y="384" width="64" height="32"/>
-  <object id="43" x="64" y="384" width="384" height="32"/>
-  <object id="45" x="672" y="384" width="384" height="32"/>
+  <object id="69" x="64" y="1088" width="352" height="32"/>
+  <object id="70" x="704" y="1088" width="352" height="32"/>
+  <object id="71" x="1056" y="896" width="32" height="192"/>
+  <object id="73" x="1056" y="416" width="32" height="192"/>
+  <object id="74" x="64" y="384" width="352" height="32"/>
+  <object id="75" x="704" y="384" width="352" height="32"/>
+  <object id="133" x="128" y="1184" width="64" height="32"/>
+  <object id="134" x="256" y="1184" width="64" height="32"/>
+  <object id="135" x="384" y="1184" width="64" height="32"/>
+  <object id="136" x="128" y="1344" width="64" height="32"/>
+  <object id="137" x="256" y="1344" width="64" height="32"/>
+  <object id="138" x="384" y="1344" width="64" height="32"/>
+  <object id="139" x="672" y="1184" width="64" height="32"/>
+  <object id="140" x="672" y="1344" width="64" height="32"/>
+  <object id="141" x="800" y="1344" width="64" height="32"/>
+  <object id="142" x="928" y="1344" width="64" height="32"/>
+  <object id="143" x="800" y="1184" width="64" height="32"/>
+  <object id="144" x="928" y="1184" width="64" height="32"/>
+  <object id="145" x="1184" y="832" width="64" height="32"/>
+  <object id="146" x="1312" y="832" width="64" height="32"/>
+  <object id="147" x="1440" y="832" width="64" height="32"/>
+  <object id="148" x="1184" y="992" width="64" height="32"/>
+  <object id="149" x="1312" y="992" width="64" height="32"/>
+  <object id="151" x="1440" y="992" width="64" height="32"/>
+  <object id="152" x="1184" y="640" width="64" height="32"/>
+  <object id="153" x="1312" y="640" width="64" height="32"/>
+  <object id="154" x="1440" y="640" width="64" height="32"/>
+  <object id="155" x="1184" y="480" width="64" height="32"/>
+  <object id="156" x="1312" y="480" width="64" height="32"/>
+  <object id="157" x="1440" y="480" width="64" height="32"/>
+  <object id="158" x="672" y="128" width="64" height="32"/>
+  <object id="159" x="800" y="128" width="64" height="32"/>
+  <object id="160" x="928" y="128" width="64" height="32"/>
+  <object id="163" x="800" y="288" width="64" height="32"/>
+  <object id="164" x="928" y="288" width="64" height="32"/>
+  <object id="165" x="672" y="288" width="64" height="32"/>
+  <object id="166" x="96" y="128" width="64" height="32"/>
+  <object id="167" x="224" y="128" width="64" height="32"/>
+  <object id="168" x="352" y="128" width="64" height="32"/>
+  <object id="169" x="96" y="288" width="64" height="32"/>
+  <object id="170" x="224" y="288" width="64" height="32"/>
+  <object id="171" x="352" y="288" width="64" height="32"/>
  </objectgroup>
  <objectgroup name="spawn" width="51" height="47">
   <properties>
@@ -50,10 +92,15 @@
   </properties>
   <object id="48" x="112" y="1008" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="stairs_up" width="51" height="47">
+ <objectgroup name="teacher_fight" width="51" height="47">
   <properties>
-   <property name="stairs_up" value="true"/>
+   <property name="teacher_fight" value="true"/>
   </properties>
-  <object id="68" x="64" y="960" width="32" height="32"/>
+  <object id="86" x="384" y="1216" width="96" height="128"/>
+  <object id="87" x="768" y="1184" width="32" height="224"/>
+  <object id="88" x="1120" y="896" width="64" height="160"/>
+  <object id="89" x="1152" y="544" width="352" height="32"/>
+  <object id="90" x="640" y="160" width="128" height="96"/>
+  <object id="91" x="448" y="96" width="96" height="128"/>
  </objectgroup>
 </map>
