@@ -377,7 +377,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                     upstairs = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
                     upstairs.setOffsetCenter(0, 0);
                     //upstairs.setVisible(false);
-                    upstairs.setColor(1, 0, 0);
+                    upstairs.setVisible(false);
                     mScene.attachChild(upstairs);
                 }
             }
@@ -388,7 +388,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                     downstairs = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
                     downstairs.setOffsetCenter(0, 0);
                     //downstairs.setVisible(false);
-                    downstairs.setColor(1, 0, 0);
+                    downstairs.setVisible(false);
                     mScene.attachChild(downstairs);
                 }
             }
@@ -402,8 +402,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                     Rectangle rect = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
                     rect.setOffsetCenter(0, 0);
                     //fight_zone[fight_zone_id].setVisible(false);
-                    rect.setColor(1, 0, 0);
-
+                    rect.setVisible(false);
                     fight_zone = append(fight_zone, rect);
 
                     mScene.attachChild(fight_zone[fight_zone_id]);
