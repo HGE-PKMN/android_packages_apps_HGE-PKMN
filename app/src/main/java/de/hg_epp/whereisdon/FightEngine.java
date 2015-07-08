@@ -17,7 +17,9 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -33,14 +35,14 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     /**
      * Engine Idea:
      * (c) 2015 Christian Schechter
-     *
+     * <p/>
      * with slight modifications by:
      * (c) 2015 Christian Oder
-     *
+     * <p/>
      * Code:
      * (c) 2015 Christian Oder
      * (c) 2015 Jan Zartmann
-     *
+     * <p/>
      * https://developer.android.com/training/system-ui/immersive.html
      * Implementation of the Google Non-Sticky Immersive Mode
      */
@@ -429,6 +431,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         //let the Webertrons jiggle while attacking each other
         startWBTAnimationHit();
     }
+
     public double getATKNormal() {
         Random r = new Random();
         int Low = 95;
@@ -550,8 +553,10 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     // Is also called by the other classes to end the game (using the fake_view as a parameter)
     public void escape(View unused) {
         if (!trainerfight) {
-            //close the activity and return to the map
+            Intent startAct = new Intent(this, TMXTiledMapDigital.class);
+            ResourceManager.setMapID(mMapID);
             finish();
+            this.startActivity(startAct);
         } else {
             Toast.makeText(this, getString(R.string.cant_escape_in_trainerfight), Toast.LENGTH_LONG).show();
         }
@@ -607,7 +612,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
             trainerfight = false;
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = settings.edit();
-            if(mMapID == settings.getInt("maxMapID", 0)) {
+            if (mMapID == settings.getInt("maxMapID", 0)) {
                 switch (mTeacherID) {
                     case 1:
                         editor.putBoolean("t1", true);
@@ -686,7 +691,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     }
 
     //make the Webertrons jiggle
-    public void startWBTAnimationHit(){
+    public void startWBTAnimationHit() {
         wbt_t.clearAnimation();
         wbt_p.clearAnimation();
         Animation hit = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.hit);
@@ -695,7 +700,6 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         wbt_t.setVisibility(View.VISIBLE);
         wbt_t.startAnimation(hit);
     }
-
 
 
     // lock the Attack button
@@ -768,7 +772,6 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.choose_wbt)
-                    .setCancelable(false)
                     .setItems(R.array.webertons, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // first position is 0, so increase the value by 1 to match our
@@ -780,6 +783,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
                             ((FightEngine) getActivity()).prepareNextFight2ndPart();
                         }
                     });
+            setCancelable(false);
             return builder.create();
         }
     }
@@ -789,7 +793,6 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle(R.string.choose_atk_type)
-                    .setCancelable(false)
                     .setItems(R.array.atk_types, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // first position is 0, so increase the value by 1 to match our
@@ -806,6 +809,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
                             }
                         }
                     });
+            setCancelable(false);
             return builder.create();
         }
     }

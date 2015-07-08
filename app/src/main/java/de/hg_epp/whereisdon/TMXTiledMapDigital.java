@@ -1,6 +1,5 @@
 package de.hg_epp.whereisdon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,7 +10,6 @@ import android.os.AsyncTask;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -104,10 +102,12 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     private Rectangle fight_zone[] = {};
     // private Rectangle moser_hidden = null;
     private boolean wasPaused = false;
+    private String[] mMapsArray;
+    float spawnX;
+    float spawnY;
 
     private ITextureRegion mOnScreenControlBaseTextureRegion;
     private ITextureRegion mOnScreenControlKnobTextureRegion;
-    private int stop_toast;
 
     private enum PlayerDirection {
         NONE,
@@ -205,9 +205,9 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     public Scene onCreateScene() {
 
         Resources r = getResources();
-        String[] maps = r.getStringArray(R.array.maps);
+        mMapsArray = r.getStringArray(R.array.maps);
         mMapID = ResourceManager.getMapID();
-        String mMapPath = maps[mMapID];
+        String mMapPath = mMapsArray[mMapID];
 
         this.mEngine.registerUpdateHandler(new FPSLogger());
 
@@ -241,7 +241,10 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
             if (group.getTMXObjectGroupProperties().containsTMXProperty(
                     "spawn", "true")) {
                 for (final TMXObject object : group.getTMXObjects()) {
-                    mPlayer = new AnimatedSprite(object.getX(), object.getY(), mPlayerTextureRegion, getVertexBufferObjectManager());
+                    spawnX = object.getX();
+                    spawnY = object.getY();
+
+                    mPlayer = new AnimatedSprite(spawnX, spawnY, mPlayerTextureRegion, getVertexBufferObjectManager());
                 }
             }
         }
@@ -342,6 +345,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         startAct.putExtra(Intent.EXTRA_UID, t_token);
         startAct.putExtra(Intent.EXTRA_SHORTCUT_NAME, MapID);
         startAct.putExtra(Intent.EXTRA_REFERRER_NAME, TeacherID);
+        finish();
         this.startActivity(startAct);
     }
 
@@ -350,6 +354,12 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         ResourceManager.setMapID(map);
         finish();
         this.startActivity(startAct);
+    }
+
+    public void showWinAnimation(){
+        //Intent startAct = new Intent(this, DonWin.class);
+        finish();
+        //this.startActivity(startAct);
     }
 
     static <T> T[] append(T[] arr, T element) {
@@ -452,16 +462,21 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                                                          Log.d("WID", "going upstairs!");
                                                      } else {
                                                          if (t1 && t2 && t3 && t4 && t5 && t6) {
-                                                             editor.putInt("maxMapID", mMapID + 1);
-                                                             editor.putBoolean("t1", false);
-                                                             editor.putBoolean("t2", false);
-                                                             editor.putBoolean("t3", false);
-                                                             editor.putBoolean("t4", false);
-                                                             editor.putBoolean("t5", false);
-                                                             editor.putBoolean("t6", false);
-                                                             editor.apply();
-                                                             loadMap(mMapID + 1);
-                                                             Log.d("WID", "going upstairs!");
+                                                             if(maxID + 1 == mMapsArray.length){
+                                                                 Log.d("WID", "YOU WON!!");
+                                                                 showWinAnimation();
+                                                             }else {
+                                                                 editor.putInt("maxMapID", mMapID + 1);
+                                                                 editor.putBoolean("t1", false);
+                                                                 editor.putBoolean("t2", false);
+                                                                 editor.putBoolean("t3", false);
+                                                                 editor.putBoolean("t4", false);
+                                                                 editor.putBoolean("t5", false);
+                                                                 editor.putBoolean("t6", false);
+                                                                 editor.apply();
+                                                                 loadMap(mMapID + 1);
+                                                                 Log.d("WID", "going upstairs!");
+                                                             }
                                                          }
                                                      }
                                                  }
@@ -488,8 +503,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
                             }
                         }*/
-                    }// end inner class method
-                }
+                                         }// end inner class method
+                                     }
         );
     }
 
