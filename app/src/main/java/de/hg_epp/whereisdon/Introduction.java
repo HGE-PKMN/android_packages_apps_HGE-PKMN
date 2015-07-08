@@ -1,6 +1,5 @@
 package de.hg_epp.whereisdon;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -21,8 +20,6 @@ import java.io.InputStream;
 
 public class Introduction extends ActionBarActivity {
 
-
-    private ImageView intropic;
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -53,7 +50,7 @@ public class Introduction extends ActionBarActivity {
     }
 
 
-        //method reads the Raw
+    //method reads the Raw
     private String setRaw() {
         InputStream inputStream = getResources().openRawResource(R.raw.exposition);
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -81,12 +78,10 @@ public class Introduction extends ActionBarActivity {
         finish();
     }
 
-
     //fills the ImageView with a Picture
     //just example Pic
     public void setPic() {
-        intropic = (ImageView) findViewById(R.id.intro_pic);
+        ImageView intropic = (ImageView) findViewById(R.id.intro_pic);
         intropic.setImageResource(R.drawable.app_icon);
     }
-
 }

@@ -5,11 +5,9 @@ import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -24,7 +22,6 @@ import org.andengine.engine.handler.IUpdateHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
-import org.andengine.entity.IEntity;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
@@ -41,7 +38,6 @@ import org.andengine.extension.tmx.TMXObjectGroup;
 import org.andengine.extension.tmx.TMXProperties;
 import org.andengine.extension.tmx.TMXTile;
 import org.andengine.extension.tmx.TMXTileProperty;
-import org.andengine.extension.tmx.TMXTiledMap;
 import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.opengl.texture.ITexture;
 import org.andengine.opengl.texture.TextureOptions;
@@ -55,10 +51,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Arrays;
 
 /**
  * Based Off TMXTiledMapExample.java by
@@ -68,7 +64,6 @@ import java.io.IOException;
  * https://developer.android.com/training/system-ui/immersive.html
  * Implementation of the Google Non-Sticky Immersive Mode
  * <p/>
- * <p/>
  * (c) 2015 Christian Oder
  * (c) 2015 Jan Zartmann
  */
@@ -76,9 +71,6 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     // ===========================================================
     // Constants
     // ===========================================================
-
-    private static int CAMERA_WIDTH;
-    private static int CAMERA_HEIGHT;
 
 
     private static final int PLAYER_VELOCITY = 3;
@@ -88,11 +80,9 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     // Fields
     // ===========================================================
 
-    private String mMapPath;
     private int mMapID;
     private BoundCamera mCamera;
 
-    private ITexture mPlayerTexture;
     private TiledTextureRegion mPlayerTextureRegion;
 
     private org.andengine.extension.tmx.TMXTiledMap mTMXTiledMap;
@@ -104,19 +94,14 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
     static AnimatedSprite mPlayer;
     private Body mPlayerBody;
-    private IUpdateHandler handler;
 
     private Rectangle upstairs = null;
     private Rectangle downstairs = null;
-    private Rectangle fight_zone[] = null;
-    private Rectangle moser_hidden = null;
+    private Rectangle fight_zone[] = {};
+    // private Rectangle moser_hidden = null;
 
-    private ITexture mOnScreenControlBaseTexture;
     private ITextureRegion mOnScreenControlBaseTextureRegion;
-    private ITexture mOnScreenControlKnobTexture;
     private ITextureRegion mOnScreenControlKnobTextureRegion;
-
-    private DigitalOnScreenControl mDigitalOnScreenControl;
 
     private enum PlayerDirection {
         NONE,
@@ -174,14 +159,14 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        CAMERA_HEIGHT = 165;
+        int CAMERA_HEIGHT = 165;
 
         // set the CAMERA_WIDTH in an fitting ratio compared to the screen size.
         // this should avoid those ugly white bars across devices with different screens
         final DisplayMetrics displayMetrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         float aspectRatio = (float) displayMetrics.widthPixels / (float) displayMetrics.heightPixels;
-        CAMERA_WIDTH = Math.round(aspectRatio * CAMERA_HEIGHT);
+        int CAMERA_WIDTH = Math.round(aspectRatio * CAMERA_HEIGHT);
 
         this.mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         this.mCamera.setBoundsEnabled(false);
@@ -194,17 +179,17 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
     @Override
     public void onCreateResources() throws IOException {
-        this.mPlayerTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), MainActivity.mChar, TextureOptions.DEFAULT);
-        this.mPlayerTextureRegion = TextureRegionFactory.extractTiledFromTexture(this.mPlayerTexture, 3, 4);
-        this.mPlayerTexture.load();
+        ITexture mPlayerTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), MainActivity.mChar, TextureOptions.DEFAULT);
+        this.mPlayerTextureRegion = TextureRegionFactory.extractTiledFromTexture(mPlayerTexture, 3, 4);
+        mPlayerTexture.load();
 
-        this.mOnScreenControlBaseTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/onscreen_control_base.png", TextureOptions.BILINEAR);
-        this.mOnScreenControlBaseTextureRegion = TextureRegionFactory.extractFromTexture(this.mOnScreenControlBaseTexture);
-        this.mOnScreenControlBaseTexture.load();
+        ITexture mOnScreenControlBaseTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/onscreen_control_base.png", TextureOptions.BILINEAR);
+        this.mOnScreenControlBaseTextureRegion = TextureRegionFactory.extractFromTexture(mOnScreenControlBaseTexture);
+        mOnScreenControlBaseTexture.load();
 
-        this.mOnScreenControlKnobTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/onscreen_control_knob.png", TextureOptions.BILINEAR);
-        this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.extractFromTexture(this.mOnScreenControlKnobTexture);
-        this.mOnScreenControlKnobTexture.load();
+        ITexture mOnScreenControlKnobTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/onscreen_control_knob.png", TextureOptions.BILINEAR);
+        this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.extractFromTexture(mOnScreenControlKnobTexture);
+        mOnScreenControlKnobTexture.load();
     }
 
 
@@ -214,7 +199,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         Resources r = getResources();
         String[] maps = r.getStringArray(R.array.maps);
         mMapID = ResourceManager.getMapID();
-        mMapPath = maps[mMapID];
+        String mMapPath = maps[mMapID];
 
         this.mEngine.registerUpdateHandler(new FPSLogger());
 
@@ -239,7 +224,6 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         }
 
 		/* Make the camera not exceed the bounds of the TMXEntity. */
-        TMXLayer tmxLayer = mTMXTiledMap.getTMXLayers().get(0);
         this.mCamera.setBounds(0, 0, this.mTMXTiledMap.getWidth(), this.mTMXTiledMap.getHeight());
         this.mCamera.setBoundsEnabled(true);
 
@@ -274,7 +258,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         		/* Velocity control (left). */
         // Amount of Pixels away from 0/0 (top left corner)
         final float edge_space = 40;
-        this.mDigitalOnScreenControl = new DigitalOnScreenControl(edge_space, edge_space, this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, this.getVertexBufferObjectManager(), new IOnScreenControlListener() {
+        DigitalOnScreenControl mDigitalOnScreenControl = new DigitalOnScreenControl(edge_space, edge_space, this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, this.getVertexBufferObjectManager(), new IOnScreenControlListener() {
 
             @Override
             public void onControlChange(BaseOnScreenControl pBaseOnScreenControl,
@@ -316,11 +300,11 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
             }
         });
 
-        this.mDigitalOnScreenControl.getControlBase().setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
-        this.mDigitalOnScreenControl.setAlpha(0.5f);
-        this.mDigitalOnScreenControl.getControlBase().setScale(0.5f);
+        mDigitalOnScreenControl.getControlBase().setBlendFunction(GLES20.GL_SRC_ALPHA, GLES20.GL_ONE_MINUS_SRC_ALPHA);
+        mDigitalOnScreenControl.setAlpha(0.5f);
+        mDigitalOnScreenControl.getControlBase().setScale(0.5f);
 
-        mScene.setChildScene(this.mDigitalOnScreenControl);
+        mScene.setChildScene(mDigitalOnScreenControl);
 
         mMusic = MediaPlayer.create(this, R.raw.background_music);
         this.mMusic.start();
@@ -336,7 +320,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     // ===========================================================
 
     private void startFEAsync(int tID, int mapID) {
-        new FEAsyncJSONTask(tID, mapID).execute("teachers.json");
+        new FEAsyncJSONTask(tID, mapID).execute("teacher.json");
     }
 
     public void startFE(String t_name, String t_token, int t_level) {
@@ -356,6 +340,13 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         ResourceManager.setMapID(map);
         finish();
         this.startActivity(startAct);
+    }
+
+    static <T> T[] append(T[] arr, T element) {
+        final int N = arr.length;
+        arr = Arrays.copyOf(arr, N + 1);
+        arr[N] = element;
+        return arr;
     }
 
     private void createObjects() {
@@ -385,7 +376,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                 for (final TMXObject object : group.getTMXObjects()) {
                     upstairs = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
                     upstairs.setOffsetCenter(0, 0);
-                    upstairs.setVisible(false);
+                    //upstairs.setVisible(false);
+                    upstairs.setColor(1, 0, 0);
                     mScene.attachChild(upstairs);
                 }
             }
@@ -395,7 +387,8 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                 for (final TMXObject object : group.getTMXObjects()) {
                     downstairs = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
                     downstairs.setOffsetCenter(0, 0);
-                    downstairs.setVisible(false);
+                    //downstairs.setVisible(false);
+                    downstairs.setColor(1, 0, 0);
                     mScene.attachChild(downstairs);
                 }
             }
@@ -405,10 +398,16 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                 int fight_zone_id = 0;
                 for (final TMXObject object : group.getTMXObjects()) {
                     //go fight with them
-                    fight_zone[fight_zone_id] = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
-                    fight_zone[fight_zone_id].setOffsetCenter(0, 0);
-                    fight_zone[fight_zone_id].setVisible(false);
+
+                    Rectangle rect = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
+                    rect.setOffsetCenter(0, 0);
+                    //fight_zone[fight_zone_id].setVisible(false);
+                    rect.setColor(1, 0, 0);
+
+                    fight_zone = append(fight_zone, rect);
+
                     mScene.attachChild(fight_zone[fight_zone_id]);
+                    Log.e("WID", "FZI" + fight_zone_id);
                     fight_zone_id++;
                 }
             }
@@ -424,7 +423,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     }
 
     public void updatePlayer() {
-        mScene.registerUpdateHandler(handler = new IUpdateHandler() {
+        mScene.registerUpdateHandler(new IUpdateHandler() {
 
                     @Override
                     public void reset() {/* Not used */
@@ -451,7 +450,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                             for (int i = 0; i < fight_zone.length; i++)
                                 if (fight_zone[i] != null) {
                                     if (fight_zone[i].collidesWith(mPlayer)) {
-                                        startFEAsync(mMapID, i);
+                                        startFEAsync(mMapID, i + 1);
                                     }
 
                                 }
@@ -484,50 +483,59 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         private String mTeacherToken;
         private int mTeacherWonFights;
 
-        public FEAsyncJSONTask(int tID, int mID) {
+        public FEAsyncJSONTask(int mID, int tID) {
             mMapID = Integer.toString(mID);
             mTeacherID = Integer.toString(tID);
         }
 
         @Override
         protected String doInBackground(String... afile) {
-            String mFile = new String(afile[0]);
-            String mFilePath = MainActivity.FILE_PATH + mFile;
-            File f = new File(mFilePath);
-            if (f.exists() && !f.isDirectory()) {
-                String[] arr = {};
-                try {
-                    FileReader fileReader = new FileReader(mFilePath);
-                    BufferedReader bufferedReader = new BufferedReader(fileReader);
+            String mFile = afile[0];
+            Log.e("WID", "exist yes");
+            try {
+
+/*                    InputStream is = getApplicationContext().getAssets().open(mFile);
+                    InputStreamReader inputStreamReader = new InputStreamReader(is);
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
                     StringBuilder stringBuilder = new StringBuilder();
                     String line;
                     while ((line = bufferedReader.readLine()) != null)
                         stringBuilder.append(line).append("\n");
                     bufferedReader.close();
-                    fileReader.close();
+                    inputStreamReader.close();
+                    is.close();*/
 
-                    JSONObject obj = new JSONObject(stringBuilder.toString().trim());
-                    JSONObject obj2 = obj.getJSONObject(mMapID);
-                    JSONObject obj3 = obj2.getJSONObject(mTeacherID);
-                    mTeacherName = obj3.getString("teacher_name");
-                    mTeacherToken = obj3.getString("teacher_token");
-                    mTeacherWonFights = obj3.getInt("teacher_won");
+                StringBuilder buf = new StringBuilder();
+                InputStream json = getAssets().open(mFile);
+                BufferedReader in =
+                        new BufferedReader(new InputStreamReader(json, "UTF-8"));
+                String str;
 
-                    return "true";
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                while ((str = in.readLine()) != null) {
+                    buf.append(str);
                 }
+                in.close();
+
+                JSONObject obj = new JSONObject(buf.toString().trim());
+                JSONObject obj2 = obj.getJSONObject(mMapID);
+                JSONObject obj3 = obj2.getJSONObject(mTeacherID);
+                mTeacherName = obj3.getString("teacher_name");
+                mTeacherToken = obj3.getString("teacher_token");
+                mTeacherWonFights = obj3.getInt("teacher_won");
+
+                return "true";
+
+            } catch (JSONException | IOException e) {
+                e.printStackTrace();
             }
-            return null;
+
+
+            return "null";
         }
 
         @Override
         protected void onPostExecute(String result) {
+            Log.e("WID", "R" + result);
             if (result.equals("true")) {
                 startFE(mTeacherName, mTeacherToken, mTeacherWonFights);
             }

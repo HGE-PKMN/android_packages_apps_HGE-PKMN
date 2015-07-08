@@ -50,14 +50,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivity.context = getApplicationContext();
-        try {
-            FILE_PATH = getAssets() + "/json/";
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         setContentView(R.layout.activity_main);
-
     }
 
     //method gets invoked when someone clicks a button with the onClick setting
