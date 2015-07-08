@@ -72,13 +72,13 @@ public class MainActivity extends ActionBarActivity {
                 break;
             case R.id.gender_changer_radio_boy:
                 Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();
-                mChar = "gfx/trainer.png";
+                mChar = "gfx/trainer_male.png";
                 storeButtonState();
 
                 break;
             case R.id.gender_changer_radio_girl:
                 Toast.makeText(this, getString(R.string.girl_selected), Toast.LENGTH_SHORT).show();
-                mChar = "gfx/player.png";
+                mChar = "gfx/trainer_female.png";
                 storeButtonState();
                 break;
 

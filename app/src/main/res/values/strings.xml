@@ -7,8 +7,8 @@
     <string name="menu_about">About the Team</string>
     <string name="gender_change_boy">Männlicher Trainer</string>
     <string name="gender_change_girl">Weiblicher Trainer</string>
-    <string name="boy_selected">You selected the Boy</string>
-    <string name="girl_selected">You selected the Player</string>
+    <string name="boy_selected">Du hast den männlichen Trainer ausgewählt</string>
+    <string name="girl_selected">Du hast den weiblichen Trainer ausgewählt</string>
     <string name="escape">Flucht</string>
     <string name="attack_button">Attacke</string>
     <string name="LVL">Level:</string>

@@ -296,6 +296,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     }
 
     // loads the arrays from the strings.xml
+    // loads the array from drawable webertrons
     private void getArrays() {
         Resources res = getResources();
         attacks = res.getStringArray(R.array.attacks);
@@ -312,6 +313,10 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         mDrawableArray.add(R.drawable.wbt_10);
         mDrawableArray.add(R.drawable.wbt_11);
         mDrawableArray.add(R.drawable.wbt_12);
+        mDrawableArray.add(R.drawable.wbt_13);
+        mDrawableArray.add(R.drawable.wbt_14);
+        mDrawableArray.add(R.drawable.wbt_15);
+        mDrawableArray.add(R.drawable.wbt_16);
     }
 
     // randomly sets the Sayings and Attack Button Text
@@ -398,7 +403,6 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         //let the Webertrons jiggle while attacking each other
         startWBTAnimationHit();
     }
-
     public double getATKNormal() {
         Random r = new Random();
         int Low = 95;
