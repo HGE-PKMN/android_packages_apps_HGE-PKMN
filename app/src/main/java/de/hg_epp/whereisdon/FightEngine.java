@@ -335,6 +335,14 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         mDrawableArray.add(R.drawable.wbt_14);
         mDrawableArray.add(R.drawable.wbt_15);
         mDrawableArray.add(R.drawable.wbt_16);
+        mDrawableArray.add(R.drawable.wbt_17);
+        mDrawableArray.add(R.drawable.wbt_18);
+        mDrawableArray.add(R.drawable.wbt_19);
+        mDrawableArray.add(R.drawable.wbt_20);
+        mDrawableArray.add(R.drawable.wbt_21);
+        mDrawableArray.add(R.drawable.wbt_22);
+        mDrawableArray.add(R.drawable.wbt_23);
+        mDrawableArray.add(R.drawable.wbt_24);
     }
 
     // randomly sets the Sayings and Attack Button Text
