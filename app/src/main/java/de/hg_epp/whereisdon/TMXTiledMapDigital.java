@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -132,18 +133,21 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     // Methods for/from SuperClass/Interfaces
     // ===========================================================
 
-    // Non Sticky Immersive Mode
+    // make our App Fullscreen, no Matter if Window is focused or not
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -357,9 +361,9 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     }
 
     public void showWinAnimation(){
-        //Intent startAct = new Intent(this, DonWin.class);
+        Intent startAct = new Intent(this, DonWin.class);
         finish();
-        //this.startActivity(startAct);
+        this.startActivity(startAct);
     }
 
     static <T> T[] append(T[] arr, T element) {

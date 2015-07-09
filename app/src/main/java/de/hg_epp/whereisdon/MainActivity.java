@@ -37,17 +37,17 @@ public class MainActivity extends ActionBarActivity {
      * https://developer.android.com/training/system-ui/immersive.html
      * Implementation of the Google Non-Sticky Immersive Mode
      */
+
+    // make our App Fullscreen
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     @Override
@@ -55,14 +55,15 @@ public class MainActivity extends ActionBarActivity {
         mMusicSwitch = MediaPlayer.create(this, R.raw.menu_switch_sound);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // make our App Fullscreen
         mActivity = this;
     }
 
     //method gets invoked when someone clicks a button with the onClick setting
     public void buttonOnClick(View z) {
+        mMusicSwitch.start();
         switch (z.getId()) {
             case R.id.continue_button:
-                mMusicSwitch.start();
                 SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
                 if(settings.getBoolean("intro_run", true)){
                     SharedPreferences.Editor editor = settings.edit();
@@ -74,20 +75,17 @@ public class MainActivity extends ActionBarActivity {
                 }
                 break;
             case R.id.restart_button:
-                mMusicSwitch.start();
-                reallyResetGame();
+                //reallyResetGame();
                 break;
             case R.id.gender_changer_radio_boy:
                 Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();
-                mChar = "gfx/trainer.png";
+                mChar = "gfx/trainer_male.png";
                 storeButtonState();
-                mMusicSwitch.start();
                 break;
             case R.id.gender_changer_radio_girl:
                 Toast.makeText(this, getString(R.string.girl_selected), Toast.LENGTH_SHORT).show();
                 mChar = "gfx/trainer_female.png";
                 storeButtonState();
-                mMusicSwitch.start();
                 break;
 
         }

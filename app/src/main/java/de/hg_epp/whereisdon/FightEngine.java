@@ -82,14 +82,12 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_LOW_PROFILE
-                            | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        }
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LOW_PROFILE
+                        | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
     // Initialize the ImageViews, TextViews and Buttons, create the fake_view and
@@ -98,7 +96,6 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fight_layout);
-
         wbt_p = (ImageView) findViewById(R.id.webertron_p);
         wbt_t = (ImageView) findViewById(R.id.webertron_t);
 
@@ -345,6 +342,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         mDrawableArray.add(R.drawable.wbt_22);
         mDrawableArray.add(R.drawable.wbt_23);
         mDrawableArray.add(R.drawable.wbt_24);
+        mDrawableArray.add(R.drawable.wbt_25);
+        mDrawableArray.add(R.drawable.wbt_26);
     }
 
     // randomly sets the Sayings and Attack Button Text
@@ -427,9 +426,13 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     }
 
     public void fight(View unused) {
-        chooseATKType();
-        //let the Webertrons jiggle while attacking each other
-        startWBTAnimationHit();
+        if (!button_locked) {
+            chooseATKType();
+            //let the Webertrons jiggle while attacking each other
+            startWBTAnimationHit();
+        } else {
+            Log.e("WID", "Attack button locked!");
+        }
     }
 
     public double getATKNormal() {
@@ -447,50 +450,32 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     }
 
     public void fight2ndPart(double atk_type) {
-        if (!button_locked) {
-            // atk has the random factor inside, so recalculate it every hit
-
-            Log.e("WID", "wbt_type_p: " + wbt_type_p);
-            Log.e("WID", "wbt_type_t: " + wbt_type_t);
-            Log.e("WID", "player_lvl: " + player_lvl);
-            Log.e("WID", "teacher_lvl: " + teacher_lvl);
-            Log.e("WID", "getU(wbt_type_p): " + getU(wbt_type_p));
-            Log.e("WID", "getU(wbt_type_t): " + getU(wbt_type_t));
-            Random r = new Random();
-            int Low = 0;
-            int High = 101;
-            int R = r.nextInt(High - Low) + Low;
-            double t_atk_type;
-            if (R <= 70) {
-                t_atk_type = getATKNormal();
-            } else {
-                t_atk_type = getATKRisky();
-            }
-            Log.e("WID", "t_R: " + R);
-            Log.e("WID", "t_atk_type: " + t_atk_type);
-            Log.e("WID", "atk_type: " + atk_type);
-            double atk_p = getAtkPwr(getU(wbt_type_p), player_lvl, atk_type);
-            double atk_t = getAtkPwr(getU(wbt_type_t), teacher_lvl, t_atk_type);
-
-            // actually fight
-            // see if one has killed the other already
-            // Teacher attacks first, when you PKM is dead you can't attack the teacher
-            Log.e("WID", "P_ATK: " + atk_p);
-            Log.e("WID", "T_ATK: " + atk_t);
-            Log.e("WID", "P_HP: " + hp_p);
-            Log.e("WID", "T_HP: " + hp_t);
-            hp_p = hp_p - (int) atk_t;
-            hp_t = hp_t - (int) atk_p;
-
-            // wait 2 seconds and set Text, do this in an Async to not freeze the Animation
-            // but set an boolean to block the button during the Waiting Time
-
-            setFightingText();
-            lockButton();
-            new FightEngineAsyncWait().execute("");
+        // atk has the random factor inside, so recalculate it every hit
+        Random r = new Random();
+        int Low = 0;
+        int High = 101;
+        int R = r.nextInt(High - Low) + Low;
+        double t_atk_type;
+        if (R <= 70) {
+            t_atk_type = getATKNormal();
         } else {
-            Log.e("WID", "Attack button locked!");
+            t_atk_type = getATKRisky();
         }
+        double atk_p = getAtkPwr(getU(wbt_type_p), player_lvl, atk_type);
+        double atk_t = getAtkPwr(getU(wbt_type_t), teacher_lvl, t_atk_type);
+
+        // actually fight
+        // see if one has killed the other already
+        // Teacher attacks first, when you PKM is dead you can't attack the teacher
+        hp_p = hp_p - (int) atk_t;
+        hp_t = hp_t - (int) atk_p;
+
+        // wait 2 seconds and set Text, do this in an Async to not freeze the Animation
+        // but set an boolean to block the button during the Waiting Time
+
+        setFightingText();
+        lockButton();
+        new FightEngineAsyncWait().execute("");
     }
 
     // updates the TextView with the Player and the Teachers Level
@@ -712,6 +697,17 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         button_locked = false;
     }
 
+    public void makeHitSound() {
+        //sleep and make hiz sounds
+        MediaPlayer mHit;
+        Random random = new Random();
+        if (random.nextBoolean())
+            mHit = MediaPlayer.create(this, R.raw.hit1);
+        else
+            mHit = MediaPlayer.create(this, R.raw.hit1);
+        mHit.start();
+    }
+
     /**
      * Just a little tool to sleep for 2 Seconds without blocking the View Thread for FightEngine
      * Created by Christian Oder on 26/06/2015.
@@ -721,8 +717,10 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         @Override
         protected String doInBackground(String... params) {
             try {
-                //sleep
-                TimeUnit.SECONDS.sleep(2);
+                TimeUnit.SECONDS.sleep(1);
+                makeHitSound();
+                TimeUnit.SECONDS.sleep(1);
+                makeHitSound();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
