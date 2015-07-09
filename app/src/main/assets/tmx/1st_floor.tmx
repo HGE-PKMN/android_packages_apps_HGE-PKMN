@@ -94,7 +94,6 @@
   <object id="203" x="128" y="288" width="64" height="32"/>
   <object id="204" x="256" y="288" width="64" height="32"/>
   <object id="205" x="384" y="288" width="64" height="32"/>
-
  </objectgroup>
  <objectgroup name="spawn" width="51" height="47">
   <properties>

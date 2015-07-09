@@ -8,7 +8,7 @@
  </tileset>
  <layer name="base" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt2DEOgCAQRUEuIPc/rqUtCQt8zJC8xmZ3JDb21loPafac3n+F5TkYCwsLCwsLy5ilKpaMWDJjyYwlM5b6uRXzT1pGnt1qqb5r9zI/9+bvZcf7Ob0PC0tyLJmx7Nnl5v8wf7TMHhYWFhYWlpWWhFi+8wLONWlj
+   eJzt2LkNwCAQRUEaMP2XS+jUEsd+o1npxeyAnLi31npIs1O9/w7LUxgLCwsLCwvLN8uqWDJiyYwlM5bMWNafu+L8SstN78KSabnlezlxP9X7sLAkx5IZy5ld/vwf5kbL7LCwsLCwsOy0JMTyzgCo/Wlh
   </data>
  </layer>
  <layer name="objects" width="51" height="47">
@@ -42,8 +42,6 @@
   <object id="11" x="896" y="800" width="192" height="32"/>
   <object id="14" x="896" y="704" width="32" height="96"/>
   <object id="16" x="1568" y="416" width="64" height="672"/>
-  <object id="18" x="1056" y="704" width="32" height="32"/>
-  <object id="19" x="1056" y="768" width="32" height="32"/>
   <object id="26" x="1056" y="1152" width="64" height="288"/>
  </objectgroup>
  <objectgroup name="spawn" width="51" height="47">
