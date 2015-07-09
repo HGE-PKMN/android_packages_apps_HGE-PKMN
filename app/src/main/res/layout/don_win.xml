@@ -7,7 +7,7 @@
     tools:context=".Introduction"
     android:background="#663333"
     android:fillViewport="false"
-    android:id="@+id/">
+    android:id="@+id/ourtro">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -19,24 +19,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:id="@+id/winMessage"
-            android:layout_alignParentTop="true"
-            android:layout_alignLeft="@+id/continue_outro"
-            android:layout_alignStart="@+id/continue_outro"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp" />
-
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/continue_outro"
             android:layout_marginLeft="39dp"
             android:layout_marginStart="39dp"
-            android:layout_below="@+id/winMessage"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="69dp"
@@ -51,12 +39,9 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/outro"
             android:phoneNumber="true"
-            android:layout_below="@+id/winMessage"
-            android:layout_alignRight="@+id/continue_outro"
-            android:layout_alignEnd="@+id/continue_outro"
-            android:layout_marginRight="47dp"
-            android:layout_marginEnd="47dp"
-            android:layout_marginTop="34dp" />
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/donWin"
+            android:layout_toEndOf="@+id/donWin" />
 
         <ImageView
             android:layout_width="wrap_content"

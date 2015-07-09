@@ -21,7 +21,6 @@ import java.io.InputStream;
 public class DonWin extends ActionBarActivity{
 
     private ImageView don;
-    private TextView winMes;
     private TextView winMes2;
 
     @Override
@@ -42,7 +41,6 @@ public class DonWin extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.don_win);
         don = (ImageView) findViewById(R.id.donWin);
-        winMes = (TextView) findViewById(R.id.winMessage);
         winMes2 = (TextView) findViewById(R.id.outro);
         setPic();
         setText();
@@ -55,7 +53,6 @@ public class DonWin extends ActionBarActivity{
     }
 
     public void setText(){
-        winMes.setText("Glückwunsch, du hast das Spiel erfolgreich beendet!");
         winMes2.setText(setRaw());
     }
 
