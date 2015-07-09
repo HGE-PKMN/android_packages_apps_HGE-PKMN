@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
 import android.os.AsyncTask;
-import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
+import android.view.Surface;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -132,6 +135,13 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     // Methods for/from SuperClass/Interfaces
     // ===========================================================
 
+    // override the action when pressing the back button to prevent changing back into the
+    // FightEngine Again. It actually should not happen anyways, but better save then sorry
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
     // make our App Fullscreen, no Matter if Window is focused or not
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
@@ -169,9 +179,29 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
         // set the CAMERA_WIDTH in an fitting ratio compared to the screen size.
         // this should avoid those ugly white bars across devices with different screens
-        final DisplayMetrics displayMetrics = new DisplayMetrics();
-        this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        float aspectRatio = (float) displayMetrics.widthPixels / (float) displayMetrics.heightPixels;
+/*        final DisplayMetrics displayMetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);*/
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        final int rotation = ((WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getOrientation();
+        float aspectRatio = 0;
+        // determine the Device Orientation and calculate aspectRatio accordingly
+        switch (rotation) {
+            case Surface.ROTATION_0:
+                aspectRatio = (float) size.y / (float) size.x;
+                break;
+            case Surface.ROTATION_90:
+                aspectRatio = (float) size.x / (float) size.y;
+                break;
+            case Surface.ROTATION_180:
+                aspectRatio = (float) size.y / (float) size.x;
+                break;
+            case Surface.ROTATION_270:
+                aspectRatio = (float) size.x / (float) size.y;
+                break;
+        }
+
         int CAMERA_WIDTH = Math.round(aspectRatio * CAMERA_HEIGHT);
 
         this.mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
@@ -356,7 +386,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         this.startActivity(startAct);
     }
 
-    public void showWinAnimation(){
+    public void showWinAnimation() {
         Intent startAct = new Intent(this, DonWin.class);
         finish();
         this.startActivity(startAct);
@@ -462,10 +492,10 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                                                          Log.d("WID", "going upstairs!");
                                                      } else {
                                                          if (t1 && t2 && t3 && t4 && t5 && t6) {
-                                                             if(maxID + 1 == mMapsArray.length){
+                                                             if (maxID + 1 == mMapsArray.length) {
                                                                  Log.d("WID", "YOU WON!!");
                                                                  showWinAnimation();
-                                                             }else {
+                                                             } else {
                                                                  editor.putInt("maxMapID", mMapID + 1);
                                                                  editor.putBoolean("t1", false);
                                                                  editor.putBoolean("t2", false);
