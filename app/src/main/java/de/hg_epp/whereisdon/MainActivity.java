@@ -75,7 +75,7 @@ public class MainActivity extends ActionBarActivity {
                 }
                 break;
             case R.id.restart_button:
-                //reallyResetGame();
+                reallyResetGame();
                 break;
             case R.id.gender_changer_radio_boy:
                 Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();
