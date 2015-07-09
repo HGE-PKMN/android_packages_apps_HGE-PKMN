@@ -17,9 +17,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -255,6 +253,14 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     // this is our cheat method, to set our own level from the WID Cheat App
     public void cheatSetN(Intent intent) {
         int n = Integer.parseInt(intent.getStringExtra(Intent.EXTRA_TEXT));
+        if (intent.getStringExtra(Intent.EXTRA_UID).equals("true"))
+        // cheat implmentation to access all floors
+        {
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putInt("maxMapID", 3);
+            editor.apply();
+        }
         setN(n);
         finish();
     }
@@ -343,7 +349,6 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         mDrawableArray.add(R.drawable.wbt_23);
         mDrawableArray.add(R.drawable.wbt_24);
         mDrawableArray.add(R.drawable.wbt_25);
-        mDrawableArray.add(R.drawable.wbt_26);
     }
 
     // randomly sets the Sayings and Attack Button Text

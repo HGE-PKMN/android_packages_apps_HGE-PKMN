@@ -1,5 +1,6 @@
 package de.hg_epp.whereisdon;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -72,8 +73,12 @@ public class Introduction extends ActionBarActivity {
     }
     */
 
+    // start the Game (listened to our feedback by the other team)
     public void resumeToMenu(View unused) {
+        Intent startAct = new Intent(this, TMXTiledMapDigital.class);
+        ResourceManager.setMapID(0);
         finish();
+        this.startActivity(startAct);
     }
 
     //fills the ImageView with a Picture

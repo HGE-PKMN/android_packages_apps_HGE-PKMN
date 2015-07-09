@@ -20,13 +20,13 @@
   <properties>
    <property name="stairs_down" value="true"/>
   </properties>
-  <object id="41" x="64" y="1056" width="32" height="32"/>
+  <object id="40" x="64" y="960" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="stairs_up" width="51" height="47">
   <properties>
    <property name="stairs_up" value="true"/>
   </properties>
-  <object id="40" x="64" y="960" width="32" height="32"/>
+  <object id="41" x="64" y="1056" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="wall" width="51" height="47">
   <properties>

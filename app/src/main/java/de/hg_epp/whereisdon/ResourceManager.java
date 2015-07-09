@@ -1,10 +1,5 @@
 package de.hg_epp.whereisdon;
 
-import org.andengine.engine.Engine;
-import org.andengine.engine.camera.Camera;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.ui.activity.BaseGameActivity;
-
 /**
  * Resources Class for our Game. It manages the Map Ressources
  * (c) 2015 Jan Zartmann
@@ -17,10 +12,12 @@ public class ResourceManager {
 
     private static int mMapID;
 
+    // store Map ID for persistence across classes
     public static void setMapID(int id){
         mMapID = id;
     }
 
+    // return Map ID for persistence across classes
     public static int getMapID(){
         return mMapID;
     }

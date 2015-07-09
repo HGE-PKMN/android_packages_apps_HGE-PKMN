@@ -11,12 +11,9 @@ import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
@@ -64,6 +61,7 @@ public class MainActivity extends ActionBarActivity {
         mMusicSwitch.start();
         switch (z.getId()) {
             case R.id.continue_button:
+                //check if the App was running before if not call the Intro
                 SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
                 if(settings.getBoolean("intro_run", true)){
                     SharedPreferences.Editor editor = settings.edit();
@@ -71,6 +69,7 @@ public class MainActivity extends ActionBarActivity {
                     editor.apply();
                     this.startActivity(new Intent(this, Introduction.class));
                 }else {
+                    // else just start the Game
                     loadDefaultMap();
                 }
                 break;
@@ -78,12 +77,14 @@ public class MainActivity extends ActionBarActivity {
                 reallyResetGame();
                 break;
             case R.id.gender_changer_radio_boy:
+                //set Trainer to male
                 Toast.makeText(this, getString(R.string.boy_selected), Toast.LENGTH_SHORT).show();
                 mChar = "gfx/trainer_male.png";
                 storeButtonState();
                 break;
             case R.id.gender_changer_radio_girl:
                 Toast.makeText(this, getString(R.string.girl_selected), Toast.LENGTH_SHORT).show();
+                //set Trainer to female
                 mChar = "gfx/trainer_female.png";
                 storeButtonState();
                 break;
@@ -94,17 +95,16 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        //reload the starte from the Radio Buttons
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         boolean radio_boy = settings.getBoolean("radio_boy", true);
         boolean radio_girl = settings.getBoolean("radio_girl", false);
-/*        if (radio_boy) {*/
         ((RadioButton) findViewById(R.id.gender_changer_radio_boy)).setChecked(radio_boy);
-/*        }else if(radio_girl){*/
         ((RadioButton) findViewById(R.id.gender_changer_radio_girl)).setChecked(radio_girl);
-/*        }*/
         mChar = settings.getString("mChar_dir", "gfx/trainer_male.png");
     }
 
+    // save the state of the radio buttons
     private void storeButtonState() {
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -136,6 +136,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //reset all the values to default
     private void resetGame(){
         SharedPreferences settings = this.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = settings.edit();
@@ -147,17 +148,19 @@ public class MainActivity extends ActionBarActivity {
         editor.putBoolean("t4", false);
         editor.putBoolean("t5", false);
         editor.putBoolean("t6", false);
-        editor.putInt("won_games", 0);
+        editor.putInt("won_games", 1);
         editor.putInt("maxMapID", 0);
         editor.apply();
         Toast.makeText(this, getString(R.string.game_has_been_reset), Toast.LENGTH_LONG).show();
     }
 
+    //create Dialog to ask if you really want to reset the game
     public void reallyResetGame() {
         DialogFragment DialogFragment = new resetGameDialog();
         DialogFragment.show(getFragmentManager(), "reset");
     }
 
+    // Dialog asking if you want to reset the game
     public static class resetGameDialog extends DialogFragment {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -179,6 +182,7 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    // load the default map (the ground floor)
     public void loadDefaultMap(){
         Intent startAct = new Intent(this, TMXTiledMapDigital.class);
         ResourceManager.setMapID(0);

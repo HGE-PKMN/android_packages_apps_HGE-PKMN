@@ -7,7 +7,6 @@ import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.opengl.GLES20;
 import android.os.AsyncTask;
-import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -145,11 +144,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                         | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
+    // stop the music to not play when App is minimized
     @Override
     protected void onPause() {
         super.onPause();
@@ -158,6 +153,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         this.mMusic.pause();
     }
 
+    // resume the music stopped in onPause
     @Override
     protected void onResume() {
         super.onResume();
