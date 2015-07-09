@@ -76,7 +76,7 @@ public class DonWin extends ActionBarActivity{
         return byteArrayOutputStream.toString();
     }
 
-
+    //starts the animation of Don
     private void startDonAnimation() {
         Animation upDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.up_down_don);
         upDown.setRepeatCount(Animation.INFINITE);
