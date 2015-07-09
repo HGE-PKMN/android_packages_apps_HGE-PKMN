@@ -78,7 +78,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
 
     MediaPlayer mMusic;
 
-    // make our App Fullscreen
+    // make our App Fullscreen, no Matter if Window is focused or not
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);

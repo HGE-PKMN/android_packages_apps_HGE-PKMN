@@ -38,7 +38,7 @@ public class MainActivity extends ActionBarActivity {
      * Implementation of the Google Non-Sticky Immersive Mode
      */
 
-    // make our App Fullscreen
+    // make our App Fullscreen, no Matter if Window is focused or not
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);

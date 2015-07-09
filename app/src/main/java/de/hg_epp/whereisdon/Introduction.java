@@ -20,7 +20,7 @@ import java.io.InputStream;
 
 public class Introduction extends ActionBarActivity {
 
-    // make our App Fullscreen
+    // make our App Fullscreen, no Matter if Window is focused or not
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
