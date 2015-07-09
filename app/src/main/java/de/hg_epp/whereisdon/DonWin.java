@@ -13,12 +13,14 @@ import java.io.IOException;
 import java.io.InputStream;
 
 
+
+
 /**
  * Outro
  *
  * (c) 2015 Jan Zartmann
  */
-public class DonWin extends ActionBarActivity{
+public class DonWin extends ActionBarActivity implements Animation.AnimationListener{
 
     private ImageView don;
     private TextView winMes2;
@@ -81,7 +83,25 @@ public class DonWin extends ActionBarActivity{
         Animation upDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.up_down_don);
         upDown.setRepeatCount(Animation.INFINITE);
         upDown.setRepeatMode(Animation.REVERSE);
+        upDown.setAnimationListener(this);
         don.setVisibility(View.VISIBLE);
         don.startAnimation(upDown);
+    }
+
+    // empty method needed for the Animation Listener
+    @Override
+    public void onAnimationStart(Animation animation) {
+
+    }
+
+    // restart the animation when it ends (Androids Loop function has some problems)
+    @Override
+    public void onAnimationEnd(Animation animation) {
+        startDonAnimation();
+    }
+
+    // empty method needed for the Animation Listener
+    @Override
+    public void onAnimationRepeat(Animation animation) {
     }
 }
