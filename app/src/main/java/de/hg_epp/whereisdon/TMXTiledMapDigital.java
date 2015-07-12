@@ -289,7 +289,6 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                 super.onUpdate(pSecondsElapsed);
                 mCamera.updateChaseEntity();
             }
-
         });
 
 //		mPhysicsHandler = new PhysicsHandler(mPlayerSprite);
@@ -364,7 +363,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         new FEAsyncJSONTask(tID, mapID).execute("teacher.json");
     }
 
-    public void startFE(String t_name, String t_token, int t_level, String MapID, String TeacherID) {
+    public void startFE(String t_name, String t_token, int t_level, String MapID, String TeacherID, String teacher_fight) {
         Intent startAct = new Intent(this, FightEngine.class);
 
         startAct.setAction(Intent.ACTION_SEND);
@@ -375,6 +374,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         startAct.putExtra(Intent.EXTRA_UID, t_token);
         startAct.putExtra(Intent.EXTRA_SHORTCUT_NAME, MapID);
         startAct.putExtra(Intent.EXTRA_REFERRER_NAME, TeacherID);
+        startAct.putExtra(Intent.EXTRA_BCC, teacher_fight);
         finish();
         this.startActivity(startAct);
     }
@@ -594,7 +594,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         @Override
         protected void onPostExecute(String result) {
             if (result.equals("true")) {
-                startFE(mTeacherName, mTeacherToken, mTeacherWonFights, mMapID, mTeacherID);
+                startFE(mTeacherName, mTeacherToken, mTeacherWonFights, mMapID, mTeacherID, "true");
             }
         }
     }

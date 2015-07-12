@@ -34,6 +34,8 @@
     <string name="game_has_been_reset">Das Spiel wurde zurückgesetzt!</string>
     <string name="stairs_not_yet_unlocked">Du kannst noch nicht nach Oben gehen!</string>
     <string name="continue_outro">Fortsetzen&#8230;</string>
+    <string name="title_activity_don_won">Don Win Animation</string>
+    <string name="finished_game">Du hast das Spiel gewonnen,\nDon ist frei!</string>
 
     <string-array name="maps">
         <item>tmx/ground_floor.tmx</item>

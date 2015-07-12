@@ -44,7 +44,7 @@
         <activity
             android:name=".DonWin"
             android:configChanges="orientation|screenSize"
-            android:label="@string/title_activity_introduction"
+            android:label="@string/title_activity_don_won"
             android:launchMode="singleTop"
             android:screenOrientation="landscape" />
     </application>

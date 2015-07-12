@@ -52,8 +52,8 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     private ArrayList<Integer> mDrawableArray = new ArrayList<>();
     private Button attack_button;
     private TextView sayingsTV;
-    private boolean trainerfight;
-    private boolean button_locked;
+    private boolean mTrainerFight;
+    private boolean mButtonLocked;
     private int remainingFights;
     private int winsPlayer;
     private int winsTeacher;
@@ -169,13 +169,13 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         // set the remaining fights to 3 + 1 (4), cause we initially reduce it by 1,
         // so we only have 3 rounds
         remainingFights = 3 + 1;
-        trainerfight = true;
         wbt_type_p = 0;
         wbt_type_t = 0;
         hp_p = 0;
         hp_t = 0;
         player_lvl = 0;
         teacher_lvl = 0;
+        setTrainerFight(intent);
         setCurrentMapID(intent);
         setTeacherID(intent);
         setTeacherWonFights(intent);
@@ -277,6 +277,11 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         if (!levelS.equals("")) {
             teacher_won_fights = Integer.parseInt(levelS);
         }
+    }
+
+    private void setTrainerFight(Intent intent){
+        String trainer_fight = intent.getStringExtra(Intent.EXTRA_BCC);
+        mTrainerFight = trainer_fight.equals("true");
     }
 
     private void setCurrentMapID(Intent intent) {
@@ -431,7 +436,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     }
 
     public void fight(View unused) {
-        if (!button_locked) {
+        if (!mButtonLocked) {
             chooseATKType();
             //let the Webertrons jiggle while attacking each other
             startWBTAnimationHit();
@@ -542,7 +547,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     // Doesn't work if Player is fighting against a Teacher for the first time.
     // Is also called by the other classes to end the game (using the fake_view as a parameter)
     public void escape(View unused) {
-        if (!trainerfight) {
+        if (!mTrainerFight) {
             Intent startAct = new Intent(this, TMXTiledMapDigital.class);
             ResourceManager.setMapID(mMapID);
             finish();
@@ -599,7 +604,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         increaseN();
         if (winsPlayer == 2) {
             Toast.makeText(this, getString(R.string.duel_won), Toast.LENGTH_LONG).show();
-            trainerfight = false;
+            mTrainerFight = false;
             SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = settings.edit();
             if (mMapID == settings.getInt("maxMapID", 0)) {
@@ -643,7 +648,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         winsTeacher++;
         if (winsTeacher == 2) {
             Toast.makeText(this, getString(R.string.duel_lost), Toast.LENGTH_LONG).show();
-            trainerfight = false;
+            mTrainerFight = false;
             escape(fake_view);
         } else {
             Toast.makeText(this, getString(R.string.fight_lost), Toast.LENGTH_LONG).show();
@@ -694,12 +699,12 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
 
     // lock the Attack button
     public void lockButton() {
-        button_locked = true;
+        mButtonLocked = true;
     }
 
     // unlock the Attack button
     public void unlockButton() {
-        button_locked = false;
+        mButtonLocked = false;
     }
 
     public void makeHitSound() {

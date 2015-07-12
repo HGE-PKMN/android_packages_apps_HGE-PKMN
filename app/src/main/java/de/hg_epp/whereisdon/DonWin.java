@@ -1,5 +1,6 @@
 package de.hg_epp.whereisdon;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -83,6 +85,14 @@ public class DonWin extends ActionBarActivity implements Animation.AnimationList
         upDown.setAnimationListener(this);
         don.setVisibility(View.VISIBLE);
         don.startAnimation(upDown);
+    }
+
+
+    public void returnToMenu(View unused){
+        Intent startAct = new Intent(this, MainActivity.class);
+        Toast.makeText(this, getString(R.string.finished_game), Toast.LENGTH_LONG).show();
+        finish();
+        this.startActivity(startAct);
     }
 
     // empty method needed for the Animation Listener

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="188">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="201">
  <tileset firstgid="1" name="floors_tiled_ready" tilewidth="32" tileheight="32" spacing="3" margin="2">
   <image source="gfx/floors/floors_tiled_ready.png" width="141" height="141"/>
  </tileset>
  <tileset firstgid="17" name="objects_tiled_ready" tilewidth="32" tileheight="32">
   <image source="gfx/objects/objects_tiled_ready.png" width="448" height="224"/>
+ </tileset>
+ <tileset firstgid="115" name="objects_teacher" tilewidth="32" tileheight="32">
+  <image source="gfx/objects/objects_teacher.png" width="448" height="224"/>
  </tileset>
  <layer name="base" width="51" height="47">
   <data encoding="base64" compression="zlib">
@@ -13,7 +16,7 @@
  </layer>
  <layer name="objects" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt2TEKAjEQBdC9gtaC1oIew160Fw8g3r8zxQYGsUnyJ/MT/4OwpBmmmZ+wWRaRvjZpbQv23nVa7NM6FOy967Q4pXUu2F9BdRg81u8ttAuM1/p9hnbxW+3MvkF1kP559r3ryDwu0Q0A3aMbMFozcOfRVAF71rZm4BHVVCV71o6egd9nrfBhuP+gMNx/UEaffZGelGOclGM8Zvgnldl78uizb+/Jmn2RvpD5EZ1FyPyIziJkfoyYRfldbIZzO7+Lsb0l1cxrfhdje0vS7PvXEmHxAVyAIjs=
+   eJztmUEKwjAQRXsFXQu6FvQY7kX34gHEYxRxXcRbKOhWQS/WWTQQAtJO8qdJ6jwYypAw/M38DJ2iUIbOObYAhxHFmJHbXEF1UEwpZoxcuk4IC4olI1+D6khz6nBn13w3kkIAXDrcOTTfvaQQT3x79giqg+Sfe1+6jjIcVrEFANnGFmAR6oETCVEM7Lc21APnKFGe2G9t7h7ovrVt3CjuEkIi8KJ4xxbRgRTmHxQpzD8ocu99RekT41Olk7vnOWB8qnJy9zwH1MfSIfV/UhzsOTn3Gcaek3WGUZR+QfpHbC9C+kdsL0L6R45eZPZiQ3i3zV6Ms0sq268E49OvZi/G2SVVP2oh4fTrg+IJqiUBp18/FF9QLUXJhRpBOSyD
   </data>
  </layer>
  <objectgroup name="stairs_down" width="51" height="47">
@@ -94,6 +97,12 @@
   <object id="185" x="1184" y="992" width="64" height="32"/>
   <object id="186" x="1312" y="992" width="64" height="32"/>
   <object id="187" x="1440" y="992" width="64" height="32"/>
+  <object id="188" x="224" y="1248" width="32" height="64"/>
+  <object id="190" x="608" y="1376" width="32" height="64"/>
+  <object id="192" x="1472" y="896" width="64" height="64"/>
+  <object id="195" x="1248" y="640" width="32" height="64"/>
+  <object id="197" x="928" y="160" width="32" height="64"/>
+  <object id="199" x="448" y="96" width="64" height="64"/>
  </objectgroup>
  <objectgroup name="spawn" width="51" height="47">
   <properties>
@@ -105,11 +114,11 @@
   <properties>
    <property name="teacher_fight" value="true"/>
   </properties>
-  <object id="100" x="448" y="1344" width="64" height="96"/>
-  <object id="101" x="608" y="1152" width="32" height="192"/>
-  <object id="102" x="1120" y="800" width="96" height="32"/>
-  <object id="103" x="1312" y="544" width="192" height="64"/>
-  <object id="104" x="608" y="96" width="64" height="96"/>
-  <object id="105" x="98" y="196" width="288" height="32"/>
+  <object id="189" x="192" y="1216" width="96" height="128"/>
+  <object id="191" x="576" y="1344" width="96" height="96"/>
+  <object id="194" x="1440" y="864" width="128" height="128"/>
+  <object id="196" x="1216" y="608" width="96" height="128"/>
+  <object id="198" x="896" y="128" width="96" height="128"/>
+  <object id="200" x="416" y="64" width="128" height="128"/>
  </objectgroup>
 </map>
