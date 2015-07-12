@@ -16,7 +16,12 @@
  </layer>
  <layer name="objects" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJztmUEKwjAQRXsFXQu6FvQY7kX34gHEYxRxXcRbKOhWQS/WWTQQAtJO8qdJ6jwYypAw/M38DJ2iUIbOObYAhxHFmJHbXEF1UEwpZoxcuk4IC4olI1+D6khz6nBn13w3kkIAXDrcOTTfvaQQT3x79giqg+Sfe1+6jjIcVrEFANnGFmAR6oETCVEM7Lc21APnKFGe2G9t7h7ovrVt3CjuEkIi8KJ4xxbRgRTmHxQpzD8ocu99RekT41Olk7vnOWB8qnJy9zwH1MfSIfV/UhzsOTn3Gcaek3WGUZR+QfpHbC9C+kdsL0L6R45eZPZiQ3i3zV6Ms0sq268E49OvZi/G2SVVP2oh4fTrg+IJqiUBp18/FF9QLUXJhRpBOSyD
+   eJzt2TEKAjEQBdC9gtaC1oIew160Fw8g3r8zxQYGsUnyJ/MT/4OwpBmmmZ+wWRaRvjZpbQv23nVa7NM6FOy967Q4pXUu2F9BdRg81u8ttAuM1/p9hnbxW+3MvkF1kP559r3ryDwu0Q0A3aMbMFozcOfRVAF71rZm4BHVVCV71o6egd9nrfBhuP+gMNx/UEaffZGelGOclGM8Zvgnldl78uizb+/Jmn2RvpD5EZ1FyPyIziJkfoyYRfldbIZzO7+Lsb0l1cxrfhdje0vS7PvXEmHxAVyAIjs=
+  </data>
+ </layer>
+ <layer name="teachers" width="51" height="47">
+  <data encoding="base64" compression="zlib">
+   eJzt1kEKwlAQRMHcXkLWIrmFQrJV0ItlDjH5jVoFvX/LniZ+3ZIOaLSmA/g6czqg0S0dAABQ7rVHOqLJs/ZKRwD8kUs6oNE1HQAAAAP58ufZans6osm79klHwGAHCi0KSQ==
   </data>
  </layer>
  <objectgroup name="stairs_down" width="51" height="47">

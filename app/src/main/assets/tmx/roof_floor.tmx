@@ -16,7 +16,12 @@
  </layer>
  <layer name="objects" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt0rEJgDAYROFMl9axJFiLuIWCtgq6mP8CVjk5Ie+D619xKQFAvS22uyNErtjtjgCABiyx1R0hcsROdwQAAC+yO0CocweE3h0gNLoD8Fv8HADqFXeA0OQOAD40uAOEZncAADToAbgUCt4=
+   eJztzjEJAAAIADDT+dq/jY8RBEG2BIsAAAAA4Ku8Diyq6wAAAAAAjAY7/QCW
+  </data>
+ </layer>
+ <layer name="teachers" width="51" height="47">
+  <data encoding="base64" compression="zlib">
+   eJzt0kEKg0AUREFvH8S1BG8RQbcJ6MUyd5hvOmAV9P4tehgA+m1tezqiyNF2piMAbuDVtqYjirzbPukIAOAnHumAQnM6gL/l5wD9xnRAoWc6AC40pQMKLekAgBv6AqGLCkk=
   </data>
  </layer>
  <objectgroup name="stairs_down" width="51" height="47">
