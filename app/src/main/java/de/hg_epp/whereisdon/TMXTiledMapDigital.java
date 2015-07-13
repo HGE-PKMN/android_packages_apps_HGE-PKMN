@@ -13,7 +13,6 @@ import android.view.Display;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -499,7 +498,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                                                          loadMap(mMapID + 1);
                                                          Log.d("WID", "going upstairs!");
                                                      } else {
-                                                         if (true) {
+                                                         if (t1 && t2 && t3 && t4 && t5 && t6) {
                                                              if (maxID + 1 == mMapsArray.length) {
                                                                  Log.d("WID", "YOU WON!!");
                                                                  showWinAnimation();
