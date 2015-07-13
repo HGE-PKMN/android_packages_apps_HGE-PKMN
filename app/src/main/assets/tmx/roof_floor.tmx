@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="69">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="98">
  <tileset firstgid="1" name="floors_tiled_ready" tilewidth="32" tileheight="32" spacing="3" margin="2">
   <image source="gfx/floors/floors_tiled_ready.png" width="141" height="141"/>
  </tileset>
@@ -11,7 +11,7 @@
  </tileset>
  <layer name="base" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt2EEKgDAMRNF4AHP/47pUCnbTVGfCL3wEN+mj1IUZESnS6vp7/zss5+aOSY6Wt/eulhxmulueT3dLl3Ppcl+6fMdmYdG2VIVFIyyaYdEMi2ZY6udWzOdcNMNSP5f7gsUhLJph0QzLN3tx/g/T0bK6sGDBggULlp0WhbDc6wJScWhG
+   eJzt2LEKgDAMRdEIrub/P9fRIhSExuYl3MAdnJpjcdHNzEVanez9/7BciWHBggULFixYvlmiwqIRFs2waIZFMyzx50acn2npdC9YNC1dvpcd7yd7HyxYlMOiGZY9u1T+D9PRsjpYsByT56qWc6iDxRtZutzLu6qWWdEWhbA8cwMLtGh+
   </data>
  </layer>
  <layer name="objects" width="51" height="47">
@@ -21,7 +21,7 @@
  </layer>
  <layer name="teachers" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt0kEKg0AUREFvH8S1BG8RQbcJ6MUyd5hvOmAV9P4tehgA+m1tezqiyNF2piMAbuDVtqYjirzbPukIAOAnHumAQnM6gL/l5wD9xnRAoWc6AC40pQMKLekAgBv6AqGLCkk=
+   eJzt0jkKgEAQBdE5vkss4i1cMFXQizmhB+ihBq0HP+isgk5JkmLsdECQK++mI6QPWekAVWvOW+iIIEfe+bo3KkSSJBXX0AGBBjpA1erogED+uSRKSwcEGukAqZCeDgg20QGS9EMP/SAK/g==
   </data>
  </layer>
  <objectgroup name="stairs_down" width="51" height="47">
@@ -34,7 +34,7 @@
   <properties>
    <property name="stairs_up" value="true"/>
   </properties>
-  <object id="37" x="832" y="64" width="224" height="224"/>
+  <object id="69" x="896" y="128" width="96" height="96"/>
  </objectgroup>
  <objectgroup name="wall" width="51" height="47">
   <properties>
@@ -51,13 +51,16 @@
   <object id="14" x="896" y="704" width="32" height="96"/>
   <object id="16" x="1568" y="416" width="64" height="672"/>
   <object id="26" x="1056" y="1152" width="64" height="288"/>
-  <object id="47" x="1408" y="576" width="32" height="64"/>
-  <object id="53" x="832" y="352" width="32" height="64"/>
-  <object id="54" x="192" y="256" height="32"/>
-  <object id="56" x="160" y="192" width="32" height="64"/>
-  <object id="62" x="352" y="1024" width="64" height="64"/>
-  <object id="64" x="640" y="1280" width="64" height="64"/>
-  <object id="67" x="352" y="672" width="32" height="64"/>
+  <object id="70" x="864" y="96" width="32" height="160"/>
+  <object id="71" x="896" y="96" width="128" height="32"/>
+  <object id="72" x="992" y="128" width="32" height="128"/>
+  <object id="73" x="928" y="160" width="32" height="32"/>
+  <object id="75" x="160" y="224" width="32" height="32"/>
+  <object id="77" x="832" y="384" width="32" height="32"/>
+  <object id="81" x="1408" y="608" width="32" height="32"/>
+  <object id="84" x="352" y="704" width="32" height="32"/>
+  <object id="92" x="928" y="1120" width="32" height="32"/>
+  <object id="96" x="480" y="1024" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="spawn" width="51" height="47">
   <properties>
@@ -69,11 +72,11 @@
   <properties>
    <property name="teacher_fight" value="true"/>
   </properties>
-  <object id="50" x="800" y="320" width="96" height="128"/>
-  <object id="63" x="320" y="992" width="128" height="128"/>
-  <object id="58" x="128" y="160" width="96" height="128"/>
-  <object id="65" x="608" y="1248" width="128" height="128"/>
-  <object id="45" x="1376" y="544" width="96" height="128"/>
-  <object id="68" x="320" y="640" width="96" height="128"/>
+  <object id="86" x="800" y="352" width="96" height="96"/>
+  <object id="93" x="896" y="1088" width="96" height="96"/>
+  <object id="90" x="128" y="192" width="96" height="96"/>
+  <object id="97" x="448" y="992" width="96" height="96"/>
+  <object id="89" x="1376" y="576" width="96" height="96"/>
+  <object id="87" x="320" y="672" width="96" height="96"/>
  </objectgroup>
 </map>

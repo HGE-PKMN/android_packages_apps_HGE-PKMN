@@ -47,6 +47,12 @@
             android:label="@string/title_activity_don_won"
             android:launchMode="singleTop"
             android:screenOrientation="landscape" />
+        <activity
+            android:name=".MoserHidden"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_moser_hidden"
+            android:launchMode="singleTop"
+            android:screenOrientation="landscape" />
     </application>
 
 </manifest>

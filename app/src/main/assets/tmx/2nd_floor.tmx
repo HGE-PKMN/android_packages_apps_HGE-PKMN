@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="201">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="227">
  <tileset firstgid="1" name="floors_tiled_ready" tilewidth="32" tileheight="32" spacing="3" margin="2">
   <image source="gfx/floors/floors_tiled_ready.png" width="141" height="141"/>
  </tileset>
@@ -9,6 +9,9 @@
  <tileset firstgid="115" name="objects_teacher" tilewidth="32" tileheight="32">
   <image source="gfx/objects/objects_teacher.png" width="448" height="224"/>
  </tileset>
+ <tileset firstgid="213" name="objects_pupils" tilewidth="32" tileheight="32">
+  <image source="gfx/objects/objects_pupils.png" width="448" height="224"/>
+ </tileset>
  <layer name="base" width="51" height="47">
   <data encoding="base64" compression="zlib">
    eJzt2MEKgCAQRVEDN/n/H9wmaBUhb3SmxxXuKoqOlkSjtTaKpI7s+19hOYUizseCBQsWLFiwfFsy6nezx3alzKta9LpiwbLakvluRluOTblbOpaSFqdnzM0SWbbFaV1cLE77mJOF77F3i3ItNSxY/maZyfk/TLU9tYJFHViwYMGCBctKS4WwPOMChP9A3Q==
@@ -16,12 +19,17 @@
  </layer>
  <layer name="objects" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt2TEKAjEQBdC9gtaC1oIew160Fw8g3r8zxQYGsUnyJ/MT/4OwpBmmmZ+wWRaRvjZpbQv23nVa7NM6FOy967Q4pXUu2F9BdRg81u8ttAuM1/p9hnbxW+3MvkF1kP559r3ryDwu0Q0A3aMbMFozcOfRVAF71rZm4BHVVCV71o6egd9nrfBhuP+gMNx/UEaffZGelGOclGM8Zvgnldl78uizb+/Jmn2RvpD5EZ1FyPyIziJkfoyYRfldbIZzO7+Lsb0l1cxrfhdje0vS7PvXEmHxAVyAIjs=
+   eJztmbEOwjAMRPsLMFeCGYl+BnuBvfABhf/f8JDBVEgotR3bcE86RVksL3c9pV0HQFs2pG3F3XqOhB1pX3G3niPhSBoq7iPpTLoI50RgIt1Id+c9NJhJD9LTe5EPwPt2cyRoeTaj94EtJ+8FFLl6L8CQZmBvsVQFvDdIM/CgtdRKeG/InoERewN4J0L/0SJC/9Eiu/cBaAlyLCbIsTgs39cyw3tydu/zngzvA9AWzfzwziLN/PDOIs38yJhFYzl/4bs9lTPaf7E1fp3LuXzfgvf1+HfvA/CNF6U/I1s=
   </data>
  </layer>
  <layer name="teachers" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt1kEKwlAQRMHcXkLWIrmFQrJV0ItlDjH5jVoFvX/LniZ+3ZIOaLSmA/g6czqg0S0dAABQ7rVHOqLJs/ZKRwD8kUs6oNE1HQAAAAP58ufZans6osm79klHwGAHCi0KSQ==
+   eJzt1jkKgEAQBVGP7xKLeAsXTBX0Yk5gLIg65VIPPp1W2EkivUdNB+jzOjpgR0UH3CCjAyRJ0mFNWEtHnFRsdwybyBBJ0muVdICkKHo6QNLvpHQAIKcD9DtP/OUHOuAic9hCR0iRrZKZCv4=
+  </data>
+ </layer>
+ <layer name="pupils" width="51" height="47">
+  <data encoding="base64" compression="zlib">
+   eJzt2DEOgDAIhWE61PtfU09h2BpiiEbEKv83ObWD8ARFgHzr8NybyPbAuWppQQfjF7QebI1U0Z1eiOq/M7LuqvqeAdTgZTr5h0iZMwKuY/cB8CX2m2IzjBkGqOFovvT2GwB16Wzg5cOd7LC7Ezk0H/5HzOmtmX281/avVyvsGACy7ElPEoo=
   </data>
  </layer>
  <objectgroup name="stairs_down" width="51" height="47">
@@ -102,12 +110,12 @@
   <object id="185" x="1184" y="992" width="64" height="32"/>
   <object id="186" x="1312" y="992" width="64" height="32"/>
   <object id="187" x="1440" y="992" width="64" height="32"/>
-  <object id="188" x="224" y="1248" width="32" height="64"/>
-  <object id="190" x="608" y="1376" width="32" height="64"/>
-  <object id="192" x="1472" y="896" width="64" height="64"/>
-  <object id="195" x="1248" y="640" width="32" height="64"/>
-  <object id="197" x="928" y="160" width="32" height="64"/>
-  <object id="199" x="448" y="96" width="64" height="64"/>
+  <object id="201" x="288" y="1216" width="32" height="32"/>
+  <object id="203" x="608" y="1280" width="32" height="32"/>
+  <object id="205" x="1408" y="896" width="32" height="32"/>
+  <object id="208" x="1120" y="480" width="32" height="32"/>
+  <object id="210" x="800" y="256" width="32" height="32"/>
+  <object id="212" x="480" y="288" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="spawn" width="51" height="47">
   <properties>
@@ -119,11 +127,17 @@
   <properties>
    <property name="teacher_fight" value="true"/>
   </properties>
-  <object id="189" x="192" y="1216" width="96" height="128"/>
-  <object id="191" x="576" y="1344" width="96" height="96"/>
-  <object id="194" x="1440" y="864" width="128" height="128"/>
-  <object id="196" x="1216" y="608" width="96" height="128"/>
-  <object id="198" x="896" y="128" width="96" height="128"/>
-  <object id="200" x="416" y="64" width="128" height="128"/>
+  <object id="202" x="256" y="1184" width="96" height="96"/>
+  <object id="204" x="576" y="1248" width="96" height="96"/>
+  <object id="206" x="1376" y="864" width="96" height="96"/>
+  <object id="209" x="1088" y="448" width="96" height="96"/>
+  <object id="211" x="768" y="224" width="96" height="96"/>
+  <object id="213" x="448" y="256" width="96" height="96"/>
  </objectgroup>
+ <objectgroup name="moser_hidden" width="51" height="47">
+   <properties>
+    <property name="moser_hidden" value="true"/>
+   </properties>
+   <object id="226" x="928" y="128" width="32" height="32"/>
+  </objectgroup>
 </map>

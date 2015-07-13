@@ -1,0 +1,59 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".HiddenMoser"
+    android:background="#663333"
+    android:fillViewport="false"
+    android:id="@+id/hiddenMoser">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#663333"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/say_sorry"
+                android:background="#504E4E4E"
+                android:text="@string/say_sorry"
+                android:onClick="getAngry"
+                android:textColor="#ffffffff"
+                android:layout_below="@+id/moser_text"
+                android:layout_marginTop="120sp"
+                android:layout_alignLeft="@+id/moser_text"
+                android:layout_alignStart="@+id/moser_text" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:id="@+id/moser_text"
+                android:text="@string/moser_hidden_text"
+                android:phoneNumber="true"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/moser"
+                android:layout_toEndOf="@+id/moser" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/moser"
+                android:layout_marginLeft="39dp"
+                android:layout_marginStart="39dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/moser" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</ScrollView>

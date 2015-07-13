@@ -1,8 +1,8 @@
 package de.hg_epp.whereisdon;
 
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.method.ScrollingMovementMethod;
 import android.view.View;
 import android.view.animation.Animation;
@@ -22,9 +22,9 @@ import java.io.InputStream;
  * (c) 2015 Jan Zartmann
  * (c) 2015 Christian Oder
  */
-public class DonWin extends ActionBarActivity implements Animation.AnimationListener {
+public class MoserHidden extends ActionBarActivity implements Animation.AnimationListener {
 
-    private ImageView don;
+    private ImageView moser;
 
     // make our App Fullscreen, no Matter if Window is focused or not
     @Override
@@ -41,27 +41,36 @@ public class DonWin extends ActionBarActivity implements Animation.AnimationList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.don_win);
-        don = (ImageView) findViewById(R.id.donWin);
-        startDonAnimation();
-        TextView don_text = (TextView) findViewById(R.id.outro);
-        don_text.setMovementMethod(new ScrollingMovementMethod());
+        setContentView(R.layout.moser_hidden);
+        moser = (ImageView) findViewById(R.id.moser);
+        TextView moser_hidden = (TextView) findViewById(R.id.moser_text);
+        startMoserAnimation();
+        moser_hidden.setMovementMethod(new ScrollingMovementMethod());
     }
 
     //starts the animation of Don
-    private void startDonAnimation() {
+    private void startMoserAnimation() {
         Animation upDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.up_down_don);
         upDown.setRepeatCount(Animation.INFINITE);
         upDown.setRepeatMode(Animation.REVERSE);
         upDown.setAnimationListener(this);
-        don.setVisibility(View.VISIBLE);
-        don.startAnimation(upDown);
+        moser.setVisibility(View.VISIBLE);
+        moser.startAnimation(upDown);
     }
 
+    // start a fight against a level 25 Moser. Cause you know, he's freaking out, hence the lvl 25!
+    public void getAngry(View unused){
+        Intent startAct = new Intent(this, FightEngine.class);
 
-    public void returnToMenu(View unused){
-        Intent startAct = new Intent(this, MainActivity.class);
-        Toast.makeText(this, getString(R.string.finished_game), Toast.LENGTH_LONG).show();
+        startAct.setAction(Intent.ACTION_SEND);
+        startAct.putExtra(Intent.EXTRA_SUBJECT, "CreateFight");
+        startAct.putExtra(Intent.EXTRA_TITLE, "Moser");
+        startAct.setType("text/plain");
+        startAct.putExtra(Intent.EXTRA_TEXT, Integer.toString(625));
+        startAct.putExtra(Intent.EXTRA_UID, "Mo");
+        startAct.putExtra(Intent.EXTRA_SHORTCUT_NAME, Integer.toString(ResourceManager.getMapID()));
+        startAct.putExtra(Intent.EXTRA_REFERRER_NAME, Integer.toString(7));
+        startAct.putExtra(Intent.EXTRA_BCC, "true");
         finish();
         this.startActivity(startAct);
     }
@@ -75,7 +84,7 @@ public class DonWin extends ActionBarActivity implements Animation.AnimationList
     // restart the animation when it ends (Androids Loop function has some problems)
     @Override
     public void onAnimationEnd(Animation animation) {
-        startDonAnimation();
+        startMoserAnimation();
     }
 
     // empty method needed for the Animation Listener

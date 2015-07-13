@@ -633,6 +633,9 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
                         editor.putBoolean("t6", true);
                         editor.apply();
                         break;
+                    case 7:
+                        // this is just an empty case for moser_hidden
+                        break;
                 }
             }
             escape(fake_view);

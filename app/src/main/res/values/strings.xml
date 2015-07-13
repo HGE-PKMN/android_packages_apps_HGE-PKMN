@@ -35,7 +35,12 @@
     <string name="stairs_not_yet_unlocked">Du kannst noch nicht nach Oben gehen!</string>
     <string name="continue_outro">Fortsetzen&#8230;</string>
     <string name="title_activity_don_won">Don Win Animation</string>
+    <string name="title_activity_moser_hidden">Moser Hidden Animation</string>
     <string name="finished_game">Du hast das Spiel gewonnen,\nDon ist frei!</string>
+    <string name="say_sorry">Entschuldigung&#8230;</string>
+    <string name="don_win_text">Herzlichen Glückwunsch!\n\n\nDu hast dich bis zum Ende durchgekämpft und Don gerettet!\nJetzt bekommst du auf ewig kostenloses Essen beim Hausmeister!\n\nAnmerkung: Dies ist ein Spiel. Du kannst dir damit nicht wirklich kostenloses Essen vom Hausmeister besorgen. Aber hey, du hast doch die Kohle :D</string>
+    <string name="moser_hidden_text">Grrr.... Du hast mich dabei gestört meinen Lieblingsfilm \"Transformers 2\" zu schauen!!! Entschuldige dich sofort, sonst wirst du dafür bezahlen!</string>
+    <string name="introduction_text">April 2014: 	Herr Weber erschafft ausversehen die Webertrons, da er beim Integrieren einen Fehler macht.. Diese vermehren sich unaufhaltsam und spezialisieren sich auf verschiedene Fachschaften. Ihr natürlicher Lebensraum ist die Schule, sie sind jedoch Meister im Verstecken, sodass Herr Weber seinen Ausrutscher lange Zeit geheim halten kann.\n\nAugust 2014:   Herr Eigenmann entdeckt die Webertrons und fängt an diese zu trainieren. Er erzählt dies auch anderen Lehrern und beginnt, seine Webertrons mit ihren zu messen. So entstehen Feindschaften  zwischen den verschiedenen Fachschaften, die schnell auch die wilden Webertrons erfassen. Nun herrscht Chaos in der Schule, da die Webertrons bei ihren Kämpfen ein riesiges Chaos verursachen.</string>
 
     <string-array name="maps">
         <item>tmx/ground_floor.tmx</item>
@@ -82,45 +87,25 @@
     </string-array>
 
     <string-array name="sayings">
-        <item
-            >Ein Tag ohne Nadine&#8230; \nist ein verlorener Tag.</item>
-        <item
-            >Mach deine Hausaufgaben!</item>
-        <item
-            >Des wird noch was&#8230;</item>
-        <item
-            >Wie ich soweit gekommmen bin?? \nIch habe mit dem Chef geschlafen&#8230;</item>
-        <item
-            >Ab an die Tafel!</item>
-        <item
-            >Integrieren vor Dividieren!</item>
-        <item
-            >Direkt hops!</item>
-        <item
-            >Ich muss neue Arbeitsblätter kopieren gehen&#8230;</item>
-        <item
-            >Ja, du darfst aufs Klo.</item>
-        <item
-            >Raus in die Pause!</item>
-        <item
-            >Rechne immer mit mir!</item>
-        <item
-            >Möge die Macht mit mir sein!</item>
-        <item
-            >Es wird Zeit für ein wenig Entropie&#8230;</item>
-        <item
-            >Kraft ist Masse mal Beschleunigung,\nalso voll auf die Fresse!</item>
-        <item
-            >Es heißt nicht w, sondern Omega!</item>
-        <item
-            >Oh, du hast den Witz nicht verstanden&#8230;</item>
-        <item
-            >Uriniere dich hinfort du Gesäßöffnung!</item>
-        <item
-            >Auf Lehramt studieren ist was für Pussies&#8230;</item>
-        <item
-            >Du bekommst eine Sechs, \nwenn du gewinnst.</item>
-        <item
-            >Fünftklässlergeruch macht high.\nAber nicht das gute high.</item>
+        <item>Ein Tag ohne Nadine&#8230; \nist ein verlorener Tag.</item>
+        <item>Mach deine Hausaufgaben!</item>
+        <item>Des wird noch was&#8230;</item>
+        <item>Wie ich soweit gekommmen bin?? \nIch habe mit dem Chef geschlafen&#8230;</item>
+        <item>Ab an die Tafel!</item>
+        <item>Integrieren vor Dividieren!</item>
+        <item>Direkt hops!</item>
+        <item>Ich muss neue Arbeitsblätter kopieren gehen&#8230;</item>
+        <item>Ja, du darfst aufs Klo.</item>
+        <item>Raus in die Pause!</item>
+        <item>Rechne immer mit mir!</item>
+        <item>Möge die Macht mit mir sein!</item>
+        <item>Es wird Zeit für ein wenig Entropie&#8230;</item>
+        <item>Kraft ist Masse mal Beschleunigung,\nalso voll auf die Fresse!</item>
+        <item>Es heißt nicht w, sondern Omega!</item>
+        <item>Oh, du hast den Witz nicht verstanden&#8230;</item>
+        <item>Uriniere dich hinfort du Gesäßöffnung!</item>
+        <item>Auf Lehramt studieren ist was für Pussies&#8230;</item>
+        <item>Du bekommst eine Sechs, \nwenn du gewinnst.</item>
+        <item>Fünftklässlergeruch macht high.\nAber nicht das gute high.</item>
     </string-array>
 </resources>

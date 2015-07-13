@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="219">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="51" height="47" tilewidth="32" tileheight="32" nextobjectid="233">
  <tileset firstgid="1" name="floors_tiled_ready" tilewidth="32" tileheight="32" spacing="3" margin="2">
   <image source="gfx/floors/floors_tiled_ready.png" width="141" height="141"/>
  </tileset>
@@ -8,6 +8,9 @@
  </tileset>
  <tileset firstgid="115" name="objects_teacher" tilewidth="32" tileheight="32">
   <image source="gfx/objects/objects_teacher.png" width="448" height="224"/>
+ </tileset>
+ <tileset firstgid="213" name="objects_pupils" tilewidth="32" tileheight="32">
+  <image source="gfx/objects/objects_pupils.png" width="448" height="224"/>
  </tileset>
  <layer name="base" width="51" height="47">
   <data encoding="base64" compression="zlib">
@@ -21,7 +24,12 @@
  </layer>
  <layer name="teachers" width="51" height="47">
   <data encoding="base64" compression="zlib">
-   eJzt2DEOQEAARNG9vTiAuAYNHQ33sp1CdJtMwnvJ9L+eUgBuXTqgoSEdEDbVzemIRra6PR0BENSnAxoa0wEAADz4gwD4sqVuTUc0ctSd6Ygf8s0B8OYCMKsKTQ==
+   eJzt2DsKgDAQRdHs3k8vbkNFtNMm7stpxSIpwjxI7oFXJcWtJwQAHkZ1QIMmdYDYYlsTfzaPkAIu262OAAAUMasDChrUAQAAwFWvDkCW1u9BAIC/w3aqIzJ1ifdoezxCUK2abnP42tUBQKNetJoLtQ==
+  </data>
+ </layer>
+ <layer name="pupils" width="51" height="47">
+  <data encoding="base64" compression="zlib">
+   eJzt2d0KgCAMgFG7qPd/TXuKFAqGmD+Q2vQ70FVmwtocZgzQ1+mufUuPyd3Pjbf3ewDJjl7Ax7R/4z4eR2Wux3I7nKO2fgCARqlaqHF/mG2PBlpJ9TnkEQANZB3z/Qu1C71p7JVnE8aAc5wxqL/QoOQ/T8n58tscTx5QhxBarV/4+57gc1Tmeul65TOxPF8tzgDauQDVzBZS
   </data>
  </layer>
  <objectgroup name="stairs_down" width="51" height="47">
@@ -102,12 +110,12 @@
   <object id="203" x="128" y="288" width="64" height="32"/>
   <object id="204" x="256" y="288" width="64" height="32"/>
   <object id="205" x="384" y="288" width="64" height="32"/>
-  <object id="206" x="192" y="1280" width="32" height="64"/>
-  <object id="209" x="608" y="1216" width="64" height="64"/>
-  <object id="211" x="1120" y="992" width="32" height="64"/>
-  <object id="213" x="1280" y="576" width="32" height="64"/>
-  <object id="215" x="736" y="288" width="64" height="64"/>
-  <object id="217" x="480" y="192" width="32" height="64"/>
+  <object id="219" x="480" y="1344" width="32" height="32"/>
+  <object id="221" x="896" y="1248" width="32" height="32"/>
+  <object id="224" x="1120" y="960" width="32" height="32"/>
+  <object id="227" x="1152" y="640" width="32" height="32"/>
+  <object id="229" x="1024" y="128" width="32" height="32"/>
+  <object id="231" x="480" y="288" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="spawn" width="51" height="47">
   <properties>
@@ -119,11 +127,11 @@
   <properties>
    <property name="teacher_fight" value="true"/>
   </properties>
-  <object id="207" x="160" y="1248" width="96" height="128"/>
-  <object id="210" x="576" y="1184" width="128" height="128"/>
-  <object id="212" x="1088" y="960" width="96" height="128"/>
-  <object id="214" x="1248" y="544" width="96" height="128"/>
-  <object id="216" x="704" y="256" width="128" height="128"/>
-  <object id="218" x="448" y="160" width="96" height="128"/>
+  <object id="220" x="448" y="1312" width="96" height="96"/>
+  <object id="222" x="864" y="1216" width="96" height="96"/>
+  <object id="225" x="1088" y="928" width="96" height="96"/>
+  <object id="228" x="1120" y="608" width="96" height="96"/>
+  <object id="230" x="992" y="96" width="64" height="96"/>
+  <object id="232" x="448" y="256" width="96" height="96"/>
  </objectgroup>
 </map>

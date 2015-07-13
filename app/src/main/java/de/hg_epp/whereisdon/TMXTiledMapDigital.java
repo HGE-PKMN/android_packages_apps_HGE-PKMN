@@ -13,6 +13,7 @@ import android.view.Display;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -103,7 +104,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     private Rectangle upstairs = null;
     private Rectangle downstairs = null;
     private Rectangle fight_zone[] = {};
-    // private Rectangle moser_hidden = null;
+    private Rectangle moser_hidden = null;
     private boolean wasPaused = false;
     private String[] mMapsArray;
     float spawnX;
@@ -386,6 +387,13 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         this.startActivity(startAct);
     }
 
+    public void startMoserHidden() {
+        Intent startAct = new Intent(this, MoserHidden.class);
+        finish();
+        this.startActivity(startAct);
+    }
+
+
     public void showWinAnimation() {
         Intent startAct = new Intent(this, DonWin.class);
         finish();
@@ -458,13 +466,13 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                 }
             }
 
-/*            if (group.getTMXObjectGroupProperties().containsTMXProperty("moser_hidden", "true")) {
+            if (group.getTMXObjectGroupProperties().containsTMXProperty("moser_hidden", "true")) {
                 // This is our "Mr. Moser" layer. Create the boxes from it
                 for (final TMXObject object : group.getTMXObjects()) {
                     //go upstairs if all teachers have been defeated
                     moser_hidden = new Rectangle(object.getX(), object.getY(), object.getWidth(), object.getHeight(), getVertexBufferObjectManager());
                 }
-            }*/
+            }
         }
     }
 
@@ -491,7 +499,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                                                          loadMap(mMapID + 1);
                                                          Log.d("WID", "going upstairs!");
                                                      } else {
-                                                         if (t1 && t2 && t3 && t4 && t5 && t6) {
+                                                         if (true) {
                                                              if (maxID + 1 == mMapsArray.length) {
                                                                  Log.d("WID", "YOU WON!!");
                                                                  showWinAnimation();
@@ -528,11 +536,11 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                                                          }
                                                      }
                                              }
-/*                        if (moser_hidden != null) {
-                            if (moser_hidden.collidesWith(mPlayer)) {
-
-                            }
-                        }*/
+                                             if (moser_hidden != null) {
+                                                 if (moser_hidden.collidesWith(mPlayer)) {
+                                                     startMoserHidden();
+                                                 }
+                                             }
                                          }// end inner class method
                                      }
         );

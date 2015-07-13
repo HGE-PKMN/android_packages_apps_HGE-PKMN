@@ -37,41 +37,10 @@ public class Introduction extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_introduction);
-        setStartText();
-        setPic();
-    }
-
-    //method sets the text and makes it scrollable
-    private void setStartText() {
+        //method sets the text and makes it scrollable
         TextView intro = (TextView) findViewById(R.id.intro_text);
-        intro.setText(setRaw());
         intro.setMovementMethod(new ScrollingMovementMethod());
     }
-
-
-    //method reads the Raw
-    private String setRaw() {
-        InputStream inputStream = getResources().openRawResource(R.raw.exposition);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
-        int j;
-        try {
-            j = inputStream.read();
-            while (j != -1) {
-                byteArrayOutputStream.write(j);
-                j = inputStream.read();
-            }
-
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return byteArrayOutputStream.toString();
-    }
-
-/*    private void waste() {
-    }
-    */
 
     // start the Game (listened to our feedback by the other team)
     public void resumeToMenu(View unused) {
@@ -79,12 +48,5 @@ public class Introduction extends ActionBarActivity {
         ResourceManager.setMapID(0);
         finish();
         this.startActivity(startAct);
-    }
-
-    //fills the ImageView with a Picture
-    //just example Pic
-    public void setPic() {
-        ImageView intropic = (ImageView) findViewById(R.id.intro_pic);
-        intropic.setImageResource(R.drawable.app_icon);
     }
 }

@@ -23,20 +23,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/continue_outro"
-            android:layout_toRightOf="@+id/donWin"
-            android:layout_toEndOf="@+id/donWin"
-            android:layout_below="@+id/outro"
-            android:layout_marginTop="69dp"
             android:background="#504E4E4E"
             android:text="@string/continue_outro"
             android:onClick="returnToMenu"
-            android:textColor="#ffffffff" />
+            android:textColor="#ffffffff"
+            android:layout_below="@+id/outro"
+            android:layout_marginTop="50sp"
+            android:layout_alignLeft="@+id/outro"
+            android:layout_alignStart="@+id/outro" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:id="@+id/outro"
+            android:text="@string/don_win_text"
             android:phoneNumber="true"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/donWin"
@@ -49,7 +50,8 @@
             android:layout_marginLeft="39dp"
             android:layout_marginStart="39dp"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:layout_alignParentStart="true"
+            android:background="@drawable/don" />
     </RelativeLayout>
 
     </LinearLayout>
