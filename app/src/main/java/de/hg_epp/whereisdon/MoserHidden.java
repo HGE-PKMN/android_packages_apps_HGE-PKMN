@@ -43,7 +43,7 @@ public class MoserHidden extends ActionBarActivity implements Animation.Animatio
         moser_hidden.setMovementMethod(new ScrollingMovementMethod());
     }
 
-    //starts the animation of Don
+    //starts the animation of Moser
     private void startMoserAnimation() {
         Animation upDown = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.up_down_don);
         upDown.setRepeatCount(Animation.INFINITE);

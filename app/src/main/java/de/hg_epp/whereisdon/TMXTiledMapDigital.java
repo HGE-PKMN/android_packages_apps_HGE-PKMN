@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 
 import org.andengine.engine.camera.BoundCamera;
+import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl;
 import org.andengine.engine.camera.hud.controls.BaseOnScreenControl.IOnScreenControlListener;
 import org.andengine.engine.camera.hud.controls.DigitalOnScreenControl;
@@ -30,6 +31,7 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.physics.box2d.FixedStepPhysicsWorld;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
@@ -51,6 +53,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.Constants;
 import org.andengine.util.debug.Debug;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,6 +63,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Random;
 
 /**
  * Based Off TMXTiledMapExample.java by
@@ -100,6 +104,10 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     static AnimatedSprite mPlayer;
     private Body mPlayerBody;
 
+    private TMXTile mTMXTileNew = null;
+    private TMXTile mTMXTileOld = null;
+    private int mStepCount = 0;
+
     private Rectangle upstairs = null;
     private Rectangle downstairs = null;
     private Rectangle fight_zone[] = {};
@@ -108,9 +116,12 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
     private String[] mMapsArray;
     float spawnX;
     float spawnY;
+    private int CAMERA_WIDTH;
+    private int CAMERA_HEIGHT;
 
     private ITextureRegion mOnScreenControlBaseTextureRegion;
     private ITextureRegion mOnScreenControlKnobTextureRegion;
+    private ITextureRegion mMoserApprovedRegion;
 
     private enum PlayerDirection {
         NONE,
@@ -175,8 +186,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
 
     @Override
     public EngineOptions onCreateEngineOptions() {
-        int CAMERA_HEIGHT = 165;
-
+        CAMERA_HEIGHT = 165;
         // set the CAMERA_WIDTH in an fitting ratio compared to the screen size.
         // this should avoid those ugly white bars across devices with different screens
 /*        final DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -202,7 +212,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
                 break;
         }
 
-        int CAMERA_WIDTH = Math.round(aspectRatio * CAMERA_HEIGHT);
+        CAMERA_WIDTH = Math.round(aspectRatio * CAMERA_HEIGHT);
 
         this.mCamera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
         this.mCamera.setBoundsEnabled(false);
@@ -226,6 +236,10 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         ITexture mOnScreenControlKnobTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/onscreen_control_knob.png", TextureOptions.BILINEAR);
         this.mOnScreenControlKnobTextureRegion = TextureRegionFactory.extractFromTexture(mOnScreenControlKnobTexture);
         mOnScreenControlKnobTexture.load();
+
+        ITexture mMoserApprovedTexture = new AssetBitmapTexture(this.getTextureManager(), this.getAssets(), "gfx/moser_approved.png", TextureOptions.BILINEAR);
+        this.mMoserApprovedRegion = TextureRegionFactory.extractFromTexture(mMoserApprovedTexture);
+        mMoserApprovedTexture.load();
 
         mMusicChangeMap = MediaPlayer.create(this, R.raw.downstairs);
     }
@@ -296,7 +310,7 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         mScene.attachChild(mPlayer);
 
         		/* Velocity control (left). */
-        // Amount of Pixels away from 0/0 (top left corner)
+        // Amount of Pixels away from 0/0 (lower left corner)
         final float edge_space = 40;
         DigitalOnScreenControl mDigitalOnScreenControl = new DigitalOnScreenControl(edge_space, edge_space, this.mCamera, this.mOnScreenControlBaseTextureRegion, this.mOnScreenControlKnobTextureRegion, 0.1f, this.getVertexBufferObjectManager(), new IOnScreenControlListener() {
 
@@ -344,6 +358,17 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         mDigitalOnScreenControl.setAlpha(0.5f);
         mDigitalOnScreenControl.getControlBase().setScale(0.5f);
 
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean moser_approvedB = settings.getBoolean("moser_approved", false);
+        if (moser_approvedB) {
+            HUD hud = new HUD();
+            int moser_edgespace_height = 20;
+            int moser_edgespace_weidth = 30;
+            Sprite moser_approved = new Sprite(CAMERA_WIDTH - moser_edgespace_weidth, CAMERA_HEIGHT - moser_edgespace_height, this.mMoserApprovedRegion ,getVertexBufferObjectManager());
+            hud.attachChild(moser_approved);
+            mCamera.setHUD(hud);
+        }
+
         mScene.setChildScene(mDigitalOnScreenControl);
 
         mMusic = MediaPlayer.create(this, R.raw.background_music);
@@ -351,6 +376,49 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         this.mMusic.setLooping(true);
         createObjects();
         updatePlayer();
+
+        /* The layer for the player to walk on. */
+        final TMXLayer tmxLayer = this.mTMXTiledMap.getTMXLayers().get(0);
+
+        mScene.registerUpdateHandler(new IUpdateHandler() {
+            @Override
+            public void reset() { }
+
+            @Override
+            public void onUpdate(final float pSecondsElapsed) {
+				/* Get the scene-coordinates of the players feet. */
+                final float[] playerFootCordinates = mPlayer.convertLocalCoordinatesToSceneCoordinates(16, 1);
+
+				/* Get the tile the feet of the player are currently waking on. */
+                mTMXTileNew = tmxLayer.getTMXTileAt(playerFootCordinates[Constants.VERTEX_INDEX_X], playerFootCordinates[Constants.VERTEX_INDEX_Y]);
+                if(mTMXTileOld != null) {
+                    // in this case steps = Tiles moved
+                    // check if the tile we are currently on is the same one as it was last time
+                    // when this method ran. If it differs, count a step.
+                    // if we reached 50+ steps ran an Random generator and start an Fight against an
+                    // wild WBT with the probability of 5%
+                    if(!mTMXTileOld.equals(mTMXTileNew)){
+                        mTMXTileOld = mTMXTileNew;
+                        mStepCount ++;
+                        if(mStepCount >= 50){
+                            Random r = new Random();
+                            int Low = 0;
+                            int High = 101;
+                            int R = r.nextInt(High - Low) + Low;
+                            if(R <= 5){
+                                mStepCount = 0;
+                                int Low2 = (5 - 3) * 100;
+                                int High2 = (5 + 3) * 100;
+                                double R2 = (r.nextInt(High2 - Low2) + Low2) / 100D;
+                                startFE(getWBTStrings("name"), getWBTStrings("token"), (int) Math.round(R2 * (mMapID + 1)), Integer.toString(mMapID), Integer.toString(0), "false");
+                            }
+                        }
+                    }
+                }else{
+                    mTMXTileOld = mTMXTileNew;
+                }
+            }
+        });
 
         return mScene;
     }
@@ -392,11 +460,18 @@ public class TMXTiledMapDigital extends SimpleBaseGameActivity {
         this.startActivity(startAct);
     }
 
-
     public void showWinAnimation() {
         Intent startAct = new Intent(this, DonWin.class);
         finish();
         this.startActivity(startAct);
+    }
+
+    public String getWBTStrings(String type){
+        if(type.equals("token")){
+            return getString(R.string.wbt_token);
+        }else{
+            return getString(R.string.webertron);
+        }
     }
 
     static <T> T[] append(T[] arr, T element) {

@@ -49,6 +49,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
 
     private String[] attacks;
     private String[] sayings;
+    private String[] wbtsayings;
     private ArrayList<Integer> mDrawableArray = new ArrayList<>();
     private Button attack_button;
     private TextView sayingsTV;
@@ -58,6 +59,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     private int winsPlayer;
     private int winsTeacher;
     private int teacherWBT;
+    private boolean inHitAnimation;
     private ImageView wbt_p;
     private ImageView wbt_t;
     private double player_lvl;
@@ -160,9 +162,6 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     // (can be changed later). Also set trainer fight true (this allows us to easily implement wild
     // Webertron fights later on, then call prepareNextFight.
     public void prepareFight(Intent intent) {
-        // I know it is bad sport to call android methods manually, but we need to be fullscreen
-        // before calling the Dialog in prepareNextFight
-        onWindowFocusChanged(true);
         getArrays();
         winsPlayer = 0;
         winsTeacher = 0;
@@ -182,7 +181,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         setTeacherName(intent);
         setTeacherToken(intent);
         prepareNextFight();
-        //initzializes music
+        //initializes music
         mMusic = MediaPlayer.create(this, R.raw.fight_music);
         //method for starting the music
         //music with loop
@@ -329,6 +328,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         Resources res = getResources();
         attacks = res.getStringArray(R.array.attacks);
         sayings = res.getStringArray(R.array.sayings);
+        wbtsayings = res.getStringArray(R.array.wbtsayings);
         mDrawableArray.add(R.drawable.wbt_1);
         mDrawableArray.add(R.drawable.wbt_2);
         mDrawableArray.add(R.drawable.wbt_3);
@@ -361,11 +361,21 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
         Random r = new Random();
         int Low = 0;
         int High1 = attacks.length;
-        int High2 = sayings.length;
+        int High2 = 0;
+        if(mTrainerFight) {
+            High2 = sayings.length;
+        }else{
+            High2 = wbtsayings.length;
+        }
         int R1 = r.nextInt(High1 - Low) + Low;
         int R2 = r.nextInt(High2 - Low) + Low;
         attack_button.setText(attacks[R1]);
-        sayingsTV.setText(getTeacherName() + " " + sayings[R2]);
+
+        if(mTrainerFight) {
+            sayingsTV.setText(getTeacherName() + " " + sayings[R2]);
+        }else{
+            sayingsTV.setText(getTeacherName() + " " + wbtsayings[R2]);
+        }
     }
 
     // sets the Sayings TextView text to R.string.fighting
@@ -437,9 +447,9 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
 
     public void fight(View unused) {
         if (!mButtonLocked) {
-            chooseATKType();
             //let the Webertrons jiggle while attacking each other
             startWBTAnimationHit();
+            chooseATKType();
         } else {
             Log.e("WID", "Attack button locked!");
         }
@@ -602,60 +612,76 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     private void winPlayer() {
         winsPlayer++;
         increaseN();
-        if (winsPlayer == 2) {
-            Toast.makeText(this, getString(R.string.duel_won), Toast.LENGTH_LONG).show();
-            mTrainerFight = false;
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = settings.edit();
-            if (mMapID == settings.getInt("maxMapID", 0)) {
-                switch (mTeacherID) {
-                    case 1:
-                        editor.putBoolean("t1", true);
-                        editor.apply();
-                        break;
-                    case 2:
-                        editor.putBoolean("t2", true);
-                        editor.apply();
-                        break;
-                    case 3:
-                        editor.putBoolean("t3", true);
-                        editor.apply();
-                        break;
-                    case 4:
-                        editor.putBoolean("t4", true);
-                        editor.apply();
-                        break;
-                    case 5:
-                        editor.putBoolean("t5", true);
-                        editor.apply();
-                        break;
-                    case 6:
-                        editor.putBoolean("t6", true);
-                        editor.apply();
-                        break;
-                    case 7:
-                        // this is just an empty case for moser_hidden
-                        break;
+        if(mTrainerFight) {
+            if (winsPlayer == 2) {
+                Toast.makeText(this, getString(R.string.duel_won), Toast.LENGTH_LONG).show();
+                mTrainerFight = false;
+                SharedPreferences settings = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = settings.edit();
+                if (mMapID == settings.getInt("maxMapID", 0)) {
+                    switch (mTeacherID) {
+                        case 1:
+                            editor.putBoolean("t1", true);
+                            editor.apply();
+                            break;
+                        case 2:
+                            editor.putBoolean("t2", true);
+                            editor.apply();
+                            break;
+                        case 3:
+                            editor.putBoolean("t3", true);
+                            editor.apply();
+                            break;
+                        case 4:
+                            editor.putBoolean("t4", true);
+                            editor.apply();
+                            break;
+                        case 5:
+                            editor.putBoolean("t5", true);
+                            editor.apply();
+                            break;
+                        case 6:
+                            editor.putBoolean("t6", true);
+                            editor.apply();
+                            break;
+                        case 7:
+                            editor.putBoolean("moser_approved", true);
+                            editor.apply();
+                            break;
+                        default:
+                            // this is just an empty case for some exeptions like wild wbts
+                            break;
+                    }
                 }
+                escape(fake_view);
+            } else {
+                Toast.makeText(this, getString(R.string.fight_won), Toast.LENGTH_LONG).show();
+                prepareNextFight();
             }
-            escape(fake_view);
-        } else {
+        }else{
             Toast.makeText(this, getString(R.string.fight_won), Toast.LENGTH_LONG).show();
-            prepareNextFight();
+            escape(fake_view);
         }
     }
 
     // Show some Toast message when the Teacher wins,
     // and close the FightEngine when the Teacher won 2 (out of 3) matches
-    private void winTeacher() {
+    private void winEnemy() {
         winsTeacher++;
-        if (winsTeacher == 2) {
-            Toast.makeText(this, getString(R.string.duel_lost), Toast.LENGTH_LONG).show();
-            mTrainerFight = false;
-            escape(fake_view);
-        } else {
-            Toast.makeText(this, getString(R.string.fight_lost), Toast.LENGTH_LONG).show();
-            prepareNextFight();
+        if(mTrainerFight) {
+            if (winsTeacher == 2) {
+                Toast.makeText(this, getString(R.string.duel_lost), Toast.LENGTH_LONG).show();
+                mTrainerFight = false;
+                escape(fake_view);
+            } else {
+                Toast.makeText(this, getString(R.string.fight_lost), Toast.LENGTH_LONG).show();
+                prepareNextFight();
+            }
+        }else{
+            // Show some text when losing against the WildWBT.
+            // We only fight once against the wild wbt, not 3 times like against a Teacher
+                Toast.makeText(this, getString(R.string.fight_lost), Toast.LENGTH_LONG).show();
+                escape(fake_view);
         }
     }
 
@@ -668,7 +694,11 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     // restart the animation when it ends (Androids Loop function has some problems)
     @Override
     public void onAnimationEnd(Animation animation) {
-        startWBTAnimation();
+        if(!inHitAnimation) {
+            startWBTAnimation();
+        }else{
+            startWBTAnimationHit();
+        }
     }
 
     // empty method needed for the Animation Listener
@@ -689,10 +719,12 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
     }
 
     //make the Webertrons jiggle
-    public void startWBTAnimationHit() {
+    private void startWBTAnimationHit() {
+        inHitAnimation = true;
         wbt_t.clearAnimation();
         wbt_p.clearAnimation();
         Animation hit = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.hit);
+        hit.setAnimationListener(this);
         wbt_p.setVisibility(View.VISIBLE);
         wbt_p.startAnimation(hit);
         wbt_t.setVisibility(View.VISIBLE);
@@ -748,9 +780,11 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
             // randomly choose the order of the attacks
             // Either Player Webertron attacks first or Teacher Webertron does so
             Random random = new Random();
+            inHitAnimation = false;
+            startWBTAnimation();
             if (random.nextBoolean()) {
                 if (hp_p < 1) {
-                    winTeacher();
+                    winEnemy();
                 } else {
                     if (hp_t < 1) {
                         winPlayer();
@@ -766,7 +800,7 @@ public class FightEngine extends ActionBarActivity implements Animation.Animatio
                     winPlayer();
                 } else {
                     if (hp_p < 1) {
-                        winTeacher();
+                        winEnemy();
                     } else {
                         Log.e("WID", "onPostExecute");
                         unlockButton();

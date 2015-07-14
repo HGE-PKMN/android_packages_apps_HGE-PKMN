@@ -150,6 +150,7 @@ public class MainActivity extends ActionBarActivity {
         editor.putBoolean("t6", false);
         editor.putInt("won_games", 1);
         editor.putInt("maxMapID", 0);
+        editor.putBoolean("moser_approved", false);
         editor.apply();
         Toast.makeText(this, getString(R.string.game_has_been_reset), Toast.LENGTH_LONG).show();
     }
